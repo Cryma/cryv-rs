@@ -14,6 +14,19 @@ pub fn get_pattern(pattern: String, add: i32) -> *mut c_void {
     data
 }
 
+pub fn get_pattern_sub(pattern: String, sub: i32) -> *mut c_void {
+    let pattern_raw = CString::new(pattern).unwrap();
+    let pattern_raw_pointer = pattern_raw.as_ptr();
+
+    let data = unsafe {
+        cpp!([pattern_raw_pointer as "const char *", sub as "uint32_t"] -> *mut c_void as "char*" {
+            return Signature(pattern_raw_pointer).scan().sub(sub).as<char*>();
+        })
+    };
+
+    data
+}
+
 pub fn get_pattern_rip(pattern: String, add: i32) -> *mut c_void {
     let pattern_raw = CString::new(pattern).unwrap();
     let pattern_raw_pointer = pattern_raw.as_ptr();

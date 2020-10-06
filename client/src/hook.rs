@@ -1,7 +1,14 @@
-use crate::memory::{address_fill, get_pattern, get_pattern_rip};
+use crate::memory::{address_fill, get_pattern, get_pattern_rip, get_pattern_sub};
 use cpp::cpp;
-use log::debug;
-use std::ffi::c_void;
+use detour::static_detour;
+use log::{debug, error};
+use std::ffi::{c_void, CStr};
+
+static LABEL: &str = "Loading CryV Multiplayer\0";
+
+static_detour! {
+    static GetLabelText: fn(i64, *const i8, i64) -> *mut c_void;
+}
 
 struct Pointers {
     logos: *mut c_void,
@@ -70,7 +77,7 @@ pub fn initialize() {
         POINTERS.registration_table = get_pattern_rip("76 32 48 8B 53 40 48 8D 0D".to_owned(), 9);
         debug!("RegistrationTable: {:p}", POINTERS.registration_table);
 
-        POINTERS.get_label_text = get_pattern("75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9".to_owned(), -19);
+        POINTERS.get_label_text = get_pattern_sub("75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9".to_owned(), 19);
         debug!("GetLabelText: {:p}", POINTERS.get_label_text);
 
         let replay_interface = get_pattern("48 8B 05 ? ? ? ? 41 8B 1E".to_owned(), 0).add(0xEE);
@@ -100,4 +107,33 @@ pub fn initialize() {
         debug!("SlowdownFix: {:p}", POINTERS.slowdown_fix);
         address_fill(POINTERS.slowdown_fix, 2, 0x90);
     };
+
+    hook_get_label_text();
+}
+
+fn hook_get_label_text() {
+    if let Err(error) = unsafe { GetLabelText.initialize(std::mem::transmute(POINTERS.get_label_text), get_label_text) } {
+        error!("Error initializing GetLabelText hook: {}", error);
+
+        return;
+    }
+
+    if let Err(error) = unsafe { GetLabelText.enable() } {
+        error!("Error enabling GetLabelText hook: {}", error);
+
+        return;
+    }
+}
+
+fn get_label_text(a1: i64, a2: *const i8, a3: i64) -> *mut c_void {
+    unsafe {
+        let label = CStr::from_ptr(a2);
+        let label_string = label.to_str().unwrap();
+
+        if label_string == "LOADING_SPLAYER_L" {
+            return LABEL.as_ptr() as *mut c_void;
+        }
+
+        GetLabelText.call(a1, a2, a3)
+    }
 }
