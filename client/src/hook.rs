@@ -17,6 +17,7 @@ struct Pointers {
     story_mode_skip: *mut c_void,
     model_check_skip: *mut c_void,
     model_spawn_fix: *mut c_void,
+    slowdown_fix: *mut c_void,
 }
 
 impl Pointers {
@@ -34,6 +35,7 @@ impl Pointers {
         story_mode_skip: std::ptr::null_mut(),
         model_check_skip: std::ptr::null_mut(),
         model_spawn_fix: std::ptr::null_mut(),
+        slowdown_fix: std::ptr::null_mut(),
     };
 }
 
@@ -93,5 +95,9 @@ pub fn initialize() {
         POINTERS.model_spawn_fix = get_pattern("48 8B C8 FF 52 30 84 C0 74 05 48".to_owned(), 8);
         debug!("ModelSpawnFix: {:p}", POINTERS.model_spawn_fix);
         address_fill(POINTERS.model_spawn_fix, 2, 0x90);
+
+        POINTERS.slowdown_fix = get_pattern("75 05 0F 28 E3 EB 03".to_owned(), 0);
+        debug!("SlowdownFix: {:p}", POINTERS.slowdown_fix);
+        address_fill(POINTERS.slowdown_fix, 2, 0x90);
     };
 }
