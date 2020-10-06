@@ -1,4 +1,39 @@
 use cpp::cpp;
+use std::ffi::{c_void, CString};
+
+pub fn get_pattern(pattern: String, add: i32) -> *mut c_void {
+    let pattern_raw = CString::new(pattern).unwrap();
+    let pattern_raw_pointer = pattern_raw.as_ptr();
+
+    let data = unsafe {
+        cpp!([pattern_raw_pointer as "const char *", add as "uint32_t"] -> *mut c_void as "char*" {
+            return Signature(pattern_raw_pointer).scan().add(add).as<char*>();
+        })
+    };
+
+    data
+}
+
+pub fn get_pattern_rip(pattern: String, add: i32) -> *mut c_void {
+    let pattern_raw = CString::new(pattern).unwrap();
+    let pattern_raw_pointer = pattern_raw.as_ptr();
+
+    let data = unsafe {
+        cpp!([pattern_raw_pointer as "const char *", add as "uint32_t"] -> *mut c_void as "char*" {
+            return Signature(pattern_raw_pointer).scan().add(add).rip().as<char*>();
+        })
+    };
+
+    data
+}
+
+pub fn address_fill(address: *mut c_void, count: usize, element: u8) {
+    for index in 0..count {
+        unsafe {
+            *((address as *mut u8).add(index)) = element;
+        };
+    }
+}
 
 cpp! {{
 
