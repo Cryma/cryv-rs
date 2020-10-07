@@ -6,6 +6,18 @@ mod memory;
 mod utility;
 
 use log::{debug, info};
+use once_cell::sync::Lazy;
+use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
+
+static INSTALL_DIRECTORY: Lazy<String> = Lazy::new(|| {
+    let key = RegKey::predef(HKEY_LOCAL_MACHINE)
+        .open_subkey(r"Software\CryV")
+        .unwrap();
+
+    let value: String = key.get_value("InstallDirectory").unwrap();
+
+    value
+});
 
 make_entrypoint!(entrypoint);
 
@@ -24,6 +36,8 @@ fn entrypoint() {
 }
 
 fn create_logger() -> Result<(), fern::InitError> {
+    let log_file_path = format!("{}/cryv.log", INSTALL_DIRECTORY.to_owned());
+
     fern::Dispatch::new()
         .format(|out, message, record| {
             out.finish(format_args!(
@@ -36,7 +50,7 @@ fn create_logger() -> Result<(), fern::InitError> {
         })
         .level(log::LevelFilter::Debug)
         .chain(std::io::stdout())
-        .chain(fern::log_file(r"E:\Prototypes\CryV\cryv.log")?)
+        .chain(fern::log_file(log_file_path)?)
         .apply()?;
 
     Ok(())
