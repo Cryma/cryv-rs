@@ -112,7 +112,9 @@ pub fn initialize() {
 }
 
 fn hook_get_label_text() {
-    if let Err(error) = unsafe { GetLabelText.initialize(std::mem::transmute(POINTERS.get_label_text), get_label_text) } {
+    if let Err(error) = unsafe {
+        GetLabelText.initialize(std::mem::transmute(POINTERS.get_label_text), get_label_text)
+    } {
         error!("Error initializing GetLabelText hook: {}", error);
 
         return;
