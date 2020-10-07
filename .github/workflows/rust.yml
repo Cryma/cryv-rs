@@ -18,13 +18,24 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: hecrj/setup-rust-action@v1
+    - name: Install latest nightly
+      uses: actions-rs/toolchain@v1
       with:
-        rust-version: nightly
-    - uses: actions/checkout@v2
+        toolchain: nightly
+        override: true
+        components: rustfmt, clippy
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
     - name: Build
       run: cargo build --verbose
-    - name: Style Check
+
+    - name: Clippy check
+      uses: actions-rs/clippy-check@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        args: --all-features
+
+    - name: Style check
       run: cargo fmt -- --check
-#    - name: Run tests
-#      run: cargo test --verbose
