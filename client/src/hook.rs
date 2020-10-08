@@ -10,21 +10,21 @@ static_detour! {
     static GetLabelText: fn(i64, *const i8, i64) -> *mut c_void;
 }
 
-struct Pointers {
-    logos: *mut c_void,
-    game_legal_skip: *mut c_void,
-    frame_count: *mut c_void,
-    game_state: *mut c_void,
-    swapchain: *mut c_void,
-    address_to_entity: *mut c_void,
-    registration_table: *mut c_void,
-    get_label_text: *mut c_void,
-    replay_interface: *mut c_void,
-    set_vector_results: *mut c_void,
-    story_mode_skip: *mut c_void,
-    model_check_skip: *mut c_void,
-    model_spawn_fix: *mut c_void,
-    slowdown_fix: *mut c_void,
+pub struct Pointers {
+    pub logos: *mut c_void,
+    pub game_legal_skip: *mut c_void,
+    pub frame_count: *mut c_void,
+    pub game_state: *mut c_void,
+    pub swapchain: *mut c_void,
+    pub address_to_entity: *mut c_void,
+    pub registration_table: *mut c_void,
+    pub get_label_text: *mut c_void,
+    pub replay_interface: *mut c_void,
+    pub set_vector_results: *mut c_void,
+    pub story_mode_skip: *mut c_void,
+    pub model_check_skip: *mut c_void,
+    pub model_spawn_fix: *mut c_void,
+    pub slowdown_fix: *mut c_void,
 }
 
 impl Pointers {
@@ -46,7 +46,7 @@ impl Pointers {
     };
 }
 
-static mut POINTERS: Pointers = Pointers::INIT;
+pub static mut POINTERS: Pointers = Pointers::INIT;
 
 pub fn initialize() {
     unsafe {
@@ -109,6 +109,15 @@ pub fn initialize() {
     };
 
     hook_get_label_text();
+
+    // Wait a few seconds until game "initializes"
+    std::thread::sleep(std::time::Duration::from_secs(3));
+
+    unsafe {
+        while *(POINTERS.game_state as *mut i32) != 0 {
+            std::thread::sleep(std::time::Duration::from_millis(50));
+        }
+    }
 }
 
 fn hook_get_label_text() {
