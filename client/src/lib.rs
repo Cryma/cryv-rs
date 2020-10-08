@@ -4,6 +4,7 @@ extern crate winapi;
 mod crossmap;
 mod hook;
 mod memory;
+mod natives;
 mod utility;
 
 use log::{debug, info};

@@ -1,4 +1,5 @@
 use crate::memory::{address_fill, get_pattern, get_pattern_rip, get_pattern_sub};
+use crate::natives;
 use cpp::cpp;
 use detour::static_detour;
 use log::{debug, error};
@@ -118,6 +119,8 @@ pub fn initialize() {
             std::thread::sleep(std::time::Duration::from_millis(50));
         }
     }
+
+    natives::hook_get_frame_count();
 }
 
 fn hook_get_label_text() {
