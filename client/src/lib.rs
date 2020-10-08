@@ -1,6 +1,7 @@
 #![recursion_limit = "1024"]
 extern crate winapi;
 
+mod crossmap;
 mod hook;
 mod memory;
 mod utility;
