@@ -503,7 +503,7 @@ uint64_t *nativeCall(NativeHandler function) {
 
         __try {
             function(&_context);
-            //ScrNativeCallContext::SetVectorResults(&_context);
+            ScrNativeCallContext::SetVectorResults(&_context);
         } __except (exceptionAddress = (GetExceptionInformation())->ExceptionRecord->ExceptionAddress, EXCEPTION_EXECUTE_HANDLER) {
         }
     }

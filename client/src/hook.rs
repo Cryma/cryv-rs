@@ -87,8 +87,11 @@ pub fn initialize() {
         });
         debug!("ReplayInterface: {:p}", POINTERS.replay_interface);
 
-        POINTERS.set_vector_results =
-            get_pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18".to_owned(), 0);
+        let set_vector_results = get_pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18".to_owned(), 0);
+        POINTERS.set_vector_results = set_vector_results;
+        cpp!([set_vector_results as "void*"] {
+            ScrNativeCallContext::SetVectorResults = reinterpret_cast<decltype(ScrNativeCallContext::SetVectorResults)>(set_vector_results);
+        });
         debug!("SetVectorResults: {:p}", POINTERS.set_vector_results);
 
         POINTERS.story_mode_skip =
