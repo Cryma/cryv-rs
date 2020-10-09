@@ -1,10 +1,11 @@
 use std::ffi::c_void;
 
+use crate::crossmap::CROSSMAP;
 use cpp::cpp;
 use detour::static_detour;
-use log::{debug, error};
+use log::error;
 
-use crate::crossmap::CROSSMAP;
+const GET_FRAME_COUNT_NATIVE: u64 = 0x812595A0644CE1DE;
 
 static_detour! {
     static GetFrameCount: fn(*mut c_void) -> *mut c_void;
@@ -36,44 +37,43 @@ fn handler(hash: u64) -> Option<*mut c_void> {
     Some(value)
 }
 
-fn get_native_handler(hash: u64) -> *mut c_void {
+fn get_native_handler(hash: u64) -> Option<*mut c_void> {
     // TODO: Implement native handler caching
 
-    let handler = match handler(hash) {
-        Some(value) => value,
-        None => {
-            // TODO: Improve error handling
-            error!("Could not find native handler for native: {}", hash);
-
-            return std::ptr::null_mut();
-        }
-    };
-
-    handler
+    match handler(hash) {
+        Some(value) => Some(value),
+        None => None,
+    }
 }
 
 fn map_native(in_native: u64) -> Option<u64> {
-    if let Some(value) = CROSSMAP.get(&in_native) {
-        return Some(value.clone());
+    match CROSSMAP.get(&in_native) {
+        Some(value) => Some(*value),
+        None => None,
     }
-
-    None
 }
 
 pub fn hook_get_frame_count() {
-    let native = match map_native(0x812595A0644CE1DE) {
+    let native = match map_native(GET_FRAME_COUNT_NATIVE) {
         Some(value) => value,
         None => {
             error!(
                 "Could not find translation for native: {}",
-                0x812595A0644CE1DEu64
+                GET_FRAME_COUNT_NATIVE
             );
 
             return;
         }
     };
 
-    let address = get_native_handler(native);
+    let address = match get_native_handler(native) {
+        Some(value) => value,
+        None => {
+            error!("Could not find native handler for native: {}", native);
+
+            return;
+        }
+    };
 
     if let Err(error) =
         unsafe { GetFrameCount.initialize(std::mem::transmute(address), get_frame_count) }
