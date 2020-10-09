@@ -3,7 +3,7 @@ use std::{ffi::c_void, sync::Mutex};
 use crate::crossmap::CROSSMAP;
 use cpp::cpp;
 use detour::static_detour;
-use log::error;
+use log::{debug, error};
 use once_cell::sync::OnceCell;
 use winapi::{
     shared::minwindef::LPVOID,
@@ -14,6 +14,38 @@ use winapi::{
 };
 
 const GET_FRAME_COUNT_NATIVE: u64 = 0x812595A0644CE1DE;
+
+macro_rules! native {
+    ($type:ty, $hash:expr, $parameters:expr) => {
+        {
+            let native = map_native($hash).unwrap();
+            let native_handler = get_native_handler(native).unwrap();
+
+            invoke_init(native);
+            $parameters;
+            invoke_call::<$type>(native_handler)
+        }
+    };
+}
+
+macro_rules! native_parameters {
+    () => {
+        {}
+    };
+
+    ($parameter:expr) => {
+        {
+            invoke_push($parameter);
+        }
+    };
+
+    ($parameter:expr, $($params:expr),+) => {
+        {
+            native_parameters! { $parameter }
+            native_parameters! { $($params).+ }
+        }
+    };
+}
 
 static_detour! {
     static GetFrameCount: fn(*mut c_void) -> *mut c_void;
@@ -143,27 +175,30 @@ fn on_tick() {
 
 unsafe extern "system" fn script_function(_: LPVOID) {
     loop {
+        let player_ped_id = native!(i32, 0xD80958FC74E988A6, native_parameters!());
+        let is_player_in_vehicle = native!(bool, 0x997ABD671D25CA0B, native_parameters!(player_ped_id, true));
+
+        debug!("Player Ped {} is currently in vehicle: {}", player_ped_id, is_player_in_vehicle);
+
         script_wait(0);
     }
 }
 
-fn script_wait(time: u32) {
-    let mut wake_time = unsafe { timeGetTime() } + time;
+unsafe fn script_wait(time: u32) {
+    let mut wake_time = timeGetTime() + time;
 
-    if wake_time == unsafe { WAKE_AT } {
+    if wake_time == WAKE_AT {
         wake_time += 1;
     }
 
-    unsafe {
-        WAKE_AT = wake_time;
-    }
+    WAKE_AT = wake_time;
 
     let main_fiber = MAIN_FIBER.get();
 
     if let Some(value) = main_fiber {
         let main_fiber_value = *value.lock().unwrap();
 
-        unsafe { SwitchToFiber(main_fiber_value.pointer) };
+        SwitchToFiber(main_fiber_value.pointer);
     }
 }
 
@@ -171,6 +206,37 @@ fn get_frame_count(context: *mut c_void) -> *mut c_void {
     on_tick();
 
     context
+}
+
+fn invoke_init(hash: u64) {
+    unsafe {
+        cpp!([hash as "uint64_t"] {
+            nativeInit(hash);
+        });
+    };
+}
+
+fn invoke_push<T>(argument: T) {
+    let mut value: u64 = 0;
+    let value_pointer: *mut u64 = &mut value;
+
+    unsafe {
+        *(value_pointer as *mut T) = argument;
+
+        cpp!([value as "uint64_t"] {
+            nativePush64(value);
+        });
+    };
+}
+
+fn invoke_call<R: Copy>(native_handler: *mut c_void) -> R {
+    let data: *mut c_void = unsafe {
+        cpp!([native_handler as "NativeHandler"] -> *mut c_void as "uint64_t*" {
+            return nativeCall(native_handler);
+        })
+    };
+
+    unsafe { *(data as *mut R) }
 }
 
 // TODO: Implement this in Rust
@@ -417,5 +483,32 @@ struct ScriptThread : scrThread {
     bool bool12;
     const char gta_pad3[10];
 };
+
+static NativeManagerContext _context;
+static uint64_t _hash;
+void(*ScrNativeCallContext::SetVectorResults)(ScrNativeCallContext*) = nullptr;
+
+void nativeInit(uint64_t hash) {
+    _context.reset();
+    _hash = hash;
+}
+
+void nativePush64(uint64_t value) {
+    _context.push(value);
+}
+
+uint64_t *nativeCall(NativeHandler function) {
+    if (function != nullptr) {
+        void* exceptionAddress;
+
+        __try {
+            function(&_context);
+            //ScrNativeCallContext::SetVectorResults(&_context);
+        } __except (exceptionAddress = (GetExceptionInformation())->ExceptionRecord->ExceptionAddress, EXCEPTION_EXECUTE_HANDLER) {
+        }
+    }
+
+    return reinterpret_cast<uint64_t*>(_context.getResultPointer());
+}
 
 }}
