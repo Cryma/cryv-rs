@@ -1,15 +1,34 @@
-use std::ffi::c_void;
+use std::{ffi::c_void, sync::Mutex};
 
 use crate::crossmap::CROSSMAP;
 use cpp::cpp;
 use detour::static_detour;
 use log::error;
+use once_cell::sync::OnceCell;
+use winapi::{
+    shared::minwindef::LPVOID,
+    um::{
+        timeapi::timeGetTime, winbase::ConvertThreadToFiber, winbase::CreateFiber,
+        winbase::SwitchToFiber, winbase::LPFIBER_START_ROUTINE,
+    },
+};
 
 const GET_FRAME_COUNT_NATIVE: u64 = 0x812595A0644CE1DE;
 
 static_detour! {
     static GetFrameCount: fn(*mut c_void) -> *mut c_void;
 }
+
+#[derive(Copy, Clone)]
+struct FiberWrapper {
+    pointer: *mut c_void,
+}
+
+unsafe impl Send for FiberWrapper {}
+
+static MAIN_FIBER: OnceCell<Mutex<FiberWrapper>> = OnceCell::new();
+static SCRIPT_FIBER: OnceCell<Mutex<FiberWrapper>> = OnceCell::new();
+static mut WAKE_AT: u32 = 0; // TODO: Find better solution for this
 
 fn handler(hash: u64) -> Option<*mut c_void> {
     if hash == 0 {
@@ -90,7 +109,67 @@ pub fn hook_get_frame_count() {
     }
 }
 
+fn on_tick() {
+    MAIN_FIBER.get_or_init(|| {
+        Mutex::new(FiberWrapper {
+            pointer: unsafe { ConvertThreadToFiber(std::ptr::null_mut()) },
+        })
+    });
+
+    if unsafe { timeGetTime() < WAKE_AT } {
+        return;
+    }
+
+    let mut has_initialized = false;
+    let script_fiber = SCRIPT_FIBER.get_or_init(|| {
+        has_initialized = true;
+
+        // Create fiber for script function
+        let func: LPFIBER_START_ROUTINE = Some(script_function);
+
+        Mutex::new(FiberWrapper {
+            pointer: unsafe { CreateFiber(0, func, std::ptr::null_mut()) },
+        })
+    });
+
+    if has_initialized {
+        return;
+    }
+
+    let script_fiber_value = *script_fiber.lock().unwrap();
+
+    unsafe { SwitchToFiber(script_fiber_value.pointer) };
+}
+
+unsafe extern "system" fn script_function(_: LPVOID) {
+    loop {
+        script_wait(0);
+    }
+}
+
+fn script_wait(time: u32) {
+    let mut wake_time = unsafe { timeGetTime() } + time;
+
+    if wake_time == unsafe { WAKE_AT } {
+        wake_time += 1;
+    }
+
+    unsafe {
+        WAKE_AT = wake_time;
+    }
+
+    let main_fiber = MAIN_FIBER.get();
+
+    if let Some(value) = main_fiber {
+        let main_fiber_value = *value.lock().unwrap();
+
+        unsafe { SwitchToFiber(main_fiber_value.pointer) };
+    }
+}
+
 fn get_frame_count(context: *mut c_void) -> *mut c_void {
+    on_tick();
+
     context
 }
 
