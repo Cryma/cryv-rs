@@ -16,16 +16,14 @@ use winapi::{
 const GET_FRAME_COUNT_NATIVE: u64 = 0x812595A0644CE1DE;
 
 macro_rules! native {
-    ($type:ty, $hash:expr, $parameters:expr) => {
-        {
-            let native = map_native($hash).unwrap();
-            let native_handler = get_native_handler(native).unwrap();
+    ($type:ty, $hash:expr, $parameters:expr) => {{
+        let native = map_native($hash).unwrap();
+        let native_handler = get_native_handler(native).unwrap();
 
-            invoke_init(native);
-            $parameters;
-            invoke_call::<$type>(native_handler)
-        }
-    };
+        invoke_init(native);
+        $parameters;
+        invoke_call::<$type>(native_handler)
+    }};
 }
 
 macro_rules! native_parameters {
@@ -176,9 +174,16 @@ fn on_tick() {
 unsafe extern "system" fn script_function(_: LPVOID) {
     loop {
         let player_ped_id = native!(i32, 0xD80958FC74E988A6, native_parameters!());
-        let is_player_in_vehicle = native!(bool, 0x997ABD671D25CA0B, native_parameters!(player_ped_id, true));
+        let is_player_in_vehicle = native!(
+            bool,
+            0x997ABD671D25CA0B,
+            native_parameters!(player_ped_id, true)
+        );
 
-        debug!("Player Ped {} is currently in vehicle: {}", player_ped_id, is_player_in_vehicle);
+        debug!(
+            "Player Ped {} is currently in vehicle: {}",
+            player_ped_id, is_player_in_vehicle
+        );
 
         script_wait(0);
     }
