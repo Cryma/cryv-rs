@@ -50,6 +50,22 @@ static_detour! {
 }
 
 #[derive(Copy, Clone)]
+pub struct NativeVector3 {
+    pub x: f32,
+    pub padding_x: u32,
+    pub y: f32,
+    pub padding_y: u32,
+    pub z: f32,
+    pub padding_z: u32,
+}
+
+impl std::fmt::Display for NativeVector3 {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "<{}, {}, {}>", self.x, self.y, self.z)
+    }
+}
+
+#[derive(Copy, Clone)]
 struct FiberWrapper {
     pointer: *mut c_void,
 }
@@ -180,9 +196,15 @@ unsafe extern "system" fn script_function(_: LPVOID) {
             native_parameters!(player_ped_id, true)
         );
 
+        let player_ped_position = native!(
+            NativeVector3,
+            0x3FEF770D40960D5A,
+            native_parameters!(player_ped_id, true)
+        );
+
         debug!(
-            "Player Ped {} is currently in vehicle: {}",
-            player_ped_id, is_player_in_vehicle
+            "Player Ped {} is currently in vehicle: {} - Position: {}",
+            player_ped_id, is_player_in_vehicle, player_ped_position
         );
 
         script_wait(0);
