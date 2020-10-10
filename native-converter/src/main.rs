@@ -10,9 +10,8 @@ macro_rules! byte_array_to_utf8_string {
 }
 
 fn main() {
-    let text =
-        std::fs::read_to_string(r"E:\Prototypes\CryV\natives.h") // TODO: Get path via launch arguments
-            .unwrap();
+    let text = std::fs::read_to_string(r"E:\Prototypes\CryV\natives.h") // TODO: Get path via launch arguments
+        .unwrap();
     let lines = text
         .split("\r\n")
         .map(|x| {
@@ -111,7 +110,11 @@ fn main() {
                     return;
                 }
                 nom::Err::Error((err, kind)) => {
-                    println!("ERR::ERROR - {:#?} -  {:#?}", kind, byte_array_to_utf8_string!(err));
+                    println!(
+                        "ERR::ERROR - {:#?} -  {:#?}",
+                        kind,
+                        byte_array_to_utf8_string!(err)
+                    );
 
                     return;
                 }
