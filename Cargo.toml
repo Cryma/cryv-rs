@@ -2,4 +2,7 @@
 members = [
     "launcher",
     "client",
+    "native-converter",
 ]
+
+default-members = ["launcher"]
