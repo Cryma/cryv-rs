@@ -3,7 +3,7 @@ use std::{ffi::c_void, sync::Mutex};
 use crate::crossmap::CROSSMAP;
 use cpp::cpp;
 use detour::static_detour;
-use log::{debug, error};
+use log::error;
 use once_cell::sync::OnceCell;
 use winapi::{
     shared::minwindef::LPVOID,
@@ -189,24 +189,6 @@ fn on_tick() {
 
 unsafe extern "system" fn script_function(_: LPVOID) {
     loop {
-        let player_ped_id = native!(i32, 0xD80958FC74E988A6, native_parameters!());
-        let is_player_in_vehicle = native!(
-            bool,
-            0x997ABD671D25CA0B,
-            native_parameters!(player_ped_id, true)
-        );
-
-        let player_ped_position = native!(
-            NativeVector3,
-            0x3FEF770D40960D5A,
-            native_parameters!(player_ped_id, true)
-        );
-
-        debug!(
-            "Player Ped {} is currently in vehicle: {} - Position: {}",
-            player_ped_id, is_player_in_vehicle, player_ped_position
-        );
-
         script_wait(0);
     }
 }
