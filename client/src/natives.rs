@@ -40,7 +40,7 @@ macro_rules! native_parameters {
     ($parameter:expr, $($params:expr),+) => {
         {
             native_parameters! { $parameter }
-            native_parameters! { $($params).+ }
+            native_parameters! { $($params),+ }
         }
     };
 }
