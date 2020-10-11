@@ -17,12 +17,12 @@ const GET_FRAME_COUNT_NATIVE: u64 = 0x812595A0644CE1DE;
 
 macro_rules! native {
     ($type:ty, $hash:expr, $parameters:expr) => {{
-        let native = map_native($hash).unwrap();
-        let native_handler = get_native_handler(native).unwrap();
+        let native = crate::natives::map_native($hash).unwrap();
+        let native_handler = crate::natives::get_native_handler(native).unwrap();
 
-        invoke_init(native);
+        crate::natives::invoke_init(native);
         $parameters;
-        invoke_call::<$type>(native_handler)
+        crate::natives::invoke_call::<$type>(native_handler)
     }};
 }
 
@@ -33,7 +33,7 @@ macro_rules! native_parameters {
 
     ($parameter:expr) => {
         {
-            invoke_push($parameter);
+            crate::natives::invoke_push($parameter);
         }
     };
 
@@ -102,7 +102,7 @@ fn handler(hash: u64) -> Option<*mut c_void> {
     Some(value)
 }
 
-fn get_native_handler(hash: u64) -> Option<*mut c_void> {
+pub fn get_native_handler(hash: u64) -> Option<*mut c_void> {
     // TODO: Implement native handler caching
 
     match handler(hash) {
@@ -111,7 +111,7 @@ fn get_native_handler(hash: u64) -> Option<*mut c_void> {
     }
 }
 
-fn map_native(in_native: u64) -> Option<u64> {
+pub fn map_native(in_native: u64) -> Option<u64> {
     match CROSSMAP.get(&in_native) {
         Some(value) => Some(*value),
         None => None,
@@ -217,7 +217,7 @@ fn get_frame_count(context: *mut c_void) -> *mut c_void {
     context
 }
 
-fn invoke_init(hash: u64) {
+pub fn invoke_init(hash: u64) {
     unsafe {
         cpp!([hash as "uint64_t"] {
             nativeInit(hash);
@@ -225,7 +225,7 @@ fn invoke_init(hash: u64) {
     };
 }
 
-fn invoke_push<T>(argument: T) {
+pub fn invoke_push<T>(argument: T) {
     let mut value: u64 = 0;
     let value_pointer: *mut u64 = &mut value;
 
@@ -238,7 +238,7 @@ fn invoke_push<T>(argument: T) {
     };
 }
 
-fn invoke_call<R: Copy>(native_handler: *mut c_void) -> R {
+pub fn invoke_call<R: Copy>(native_handler: *mut c_void) -> R {
     let data: *mut c_void = unsafe {
         cpp!([native_handler as "NativeHandler"] -> *mut c_void as "uint64_t*" {
             return nativeCall(native_handler);
