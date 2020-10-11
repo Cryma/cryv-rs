@@ -4,7 +4,10 @@ extern crate winapi;
 mod crossmap;
 mod hook;
 mod memory;
+#[macro_use]
 mod natives;
+#[allow(warnings)]
+mod natives_codegen;
 mod utility;
 
 use log::{debug, info};
