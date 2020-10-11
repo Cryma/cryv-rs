@@ -9,6 +9,7 @@ macro_rules! byte_array_to_utf8_string {
     };
 }
 
+// Parts for the natives parser
 named!(word, take_while1!(is_alphanumeric_with_asterisk));
 named!(const_optional<&[u8], Option<&[u8]>>, opt!(tag!("const ")));
 named!(space, take_while1!(|x| x == b' '));
@@ -34,6 +35,7 @@ named!(
 );
 named!(hash, take_while!(is_hex_digit_with_prefix));
 
+// Completed parser type for natives
 named!(parser<&[u8], (&[u8], &[u8], Option<&[u8]>, &[u8], &[u8], &[u8], &[u8], (Vec<(Vec<&[u8]>, &[u8])>, &[u8]), &[u8], &[u8], &[u8], Option<&[u8]>, Option<&[u8]>, &[u8], &[u8], &[u8], &[u8], &[u8], &[u8])>,
     tuple!(word, space, const_optional, word, space, native_name, skip_one, parameters, skip_one, skip_one, space, return_statement, space_optional, invoke_statement, skip_one, invoke_return_type, skip_one, skip_one, hash));
 
@@ -42,7 +44,7 @@ pub struct Natives {
     pub data: HashMap<String, Vec<NativeEntry>>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct NativeEntry {
     pub name: String,
     pub return_type: String,
@@ -51,7 +53,7 @@ pub struct NativeEntry {
     pub does_return: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct NativeParameter {
     pub name: String,
     pub return_type: String,
@@ -59,12 +61,15 @@ pub struct NativeParameter {
 
 impl Display for NativeEntry {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        // We use this method to convert a native entry to rust code
         let mut parameter_parts: Vec<String> = vec![];
         let mut parameter_invoke_names: Vec<String> = vec![];
 
         let mut additional_cstring_lines: Vec<String> = vec![];
 
         for parameter in &self.parameters {
+            // Check if the parameter return type is some kind of char-pointer
+            // They are special types and need to be handled in a specific way
             let parameter_invoke_name = match parameter.return_type.as_str() {
                 "const char*" | "char*" => {
                     additional_cstring_lines.push(format!(
@@ -77,6 +82,7 @@ impl Display for NativeEntry {
                 _ => format!("{}", parameter.name),
             };
 
+            // Build parameter signatures ("parameter_name: parameter_type")
             parameter_parts.push(format!(
                 "{}: {}",
                 parameter.name,
@@ -88,6 +94,8 @@ impl Display for NativeEntry {
 
         let mut return_value_modifications: Vec<String> = vec![];
 
+        // Check if the return type for the native is some kind of char-pointer
+        // They are special types and need to be handled in a specific way
         match self.return_type.as_str() {
             "const char*" | "char*" => {
                 return_value_modifications
@@ -98,6 +106,7 @@ impl Display for NativeEntry {
             _ => (),
         };
 
+        // Build the rust function for the native
         write!(
             f,
             r"
@@ -120,8 +129,13 @@ pub fn {}({}) -> {} {{
     }
 }
 
-fn get_translated_type(t: &String) -> String {
-    match t.as_str() {
+/// Translates the native type to the corresponding rust type
+///
+/// # Arguments
+///
+/// * `native_type` - The native type that will get translated
+fn get_translated_type(native_type: &String) -> String {
+    match native_type.as_str() {
         "void" => "()".to_owned(),
         "int" => "i32".to_owned(),
         "int*" => "*mut i32".to_owned(),
@@ -154,18 +168,30 @@ fn get_translated_type(t: &String) -> String {
         "Object*" => "*mut i32".to_owned(),
         "Vector3" => "NativeVector3".to_owned(),
         "Vector3*" => "*mut NativeVector3".to_owned(),
-        _ => panic!("Could not find translation for type: {}", t),
+        _ => panic!("Could not find translation for type: {}", native_type),
     }
 }
 
-fn get_translated_native_invoke_type(t: &String) -> String {
-    match t.as_str() {
+/// Translates the native type to the corresponding rust type
+/// This function treats special cases for native return types
+///
+/// # Arguments
+///
+/// * `native_type` - The native type that will get translated
+fn get_translated_native_invoke_type(native_type: &String) -> String {
+    match native_type.as_str() {
         "const char*" => "*const i8".to_owned(),
         "char*" => "*const i8".to_owned(),
-        _ => get_translated_type(t),
+        _ => get_translated_type(native_type),
     }
 }
 
+/// Converts the lines from the natives.h file to a HashMap with
+/// the namespaces as the key and a vector of string slices as the value
+///
+///# Arguments
+///
+/// * `lines` - Content from the natives.h file in form of a vector of string slices
 fn map_native_lines<'a>(lines: &'a Vec<&str>) -> HashMap<&'a str, Vec<&'a str>> {
     let mut natives: HashMap<&str, Vec<&str>> = HashMap::new();
 
