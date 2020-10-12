@@ -55,13 +55,10 @@ fn do_convert(input_file: String, output_directory: String) {
     };
 
     let output_path = std::path::Path::new(&output_directory);
-    match std::fs::create_dir_all(output_path) {
-        Ok(_) => (),
-        Err(error) => {
-            println!("Error while trying to create output directory: {}", error);
+    if let Err(error) = std::fs::create_dir_all(output_path) {
+        println!("Error while trying to create output directory: {}", error);
 
-            return;
-        }
+        return;
     }
 
     let all_namespaces = natives.data.keys().collect::<Vec<&String>>();
@@ -75,20 +72,17 @@ fn do_convert(input_file: String, output_directory: String) {
         }
     };
 
-    match file.write_all(
+    if let Err(error) = file.write_all(
         all_namespaces
             .into_iter()
             .map(|x| format!("pub mod {};\n", x.to_lowercase()))
             .collect::<String>()
             .as_bytes(),
     ) {
-        Ok(_) => (),
-        Err(error) => {
-            println!("Error while trying to write to mod.rs file: {}", error);
+        println!("Error while trying to write to mod.rs file: {}", error);
 
-            return;
-        }
-    };
+        return;
+    }
 
     for (namespace, natives) in &natives.data {
         let natives = natives
@@ -110,15 +104,13 @@ fn do_convert(input_file: String, output_directory: String) {
             }
         };
 
-        match file.write_all(format!("use crate::natives::NativeVector3;\n{}", natives).as_bytes())
+        if let Err(error) =
+            file.write_all(format!("use crate::natives::NativeVector3;\n{}", natives).as_bytes())
         {
-            Ok(_) => (),
-            Err(error) => {
-                println!(
-                    "Error while trying to write to {}.rs file: {}",
-                    namespace, error
-                );
-            }
+            println!(
+                "Error while trying to write to {}.rs file: {}",
+                namespace, error
+            );
         }
     }
 }
