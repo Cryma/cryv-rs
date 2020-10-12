@@ -1,8 +1,10 @@
-mod utility;
+#![forbid(unsafe_code)]
 
 use log::info;
 use once_cell::sync::Lazy;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
+
+mod utility;
 
 static INSTALL_DIRECTORY: Lazy<String> = Lazy::new(|| {
     let key = RegKey::predef(HKEY_LOCAL_MACHINE)
