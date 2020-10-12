@@ -105,7 +105,7 @@ fn do_convert(input_file: String, output_directory: String) {
         };
 
         if let Err(error) =
-            file.write_all(format!("use crate::natives::NativeVector3;\n{}", natives).as_bytes())
+            file.write_all(format!("use crate::types::NativeVector3;\n{}", natives).as_bytes())
         {
             println!(
                 "Error while trying to write to {}.rs file: {}",

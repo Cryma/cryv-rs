@@ -106,13 +106,10 @@ name = "client"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "cpp",
- "cpp_build",
- "detour",
  "fern",
+ "hook",
  "log",
  "once_cell",
- "process-memory",
  "winapi 0.3.9",
  "winreg",
 ]
@@ -283,6 +280,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5aca5565f760fb5b220e499d72710ed156fdb74e631659e99377d9ebfbd13ae8"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "hook"
+version = "0.1.0"
+dependencies = [
+ "cpp",
+ "cpp_build",
+ "detour",
+ "log",
+ "once_cell",
+ "winapi 0.3.9",
 ]
 
 [[package]]
@@ -505,17 +514,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71"
 dependencies = [
  "unicode-xid",
-]
-
-[[package]]
-name = "process-memory"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61d7c67e1d5e7e8e100ce1240b08e3a7249fe7d02b04232f006f8f60f27791fe"
-dependencies = [
- "libc",
- "mach",
- "winapi 0.3.9",
 ]
 
 [[package]]

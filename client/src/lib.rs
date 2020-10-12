@@ -1,16 +1,6 @@
-#![recursion_limit = "1024"]
-extern crate winapi;
-
-mod crossmap;
-mod hook;
-mod memory;
-#[macro_use]
-mod natives;
-#[allow(warnings)]
-mod natives_codegen;
 mod utility;
 
-use log::{debug, info};
+use log::info;
 use once_cell::sync::Lazy;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
@@ -32,12 +22,13 @@ fn entrypoint() {
     info!("--------------------------");
     info!("Starting CryV");
 
-    let base = unsafe { winapi::um::libloaderapi::GetModuleHandleA(std::ptr::null()) };
-    debug!("Base: {:p}", base);
-
-    hook::initialize();
+    hook::initialize(tick);
 
     info!("Successfully started CryV");
+}
+
+fn tick() {
+    //
 }
 
 fn create_logger() -> Result<(), fern::InitError> {

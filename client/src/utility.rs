@@ -13,10 +13,3 @@ macro_rules! make_entrypoint {
         }
     };
 }
-
-#[macro_export]
-macro_rules! ptr {
-    ($address:expr, $type:ty) => {
-        *($address as *mut $type)
-    };
-}
