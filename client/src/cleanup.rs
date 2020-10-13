@@ -7,18 +7,18 @@ struct FunctionComponent {
     function: fn(),
 }
 
-pub fn run_initial_cleanup() {
+pub fn run_initial() {
     let player_ped_id = player::player_ped_id();
     entity::set_entity_coords_no_offset(player_ped_id, 412.4, -976.71, 29.43, false, false, false);
 }
 
-pub fn add_cleanup_components(world: &mut World) {
+pub fn add_components(world: &mut World) {
     let _entity = world.push((FunctionComponent {
         function: hijack_frontend_menu,
     },));
 }
 
-pub fn add_cleanup_systems(builder: &mut Builder) {
+pub fn add_systems(builder: &mut Builder) {
     builder.add_thread_local(run_cleanup_systems_system());
 }
 

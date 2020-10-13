@@ -11,7 +11,9 @@ struct TextEntry {
     color: (i32, i32, i32, i32),
 }
 
-pub fn add_ui_components(world: &mut World) {
+pub fn run_initial() {}
+
+pub fn add_components(world: &mut World) {
     let _entity = world.push((TextEntry {
         text: "CryV".to_owned(),
         pos_x: 0.975,
@@ -21,7 +23,7 @@ pub fn add_ui_components(world: &mut World) {
     },));
 }
 
-pub fn add_ui_systems(builder: &mut Builder) {
+pub fn add_systems(builder: &mut Builder) {
     builder.add_thread_local(draw_text_entries_system());
 }
 
