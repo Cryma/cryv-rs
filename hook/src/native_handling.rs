@@ -172,16 +172,21 @@ fn on_tick() {
 }
 
 unsafe extern "system" fn script_function(_: LPVOID) {
-    loop {
-        if let Some(value) = crate::ON_TICK {
-            value();
-        }
+    match crate::SCRIPT_CALLBACK {
+        Some(value) => value(),
+        None => {
+            error!("It is required to provide a script callback!");
 
+            return;
+        }
+    }
+
+    loop {
         script_wait(0);
     }
 }
 
-unsafe fn script_wait(time: u32) {
+pub(crate) unsafe fn script_wait(time: u32) {
     let mut wake_time = timeGetTime() + time;
 
     if wake_time == WAKE_AT {

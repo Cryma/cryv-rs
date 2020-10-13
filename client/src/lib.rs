@@ -24,14 +24,17 @@ fn entrypoint() {
     info!("--------------------------");
     info!("Starting CryV");
 
-    hook::initialize(tick);
+    hook::initialize(script_callback);
 
     info!("Successfully started CryV");
 }
 
-fn tick() {
+fn script_callback() {
     //
     draw_text("CryV", 0.975, 0.01, 0.42, (200, 200, 200, 255));
+    loop {
+        hook::script_wait(0);
+    }
 }
 
 fn create_logger() -> Result<(), fern::InitError> {

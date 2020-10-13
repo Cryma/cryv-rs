@@ -17,7 +17,7 @@ static_detour! {
     static GetLabelText: fn(i64, *const i8, i64) -> *mut c_void;
 }
 
-pub(crate) static mut ON_TICK: Option<fn()> = None;
+pub(crate) static mut SCRIPT_CALLBACK: Option<fn()> = None;
 static LABEL: &str = "Loading CryV Multiplayer\0";
 
 pub struct Pointers {
@@ -58,9 +58,9 @@ impl Pointers {
 
 pub static mut POINTERS: Pointers = Pointers::INIT;
 
-pub fn initialize(on_tick: fn()) {
+pub fn initialize(script_callback: fn()) {
     unsafe {
-        ON_TICK = Some(on_tick);
+        SCRIPT_CALLBACK = Some(script_callback);
     }
 
     fetch_pointers();
@@ -76,6 +76,12 @@ pub fn initialize(on_tick: fn()) {
     }
 
     native_handling::hook_get_frame_count();
+}
+
+pub fn script_wait(time: u32) {
+    unsafe {
+        native_handling::script_wait(time);
+    }
 }
 
 fn fetch_pointers() {
