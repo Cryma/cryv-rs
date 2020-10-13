@@ -65,20 +65,11 @@ impl Display for NativeEntry {
         let mut parameter_parts: Vec<String> = vec![];
         let mut parameter_invoke_names: Vec<String> = vec![];
 
-        let mut additional_cstring_lines: Vec<String> = vec![];
-
         for parameter in &self.parameters {
             // Check if the parameter return type is some kind of char-pointer
             // They are special types and need to be handled in a specific way
             let parameter_invoke_name = match parameter.return_type.as_str() {
-                "const char*" | "char*" => {
-                    additional_cstring_lines.push(format!(
-                        "let {}_cstring = std::ffi::CString::new({}).unwrap();\n    ",
-                        parameter.name, parameter.name
-                    ));
-
-                    format!("{}_cstring.as_ptr()", parameter.name)
-                }
+                "const char*" | "char*" => format!("{}.as_ptr()", parameter.name),
                 _ => format!("{}", parameter.name),
             };
 
@@ -111,7 +102,6 @@ impl Display for NativeEntry {
             f,
             r"
 pub fn {}({}) -> {} {{
-    {}
     let value = native!({}, {}, native_parameters!({}));
     {}
     value
@@ -119,8 +109,8 @@ pub fn {}({}) -> {} {{
 ",
             self.name.to_lowercase(),
             parameter_parts.join(", "),
-            get_translated_type(&self.return_type),
-            additional_cstring_lines.join("\r\n"),
+            get_translated_native_return_type(&self.return_type),
+            // additional_cstring_lines.join("\r\n"),
             get_translated_native_invoke_type(&self.return_type),
             self.hash,
             format!("{}", parameter_invoke_names.join(", ")),
@@ -141,8 +131,8 @@ fn get_translated_type(native_type: &String) -> String {
         "int*" => "*mut i32".to_owned(),
         "float" => "f32".to_owned(),
         "float*" => "*mut f32".to_owned(),
-        "const char*" => "String".to_owned(),
-        "char*" => "String".to_owned(),
+        "const char*" => "&std::ffi::CString".to_owned(),
+        "char*" => "&std::ffi::CString".to_owned(),
         "BOOL" => "bool".to_owned(),
         "BOOL*" => "*mut bool".to_owned(),
         "Any" => "u32".to_owned(),
@@ -173,7 +163,7 @@ fn get_translated_type(native_type: &String) -> String {
 }
 
 /// Translates the native type to the corresponding rust type
-/// This function treats special cases for native return types
+/// This function treats special cases for native call return types
 ///
 /// # Arguments
 ///
@@ -182,6 +172,19 @@ fn get_translated_native_invoke_type(native_type: &String) -> String {
     match native_type.as_str() {
         "const char*" => "*const i8".to_owned(),
         "char*" => "*const i8".to_owned(),
+        _ => get_translated_type(native_type),
+    }
+}
+
+/// Translates the native type to the corresponding rust type
+/// This function treats special cases for native function return types
+///
+/// # Arguments
+///
+/// * `native_type` - The native type that will get translated
+fn get_translated_native_return_type(native_type: &String) -> String {
+    match native_type.as_str() {
+        "const char*" | "char*" => "String".to_owned(),
         _ => get_translated_type(native_type),
     }
 }
