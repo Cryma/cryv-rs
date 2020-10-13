@@ -3,6 +3,7 @@ use cpp::cpp;
 use detour::static_detour;
 use log::{debug, error};
 use memory::{address_fill, get_pattern, get_pattern_rip, get_pattern_sub};
+pub use replay_interface::{get_all_vehicles, get_all_peds};
 use std::ffi::{c_void, CStr};
 
 mod crossmap;
@@ -11,6 +12,7 @@ mod memory;
 pub(crate) mod native_handling;
 #[allow(warnings)]
 pub mod natives;
+mod replay_interface;
 pub mod types;
 
 static_detour! {
@@ -20,16 +22,18 @@ static_detour! {
 pub(crate) static mut SCRIPT_CALLBACK: Option<fn()> = None;
 static LABEL: &str = "Loading CryV Multiplayer\0";
 
+type AddressToEntity = fn(*mut c_void) -> i32;
+
 pub struct Pointers {
     pub logos: *mut c_void,
     pub game_legal_skip: *mut c_void,
     pub frame_count: *mut c_void,
     pub game_state: *mut c_void,
     pub swapchain: *mut c_void,
-    pub address_to_entity: *mut c_void,
+    pub address_to_entity: Option<AddressToEntity>,
     pub registration_table: *mut c_void,
     pub get_label_text: *mut c_void,
-    pub replay_interface: *mut c_void,
+    pub replay_interface: *mut replay_interface::CReplayInterface,
     pub set_vector_results: *mut c_void,
     pub story_mode_skip: *mut c_void,
     pub model_check_skip: *mut c_void,
@@ -44,7 +48,7 @@ impl Pointers {
         frame_count: std::ptr::null_mut(),
         game_state: std::ptr::null_mut(),
         swapchain: std::ptr::null_mut(),
-        address_to_entity: std::ptr::null_mut(),
+        address_to_entity: None,
         registration_table: std::ptr::null_mut(),
         get_label_text: std::ptr::null_mut(),
         replay_interface: std::ptr::null_mut(),
@@ -103,12 +107,12 @@ fn fetch_pointers() {
         POINTERS.swapchain = get_pattern_rip("48 8B 0D ? ? ? ? 48 8D 55 A0 48 8B 01".to_owned(), 3);
         debug!("Swapchain: {:p}", POINTERS.swapchain);
 
-        POINTERS.address_to_entity = get_pattern(
+        POINTERS.address_to_entity = Some(std::mem::transmute(get_pattern(
             "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 8B 15 ? ? ? ? 48 8B F9 48 83 C1 10 33 DB"
                 .to_owned(),
             0,
-        );
-        debug!("AddressToEntity: {:p}", POINTERS.address_to_entity);
+        )));
+        debug!("AddressToEntity: {:p}", POINTERS.address_to_entity.unwrap());
 
         POINTERS.registration_table = get_pattern_rip("76 32 48 8B 53 40 48 8D 0D".to_owned(), 9);
         debug!("RegistrationTable: {:p}", POINTERS.registration_table);
@@ -117,9 +121,13 @@ fn fetch_pointers() {
         debug!("GetLabelText: {:p}", POINTERS.get_label_text);
 
         let replay_interface = get_pattern("48 8B 05 ? ? ? ? 41 8B 1E".to_owned(), 0).add(0xEE);
-        POINTERS.replay_interface = cpp!([replay_interface as "char*"] -> *mut c_void as "char*" {
+        let replay_interface: *mut c_void = cpp!([replay_interface as "char*"] -> *mut c_void as "char*" {
             return (replay_interface + *(DWORD*) (replay_interface + 0x3) + 0x7); // TODO: Implement in rust
         });
+
+        let replay_interface = *(replay_interface as *mut *mut replay_interface::CReplayInterface);
+
+        POINTERS.replay_interface = replay_interface;
         debug!("ReplayInterface: {:p}", POINTERS.replay_interface);
 
         let set_vector_results = get_pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18".to_owned(), 0);
