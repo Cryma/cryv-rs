@@ -31,6 +31,7 @@ fn entrypoint() {
 
 fn tick() {
     //
+    draw_text("CryV", 0.975, 0.01, 0.42, (200, 200, 200, 255));
 }
 
 fn create_logger() -> Result<(), fern::InitError> {
@@ -52,4 +53,21 @@ fn create_logger() -> Result<(), fern::InitError> {
         .apply()?;
 
     Ok(())
+}
+
+fn draw_text(text: &str, pos_x: f32, pos_y: f32, scale: f32, color: (i32, i32, i32, i32)) {
+    hud::set_text_font(0);
+    hud::set_text_scale(scale, scale);
+    hud::set_text_colour(color.0, color.1, color.2, color.3);
+    hud::set_text_wrap(0.0, 1.0);
+    hud::set_text_centre(true);
+    hud::set_text_dropshadow(0, 0, 0, 0, 0);
+    hud::set_text_edge(1, 0, 0, 0, 205);
+
+    let text_type = std::ffi::CString::new("STRING").unwrap();
+    let text = std::ffi::CString::new(text).unwrap();
+
+    hud::begin_text_command_display_text(&text_type);
+    hud::add_text_component_substring_player_name(&text);
+    hud::end_text_command_display_text(pos_x, pos_y, 1);
 }
