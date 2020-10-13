@@ -6,6 +6,7 @@ use once_cell::sync::Lazy;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
+mod generic;
 mod ui;
 mod utility;
 
@@ -46,6 +47,7 @@ fn script_callback() {
     let mut schedule_builder = Schedule::builder();
 
     register_module!(cleanup, world, schedule_builder);
+    register_module!(generic, world, schedule_builder);
     register_module!(ui, world, schedule_builder);
 
     let mut schedule = schedule_builder.build();

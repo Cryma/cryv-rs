@@ -1,11 +1,7 @@
+use crate::generic::GenericFunctionComponent;
 use hook::natives::*;
 use legion::systems::Builder;
 use legion::*;
-
-#[derive(Copy, Clone, Debug, PartialEq)]
-struct FunctionComponent {
-    function: fn(),
-}
 
 pub fn run_initial() {
     let player_ped_id = player::player_ped_id();
@@ -13,19 +9,12 @@ pub fn run_initial() {
 }
 
 pub fn add_components(world: &mut World) {
-    let _entity = world.push((FunctionComponent {
+    let _entity = world.push((GenericFunctionComponent {
         function: hijack_frontend_menu,
     },));
 }
 
-pub fn add_systems(builder: &mut Builder) {
-    builder.add_thread_local(run_cleanup_systems_system());
-}
-
-#[system(for_each)]
-fn run_cleanup_systems(function_components: &FunctionComponent) {
-    (function_components.function)();
-}
+pub fn add_systems(_builder: &mut Builder) {}
 
 fn hijack_frontend_menu() {
     pad::disable_control_action(0, 199, true);
