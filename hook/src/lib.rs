@@ -3,7 +3,7 @@ use cpp::cpp;
 use detour::static_detour;
 use log::{debug, error};
 use memory::{address_fill, get_pattern, get_pattern_rip, get_pattern_sub};
-pub use replay_interface::{get_all_vehicles, get_all_peds};
+pub use replay_interface::{get_all_peds, get_all_vehicles};
 use std::ffi::{c_void, CStr};
 
 mod crossmap;

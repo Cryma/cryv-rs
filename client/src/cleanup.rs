@@ -9,9 +9,17 @@ pub fn run_initial() {
 }
 
 pub fn add_components(world: &mut World) {
-    let _entity = world.push((GenericFunctionComponent {
-        function: hijack_frontend_menu,
-    },));
+    let _entity = world.extend(vec![
+        (GenericFunctionComponent {
+            function: hijack_frontend_menu,
+        },),
+        (GenericFunctionComponent {
+            function: cleanup_peds,
+        },),
+        (GenericFunctionComponent {
+            function: cleanup_vehicles,
+        },),
+    ]);
 }
 
 pub fn add_systems(_builder: &mut Builder) {}
@@ -28,5 +36,35 @@ fn hijack_frontend_menu() {
             false,
             -1,
         );
+    }
+}
+
+fn cleanup_peds() {
+    let (_, peds) = hook::get_all_peds();
+
+    for mut ped in peds {
+        if entity::does_entity_exist(ped) == false {
+            continue;
+        }
+
+        entity::set_ped_as_no_longer_needed(&mut ped);
+        entity::set_entity_as_mission_entity(ped, false, true);
+
+        entity::delete_entity(&mut ped);
+    }
+}
+
+fn cleanup_vehicles() {
+    let (_, vehicles) = hook::get_all_vehicles();
+
+    for mut vehicle in vehicles {
+        if entity::does_entity_exist(vehicle) == false {
+            continue;
+        }
+
+        entity::set_vehicle_as_no_longer_needed(&mut vehicle);
+        entity::set_entity_as_mission_entity(vehicle, false, true);
+
+        entity::delete_entity(&mut vehicle);
     }
 }
