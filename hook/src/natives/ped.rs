@@ -917,12 +917,11 @@ pub fn _get_ped_visual_field_center_angle(ped: i32) -> f32 {
     value
 }
 
-pub fn set_ped_stealth_movement(ped: i32, p1: bool, action: String) -> () {
-    let action_cstring = std::ffi::CString::new(action).unwrap();
+pub fn set_ped_stealth_movement(ped: i32, p1: bool, action: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x88CBB5CEB96B7BD2,
-        native_parameters!(ped, p1, action_cstring.as_ptr())
+        native_parameters!(ped, p1, action.as_ptr())
     );
 
     value
@@ -1174,12 +1173,11 @@ pub fn clear_relationship_between_groups(relationship: i32, group1: u32, group2:
     value
 }
 
-pub fn add_relationship_group(name: String, groupHash: *mut u32) -> u32 {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn add_relationship_group(name: &std::ffi::CString, groupHash: *mut u32) -> u32 {
     let value = native!(
         u32,
         0xF372BC22FCB88606,
-        native_parameters!(name_cstring.as_ptr(), groupHash)
+        native_parameters!(name.as_ptr(), groupHash)
     );
 
     value
@@ -1637,12 +1635,11 @@ pub fn set_ped_get_out_upside_down_vehicle(ped: i32, toggle: bool) -> () {
     value
 }
 
-pub fn set_ped_movement_clipset(ped: i32, clipSet: String, p2: f32) -> () {
-    let clipSet_cstring = std::ffi::CString::new(clipSet).unwrap();
+pub fn set_ped_movement_clipset(ped: i32, clipSet: &std::ffi::CString, p2: f32) -> () {
     let value = native!(
         (),
         0xAF8A94EDE7712BEF,
-        native_parameters!(ped, clipSet_cstring.as_ptr(), p2)
+        native_parameters!(ped, clipSet.as_ptr(), p2)
     );
 
     value
@@ -1654,12 +1651,11 @@ pub fn reset_ped_movement_clipset(ped: i32, p1: f32) -> () {
     value
 }
 
-pub fn set_ped_strafe_clipset(ped: i32, clipSet: String) -> () {
-    let clipSet_cstring = std::ffi::CString::new(clipSet).unwrap();
+pub fn set_ped_strafe_clipset(ped: i32, clipSet: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x29A28F3F8CF6D854,
-        native_parameters!(ped, clipSet_cstring.as_ptr())
+        native_parameters!(ped, clipSet.as_ptr())
     );
 
     value
@@ -1671,12 +1667,11 @@ pub fn reset_ped_strafe_clipset(ped: i32) -> () {
     value
 }
 
-pub fn set_ped_weapon_movement_clipset(ped: i32, clipSet: String) -> () {
-    let clipSet_cstring = std::ffi::CString::new(clipSet).unwrap();
+pub fn set_ped_weapon_movement_clipset(ped: i32, clipSet: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x2622E35B77D3ACA2,
-        native_parameters!(ped, clipSet_cstring.as_ptr())
+        native_parameters!(ped, clipSet.as_ptr())
     );
 
     value
@@ -1688,12 +1683,11 @@ pub fn reset_ped_weapon_movement_clipset(ped: i32) -> () {
     value
 }
 
-pub fn set_ped_drive_by_clipset_override(ped: i32, clipset: String) -> () {
-    let clipset_cstring = std::ffi::CString::new(clipset).unwrap();
+pub fn set_ped_drive_by_clipset_override(ped: i32, clipset: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xED34AB6C5CB36520,
-        native_parameters!(ped, clipset_cstring.as_ptr())
+        native_parameters!(ped, clipset.as_ptr())
     );
 
     value
@@ -1705,13 +1699,8 @@ pub fn clear_ped_drive_by_clipset_override(ped: i32) -> () {
     value
 }
 
-pub fn _set_ped_cover_clipset_override(ped: i32, p1: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-    let value = native!(
-        (),
-        0x9DBA107B4937F809,
-        native_parameters!(ped, p1_cstring.as_ptr())
-    );
+pub fn _set_ped_cover_clipset_override(ped: i32, p1: &std::ffi::CString) -> () {
+    let value = native!((), 0x9DBA107B4937F809, native_parameters!(ped, p1.as_ptr()));
 
     value
 }
@@ -1742,16 +1731,13 @@ pub fn reset_ped_in_vehicle_context(ped: i32) -> () {
 
 pub fn is_scripted_scenario_ped_using_conditional_anim(
     ped: i32,
-    animDict: String,
-    anim: String,
+    animDict: &std::ffi::CString,
+    anim: &std::ffi::CString,
 ) -> bool {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let anim_cstring = std::ffi::CString::new(anim).unwrap();
     let value = native!(
         bool,
         0x6EC47A344923E1ED,
-        native_parameters!(ped, animDict_cstring.as_ptr(), anim_cstring.as_ptr())
+        native_parameters!(ped, animDict.as_ptr(), anim.as_ptr())
     );
 
     value
@@ -1759,24 +1745,15 @@ pub fn is_scripted_scenario_ped_using_conditional_anim(
 
 pub fn set_ped_alternate_walk_anim(
     ped: i32,
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
     p3: f32,
     p4: bool,
 ) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         (),
         0x6C60394CB4F75E9A,
-        native_parameters!(
-            ped,
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
-            p3,
-            p4
-        )
+        native_parameters!(ped, animDict.as_ptr(), animName.as_ptr(), p3, p4)
     );
 
     value
@@ -1791,22 +1768,19 @@ pub fn clear_ped_alternate_walk_anim(ped: i32, p1: f32) -> () {
 pub fn set_ped_alternate_movement_anim(
     ped: i32,
     stance: i32,
-    animDictionary: String,
-    animationName: String,
+    animDictionary: &std::ffi::CString,
+    animationName: &std::ffi::CString,
     p4: f32,
     p5: bool,
 ) -> () {
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
-
-    let animationName_cstring = std::ffi::CString::new(animationName).unwrap();
     let value = native!(
         (),
         0x90A43CC281FFAB46,
         native_parameters!(
             ped,
             stance,
-            animDictionary_cstring.as_ptr(),
-            animationName_cstring.as_ptr(),
+            animDictionary.as_ptr(),
+            animationName.as_ptr(),
             p4,
             p5
         )
@@ -1821,20 +1795,19 @@ pub fn clear_ped_alternate_movement_anim(ped: i32, stance: i32, p2: f32) -> () {
     value
 }
 
-pub fn set_ped_gesture_group(ped: i32, animGroupGesture: String) -> () {
-    let animGroupGesture_cstring = std::ffi::CString::new(animGroupGesture).unwrap();
+pub fn set_ped_gesture_group(ped: i32, animGroupGesture: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xDDF803377F94AAA8,
-        native_parameters!(ped, animGroupGesture_cstring.as_ptr())
+        native_parameters!(ped, animGroupGesture.as_ptr())
     );
 
     value
 }
 
 pub fn get_anim_initial_offset_position(
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
@@ -1844,15 +1817,12 @@ pub fn get_anim_initial_offset_position(
     p8: f32,
     p9: i32,
 ) -> NativeVector3 {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         NativeVector3,
         0xBE22B26DD764C040,
         native_parameters!(
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
+            animDict.as_ptr(),
+            animName.as_ptr(),
             x,
             y,
             z,
@@ -1868,8 +1838,8 @@ pub fn get_anim_initial_offset_position(
 }
 
 pub fn get_anim_initial_offset_rotation(
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
@@ -1879,15 +1849,12 @@ pub fn get_anim_initial_offset_rotation(
     p8: f32,
     p9: i32,
 ) -> NativeVector3 {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         NativeVector3,
         0x4B805E6046EE9E47,
         native_parameters!(
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
+            animDict.as_ptr(),
+            animName.as_ptr(),
             x,
             y,
             z,
@@ -2828,12 +2795,11 @@ pub fn resurrect_ped(ped: i32) -> () {
     value
 }
 
-pub fn set_ped_name_debug(ped: i32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn set_ped_name_debug(ped: i32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x98EFA132A4117BE1,
-        native_parameters!(ped, name_cstring.as_ptr())
+        native_parameters!(ped, name.as_ptr())
     );
 
     value
@@ -2889,13 +2855,12 @@ pub fn apply_ped_blood(
     xRot: f32,
     yRot: f32,
     zRot: f32,
-    woundType: String,
+    woundType: &std::ffi::CString,
 ) -> () {
-    let woundType_cstring = std::ffi::CString::new(woundType).unwrap();
     let value = native!(
         (),
         0x83F7E01C7B769A26,
-        native_parameters!(ped, boneIndex, xRot, yRot, zRot, woundType_cstring.as_ptr())
+        native_parameters!(ped, boneIndex, xRot, yRot, zRot, woundType.as_ptr())
     );
 
     value
@@ -2941,9 +2906,8 @@ pub fn apply_ped_damage_decal(
     alpha: f32,
     variation: i32,
     fadeIn: bool,
-    decalName: String,
+    decalName: &std::ffi::CString,
 ) -> () {
-    let decalName_cstring = std::ffi::CString::new(decalName).unwrap();
     let value = native!(
         (),
         0x397C38AA7B4A5F83,
@@ -2957,19 +2921,23 @@ pub fn apply_ped_damage_decal(
             alpha,
             variation,
             fadeIn,
-            decalName_cstring.as_ptr()
+            decalName.as_ptr()
         )
     );
 
     value
 }
 
-pub fn apply_ped_damage_pack(ped: i32, damagePack: String, damage: f32, mult: f32) -> () {
-    let damagePack_cstring = std::ffi::CString::new(damagePack).unwrap();
+pub fn apply_ped_damage_pack(
+    ped: i32,
+    damagePack: &std::ffi::CString,
+    damage: f32,
+    mult: f32,
+) -> () {
     let value = native!(
         (),
         0x46DF918788CB093F,
-        native_parameters!(ped, damagePack_cstring.as_ptr(), damage, mult)
+        native_parameters!(ped, damagePack.as_ptr(), damage, mult)
     );
 
     value
@@ -2993,12 +2961,11 @@ pub fn hide_ped_blood_damage_by_zone(ped: i32, p1: u32, p2: bool) -> () {
     value
 }
 
-pub fn clear_ped_damage_decal_by_zone(ped: i32, p1: i32, p2: String) -> () {
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
+pub fn clear_ped_damage_decal_by_zone(ped: i32, p1: i32, p2: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x523C79AEEFCC4A2A,
-        native_parameters!(ped, p1, p2_cstring.as_ptr())
+        native_parameters!(ped, p1, p2.as_ptr())
     );
 
     value
@@ -3186,12 +3153,11 @@ pub fn _does_scenario_blocking_area_exist(
     value
 }
 
-pub fn is_ped_using_scenario(ped: i32, scenario: String) -> bool {
-    let scenario_cstring = std::ffi::CString::new(scenario).unwrap();
+pub fn is_ped_using_scenario(ped: i32, scenario: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x1BF094736DD62C2E,
-        native_parameters!(ped, scenario_cstring.as_ptr())
+        native_parameters!(ped, scenario.as_ptr())
     );
 
     value
@@ -3269,38 +3235,39 @@ pub fn _0xc30bdaee47256c13(p0: u32) -> u32 {
     value
 }
 
-pub fn play_facial_anim(ped: i32, animName: String, animDict: String) -> () {
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
-
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
+pub fn play_facial_anim(
+    ped: i32,
+    animName: &std::ffi::CString,
+    animDict: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0xE1E65CA8AC9C00ED,
-        native_parameters!(ped, animName_cstring.as_ptr(), animDict_cstring.as_ptr())
+        native_parameters!(ped, animName.as_ptr(), animDict.as_ptr())
     );
 
     value
 }
 
-pub fn _0x5687c7f05b39e401(ped: i32, animDict: String) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
+pub fn _0x5687c7f05b39e401(ped: i32, animDict: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x5687C7F05B39E401,
-        native_parameters!(ped, animDict_cstring.as_ptr())
+        native_parameters!(ped, animDict.as_ptr())
     );
 
     value
 }
 
-pub fn set_facial_idle_anim_override(ped: i32, animName: String, animDict: String) -> () {
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
-
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
+pub fn set_facial_idle_anim_override(
+    ped: i32,
+    animName: &std::ffi::CString,
+    animDict: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0xFFC24B988B938B38,
-        native_parameters!(ped, animName_cstring.as_ptr(), animDict_cstring.as_ptr())
+        native_parameters!(ped, animName.as_ptr(), animDict.as_ptr())
     );
 
     value
@@ -3818,13 +3785,8 @@ pub fn set_ped_flee_attributes(ped: i32, attributeFlags: i32, enable: bool) -> (
     value
 }
 
-pub fn set_ped_cower_hash(ped: i32, p1: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-    let value = native!(
-        (),
-        0xA549131166868ED3,
-        native_parameters!(ped, p1_cstring.as_ptr())
-    );
+pub fn set_ped_cower_hash(ped: i32, p1: &std::ffi::CString) -> () {
+    let value = native!((), 0xA549131166868ED3, native_parameters!(ped, p1.as_ptr()));
 
     value
 }
@@ -4254,23 +4216,21 @@ pub fn is_ped_using_action_mode(ped: i32) -> bool {
     value
 }
 
-pub fn set_ped_using_action_mode(ped: i32, p1: bool, p2: i32, action: String) -> () {
-    let action_cstring = std::ffi::CString::new(action).unwrap();
+pub fn set_ped_using_action_mode(ped: i32, p1: bool, p2: i32, action: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xD75ACCF5E0FB5367,
-        native_parameters!(ped, p1, p2, action_cstring.as_ptr())
+        native_parameters!(ped, p1, p2, action.as_ptr())
     );
 
     value
 }
 
-pub fn set_movement_mode_override(ped: i32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn set_movement_mode_override(ped: i32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x781DE8FA214E87D2,
-        native_parameters!(ped, name_cstring.as_ptr())
+        native_parameters!(ped, name.as_ptr())
     );
 
     value
@@ -4487,68 +4447,38 @@ pub fn _0xed3c76adfa6d07c4(ped: i32) -> () {
     value
 }
 
-pub fn request_action_mode_asset(asset: String) -> () {
-    let asset_cstring = std::ffi::CString::new(asset).unwrap();
-    let value = native!(
-        (),
-        0x290E2780BB7AA598,
-        native_parameters!(asset_cstring.as_ptr())
-    );
+pub fn request_action_mode_asset(asset: &std::ffi::CString) -> () {
+    let value = native!((), 0x290E2780BB7AA598, native_parameters!(asset.as_ptr()));
 
     value
 }
 
-pub fn has_action_mode_asset_loaded(asset: String) -> bool {
-    let asset_cstring = std::ffi::CString::new(asset).unwrap();
-    let value = native!(
-        bool,
-        0xE4B5F4BF2CB24E65,
-        native_parameters!(asset_cstring.as_ptr())
-    );
+pub fn has_action_mode_asset_loaded(asset: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0xE4B5F4BF2CB24E65, native_parameters!(asset.as_ptr()));
 
     value
 }
 
-pub fn remove_action_mode_asset(asset: String) -> () {
-    let asset_cstring = std::ffi::CString::new(asset).unwrap();
-    let value = native!(
-        (),
-        0x13E940F88470FA51,
-        native_parameters!(asset_cstring.as_ptr())
-    );
+pub fn remove_action_mode_asset(asset: &std::ffi::CString) -> () {
+    let value = native!((), 0x13E940F88470FA51, native_parameters!(asset.as_ptr()));
 
     value
 }
 
-pub fn request_stealth_mode_asset(asset: String) -> () {
-    let asset_cstring = std::ffi::CString::new(asset).unwrap();
-    let value = native!(
-        (),
-        0x2A0A62FCDEE16D4F,
-        native_parameters!(asset_cstring.as_ptr())
-    );
+pub fn request_stealth_mode_asset(asset: &std::ffi::CString) -> () {
+    let value = native!((), 0x2A0A62FCDEE16D4F, native_parameters!(asset.as_ptr()));
 
     value
 }
 
-pub fn has_stealth_mode_asset_loaded(asset: String) -> bool {
-    let asset_cstring = std::ffi::CString::new(asset).unwrap();
-    let value = native!(
-        bool,
-        0xE977FC5B08AF3441,
-        native_parameters!(asset_cstring.as_ptr())
-    );
+pub fn has_stealth_mode_asset_loaded(asset: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0xE977FC5B08AF3441, native_parameters!(asset.as_ptr()));
 
     value
 }
 
-pub fn remove_stealth_mode_asset(asset: String) -> () {
-    let asset_cstring = std::ffi::CString::new(asset).unwrap();
-    let value = native!(
-        (),
-        0x9219857D21F0E842,
-        native_parameters!(asset_cstring.as_ptr())
-    );
+pub fn remove_stealth_mode_asset(asset: &std::ffi::CString) -> () {
+    let value = native!((), 0x9219857D21F0E842, native_parameters!(asset.as_ptr()));
 
     value
 }

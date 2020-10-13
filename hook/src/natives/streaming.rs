@@ -52,12 +52,11 @@ pub fn has_model_loaded(model: u32) -> bool {
     value
 }
 
-pub fn request_models_in_room(interior: i32, roomName: String) -> () {
-    let roomName_cstring = std::ffi::CString::new(roomName).unwrap();
+pub fn request_models_in_room(interior: i32, roomName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x8A7A40100EDFEC58,
-        native_parameters!(interior, roomName_cstring.as_ptr())
+        native_parameters!(interior, roomName.as_ptr())
     );
 
     value
@@ -117,144 +116,107 @@ pub fn request_additional_collision_at_coord(x: f32, y: f32, z: f32) -> () {
     value
 }
 
-pub fn does_anim_dict_exist(animDict: String) -> bool {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
+pub fn does_anim_dict_exist(animDict: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x2DA49C3B79856961,
-        native_parameters!(animDict_cstring.as_ptr())
+        native_parameters!(animDict.as_ptr())
     );
 
     value
 }
 
-pub fn request_anim_dict(animDict: String) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
+pub fn request_anim_dict(animDict: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xD3BD40951412FEF6,
-        native_parameters!(animDict_cstring.as_ptr())
+        native_parameters!(animDict.as_ptr())
     );
 
     value
 }
 
-pub fn has_anim_dict_loaded(animDict: String) -> bool {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
+pub fn has_anim_dict_loaded(animDict: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xD031A9162D01088C,
-        native_parameters!(animDict_cstring.as_ptr())
+        native_parameters!(animDict.as_ptr())
     );
 
     value
 }
 
-pub fn remove_anim_dict(animDict: String) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
+pub fn remove_anim_dict(animDict: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xF66A602F829E2A06,
-        native_parameters!(animDict_cstring.as_ptr())
+        native_parameters!(animDict.as_ptr())
     );
 
     value
 }
 
-pub fn request_anim_set(animSet: String) -> () {
-    let animSet_cstring = std::ffi::CString::new(animSet).unwrap();
-    let value = native!(
-        (),
-        0x6EA47DAE7FAD0EED,
-        native_parameters!(animSet_cstring.as_ptr())
-    );
+pub fn request_anim_set(animSet: &std::ffi::CString) -> () {
+    let value = native!((), 0x6EA47DAE7FAD0EED, native_parameters!(animSet.as_ptr()));
 
     value
 }
 
-pub fn has_anim_set_loaded(animSet: String) -> bool {
-    let animSet_cstring = std::ffi::CString::new(animSet).unwrap();
+pub fn has_anim_set_loaded(animSet: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xC4EA073D86FB29B0,
-        native_parameters!(animSet_cstring.as_ptr())
+        native_parameters!(animSet.as_ptr())
     );
 
     value
 }
 
-pub fn remove_anim_set(animSet: String) -> () {
-    let animSet_cstring = std::ffi::CString::new(animSet).unwrap();
-    let value = native!(
-        (),
-        0x16350528F93024B3,
-        native_parameters!(animSet_cstring.as_ptr())
-    );
+pub fn remove_anim_set(animSet: &std::ffi::CString) -> () {
+    let value = native!((), 0x16350528F93024B3, native_parameters!(animSet.as_ptr()));
 
     value
 }
 
-pub fn request_clip_set(clipSet: String) -> () {
-    let clipSet_cstring = std::ffi::CString::new(clipSet).unwrap();
-    let value = native!(
-        (),
-        0xD2A71E1A77418A49,
-        native_parameters!(clipSet_cstring.as_ptr())
-    );
+pub fn request_clip_set(clipSet: &std::ffi::CString) -> () {
+    let value = native!((), 0xD2A71E1A77418A49, native_parameters!(clipSet.as_ptr()));
 
     value
 }
 
-pub fn has_clip_set_loaded(clipSet: String) -> bool {
-    let clipSet_cstring = std::ffi::CString::new(clipSet).unwrap();
+pub fn has_clip_set_loaded(clipSet: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x318234F4F3738AF3,
-        native_parameters!(clipSet_cstring.as_ptr())
+        native_parameters!(clipSet.as_ptr())
     );
 
     value
 }
 
-pub fn remove_clip_set(clipSet: String) -> () {
-    let clipSet_cstring = std::ffi::CString::new(clipSet).unwrap();
-    let value = native!(
-        (),
-        0x01F73A131C18CD94,
-        native_parameters!(clipSet_cstring.as_ptr())
-    );
+pub fn remove_clip_set(clipSet: &std::ffi::CString) -> () {
+    let value = native!((), 0x01F73A131C18CD94, native_parameters!(clipSet.as_ptr()));
 
     value
 }
 
-pub fn request_ipl(iplName: String) -> () {
-    let iplName_cstring = std::ffi::CString::new(iplName).unwrap();
-    let value = native!(
-        (),
-        0x41B4893843BBDB74,
-        native_parameters!(iplName_cstring.as_ptr())
-    );
+pub fn request_ipl(iplName: &std::ffi::CString) -> () {
+    let value = native!((), 0x41B4893843BBDB74, native_parameters!(iplName.as_ptr()));
 
     value
 }
 
-pub fn remove_ipl(iplName: String) -> () {
-    let iplName_cstring = std::ffi::CString::new(iplName).unwrap();
-    let value = native!(
-        (),
-        0xEE6C5AD3ECE0A82D,
-        native_parameters!(iplName_cstring.as_ptr())
-    );
+pub fn remove_ipl(iplName: &std::ffi::CString) -> () {
+    let value = native!((), 0xEE6C5AD3ECE0A82D, native_parameters!(iplName.as_ptr()));
 
     value
 }
 
-pub fn is_ipl_active(iplName: String) -> bool {
-    let iplName_cstring = std::ffi::CString::new(iplName).unwrap();
+pub fn is_ipl_active(iplName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x88A741E44A2B3495,
-        native_parameters!(iplName_cstring.as_ptr())
+        native_parameters!(iplName.as_ptr())
     );
 
     value
@@ -314,35 +276,24 @@ pub fn remove_ptfx_asset() -> () {
     value
 }
 
-pub fn request_named_ptfx_asset(fxName: String) -> () {
-    let fxName_cstring = std::ffi::CString::new(fxName).unwrap();
-    let value = native!(
-        (),
-        0xB80D8756B4668AB6,
-        native_parameters!(fxName_cstring.as_ptr())
-    );
+pub fn request_named_ptfx_asset(fxName: &std::ffi::CString) -> () {
+    let value = native!((), 0xB80D8756B4668AB6, native_parameters!(fxName.as_ptr()));
 
     value
 }
 
-pub fn has_named_ptfx_asset_loaded(fxName: String) -> bool {
-    let fxName_cstring = std::ffi::CString::new(fxName).unwrap();
+pub fn has_named_ptfx_asset_loaded(fxName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x8702416E512EC454,
-        native_parameters!(fxName_cstring.as_ptr())
+        native_parameters!(fxName.as_ptr())
     );
 
     value
 }
 
-pub fn remove_named_ptfx_asset(fxName: String) -> () {
-    let fxName_cstring = std::ffi::CString::new(fxName).unwrap();
-    let value = native!(
-        (),
-        0x5F61EBBE1A00F96D,
-        native_parameters!(fxName_cstring.as_ptr())
-    );
+pub fn remove_named_ptfx_asset(fxName: &std::ffi::CString) -> () {
+    let value = native!((), 0x5F61EBBE1A00F96D, native_parameters!(fxName.as_ptr()));
 
     value
 }
@@ -400,12 +351,11 @@ pub fn _0x0811381ef5062fec(p0: i32) -> () {
     value
 }
 
-pub fn set_mapdatacullbox_enabled(name: String, toggle: bool) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn set_mapdatacullbox_enabled(name: &std::ffi::CString, toggle: bool) -> () {
     let value = native!(
         (),
         0xAF12610C644A35C9,
-        native_parameters!(name_cstring.as_ptr(), toggle)
+        native_parameters!(name.as_ptr(), toggle)
     );
 
     value
@@ -616,13 +566,8 @@ pub fn set_player_switch_outro(
     value
 }
 
-pub fn set_player_switch_establishing_shot(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x0FDE9DBFC0A6BC65,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn set_player_switch_establishing_shot(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x0FDE9DBFC0A6BC65, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -751,14 +696,11 @@ pub fn _0x03f1a106bda7dd3e() -> () {
     value
 }
 
-pub fn _0x95a7dabddbb78ae7(iplName1: String, iplName2: String) -> () {
-    let iplName1_cstring = std::ffi::CString::new(iplName1).unwrap();
-
-    let iplName2_cstring = std::ffi::CString::new(iplName2).unwrap();
+pub fn _0x95a7dabddbb78ae7(iplName1: &std::ffi::CString, iplName2: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x95A7DABDDBB78AE7,
-        native_parameters!(iplName1_cstring.as_ptr(), iplName2_cstring.as_ptr())
+        native_parameters!(iplName1.as_ptr(), iplName2.as_ptr())
     );
 
     value
@@ -788,13 +730,8 @@ pub fn _0x5068f488ddb54dd8() -> u32 {
     value
 }
 
-pub fn prefetch_srl(srl: String) -> () {
-    let srl_cstring = std::ffi::CString::new(srl).unwrap();
-    let value = native!(
-        (),
-        0x3D245789CE12982C,
-        native_parameters!(srl_cstring.as_ptr())
-    );
+pub fn prefetch_srl(srl: &std::ffi::CString) -> () {
+    let value = native!((), 0x3D245789CE12982C, native_parameters!(srl.as_ptr()));
 
     value
 }

@@ -1,11 +1,10 @@
 use crate::types::NativeVector3;
 
-pub fn play_ped_ringtone(ringtoneName: String, ped: i32, p2: bool) -> () {
-    let ringtoneName_cstring = std::ffi::CString::new(ringtoneName).unwrap();
+pub fn play_ped_ringtone(ringtoneName: &std::ffi::CString, ped: i32, p2: bool) -> () {
     let value = native!(
         (),
         0xF9E56683CA8E11A5,
-        native_parameters!(ringtoneName_cstring.as_ptr(), ped, p2)
+        native_parameters!(ringtoneName.as_ptr(), ped, p2)
     );
 
     value
@@ -43,8 +42,8 @@ pub fn create_new_scripted_conversation() -> () {
 
 pub fn add_line_to_conversation(
     index: i32,
-    p1: String,
-    p2: String,
+    p1: &std::ffi::CString,
+    p2: &std::ffi::CString,
     p3: i32,
     p4: i32,
     p5: bool,
@@ -56,16 +55,13 @@ pub fn add_line_to_conversation(
     p11: bool,
     p12: bool,
 ) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
     let value = native!(
         (),
         0xC5EF963405593646,
         native_parameters!(
             index,
-            p1_cstring.as_ptr(),
-            p2_cstring.as_ptr(),
+            p1.as_ptr(),
+            p2.as_ptr(),
             p3,
             p4,
             p5,
@@ -82,12 +78,11 @@ pub fn add_line_to_conversation(
     value
 }
 
-pub fn add_ped_to_conversation(index: i32, ped: i32, p2: String) -> () {
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
+pub fn add_ped_to_conversation(index: i32, ped: i32, p2: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x95D9F4BC443956E7,
-        native_parameters!(index, ped, p2_cstring.as_ptr())
+        native_parameters!(index, ped, p2.as_ptr())
     );
 
     value
@@ -222,14 +217,15 @@ pub fn interrupt_conversation(p0: u32, p1: *mut u32, p2: *mut u32) -> () {
     value
 }
 
-pub fn interrupt_conversation_and_pause(p0: i32, p1: String, p2: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
+pub fn interrupt_conversation_and_pause(
+    p0: i32,
+    p1: &std::ffi::CString,
+    p2: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x8A694D7A68F8DC38,
-        native_parameters!(p0, p1_cstring.as_ptr(), p2_cstring.as_ptr())
+        native_parameters!(p0, p1.as_ptr(), p2.as_ptr())
     );
 
     value
@@ -259,34 +255,31 @@ pub fn unregister_script_with_audio() -> () {
     value
 }
 
-pub fn request_mission_audio_bank(p0: String, p1: bool, p2: u32) -> bool {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
+pub fn request_mission_audio_bank(p0: &std::ffi::CString, p1: bool, p2: u32) -> bool {
     let value = native!(
         bool,
         0x7345BDD95E62E0F2,
-        native_parameters!(p0_cstring.as_ptr(), p1, p2)
+        native_parameters!(p0.as_ptr(), p1, p2)
     );
 
     value
 }
 
-pub fn request_ambient_audio_bank(p0: String, p1: bool, p2: u32) -> bool {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
+pub fn request_ambient_audio_bank(p0: &std::ffi::CString, p1: bool, p2: u32) -> bool {
     let value = native!(
         bool,
         0xFE02FFBED8CA9D99,
-        native_parameters!(p0_cstring.as_ptr(), p1, p2)
+        native_parameters!(p0.as_ptr(), p1, p2)
     );
 
     value
 }
 
-pub fn request_script_audio_bank(p0: String, p1: bool, p2: u32) -> bool {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
+pub fn request_script_audio_bank(p0: &std::ffi::CString, p1: bool, p2: u32) -> bool {
     let value = native!(
         bool,
         0x2F844A8B08D76685,
-        native_parameters!(p0_cstring.as_ptr(), p1, p2)
+        native_parameters!(p0.as_ptr(), p1, p2)
     );
 
     value
@@ -322,12 +315,11 @@ pub fn release_ambient_audio_bank() -> () {
     value
 }
 
-pub fn release_named_script_audio_bank(audioBank: String) -> () {
-    let audioBank_cstring = std::ffi::CString::new(audioBank).unwrap();
+pub fn release_named_script_audio_bank(audioBank: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x77ED170667F50170,
-        native_parameters!(audioBank_cstring.as_ptr())
+        native_parameters!(audioBank.as_ptr())
     );
 
     value
@@ -371,57 +363,44 @@ pub fn release_sound_id(soundId: i32) -> () {
 
 pub fn play_sound(
     soundId: i32,
-    audioName: String,
-    audioRef: String,
+    audioName: &std::ffi::CString,
+    audioRef: &std::ffi::CString,
     p3: bool,
     p4: u32,
     p5: bool,
 ) -> () {
-    let audioName_cstring = std::ffi::CString::new(audioName).unwrap();
-
-    let audioRef_cstring = std::ffi::CString::new(audioRef).unwrap();
     let value = native!(
         (),
         0x7FF4944CC209192D,
-        native_parameters!(
-            soundId,
-            audioName_cstring.as_ptr(),
-            audioRef_cstring.as_ptr(),
-            p3,
-            p4,
-            p5
-        )
+        native_parameters!(soundId, audioName.as_ptr(), audioRef.as_ptr(), p3, p4, p5)
     );
 
     value
 }
 
-pub fn play_sound_frontend(soundId: i32, audioName: String, audioRef: String, p3: bool) -> () {
-    let audioName_cstring = std::ffi::CString::new(audioName).unwrap();
-
-    let audioRef_cstring = std::ffi::CString::new(audioRef).unwrap();
+pub fn play_sound_frontend(
+    soundId: i32,
+    audioName: &std::ffi::CString,
+    audioRef: &std::ffi::CString,
+    p3: bool,
+) -> () {
     let value = native!(
         (),
         0x67C540AA08E4A6F5,
-        native_parameters!(
-            soundId,
-            audioName_cstring.as_ptr(),
-            audioRef_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(soundId, audioName.as_ptr(), audioRef.as_ptr(), p3)
     );
 
     value
 }
 
-pub fn play_deferred_sound_frontend(soundName: String, soundsetName: String) -> () {
-    let soundName_cstring = std::ffi::CString::new(soundName).unwrap();
-
-    let soundsetName_cstring = std::ffi::CString::new(soundsetName).unwrap();
+pub fn play_deferred_sound_frontend(
+    soundName: &std::ffi::CString,
+    soundsetName: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0xCADA5A0D0702381E,
-        native_parameters!(soundName_cstring.as_ptr(), soundsetName_cstring.as_ptr())
+        native_parameters!(soundName.as_ptr(), soundsetName.as_ptr())
     );
 
     value
@@ -429,23 +408,20 @@ pub fn play_deferred_sound_frontend(soundName: String, soundsetName: String) -> 
 
 pub fn play_sound_from_entity(
     soundId: i32,
-    audioName: String,
+    audioName: &std::ffi::CString,
     entity: i32,
-    audioRef: String,
+    audioRef: &std::ffi::CString,
     isNetwork: bool,
     p5: u32,
 ) -> () {
-    let audioName_cstring = std::ffi::CString::new(audioName).unwrap();
-
-    let audioRef_cstring = std::ffi::CString::new(audioRef).unwrap();
     let value = native!(
         (),
         0xE65F427EB70AB1ED,
         native_parameters!(
             soundId,
-            audioName_cstring.as_ptr(),
+            audioName.as_ptr(),
             entity,
-            audioRef_cstring.as_ptr(),
+            audioRef.as_ptr(),
             isNetwork,
             p5
         )
@@ -466,28 +442,25 @@ pub fn _0x5b9853296731e88d(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32)
 
 pub fn play_sound_from_coord(
     soundId: i32,
-    audioName: String,
+    audioName: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
-    audioRef: String,
+    audioRef: &std::ffi::CString,
     isNetwork: bool,
     range: i32,
     p8: bool,
 ) -> () {
-    let audioName_cstring = std::ffi::CString::new(audioName).unwrap();
-
-    let audioRef_cstring = std::ffi::CString::new(audioRef).unwrap();
     let value = native!(
         (),
         0x8D8686B622B88120,
         native_parameters!(
             soundId,
-            audioName_cstring.as_ptr(),
+            audioName.as_ptr(),
             x,
             y,
             z,
-            audioRef_cstring.as_ptr(),
+            audioRef.as_ptr(),
             isNetwork,
             range,
             p8
@@ -527,13 +500,8 @@ pub fn set_variable_on_sound(soundId: i32, p1: *mut u32, p2: f32) -> () {
     value
 }
 
-pub fn set_variable_on_stream(p0: String, p1: f32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x2F9D3834AEB9EF79,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn set_variable_on_stream(p0: &std::ffi::CString, p1: f32) -> () {
+    let value = native!((), 0x2F9D3834AEB9EF79, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
@@ -544,12 +512,11 @@ pub fn override_underwater_stream(p0: *mut u32, p1: bool) -> () {
     value
 }
 
-pub fn set_variable_on_under_water_stream(variableName: String, value: f32) -> () {
-    let variableName_cstring = std::ffi::CString::new(variableName).unwrap();
+pub fn set_variable_on_under_water_stream(variableName: &std::ffi::CString, value: f32) -> () {
     let value = native!(
         (),
         0x733ADF241531E5C2,
-        native_parameters!(variableName_cstring.as_ptr(), value)
+        native_parameters!(variableName.as_ptr(), value)
     );
 
     value
@@ -561,37 +528,31 @@ pub fn has_sound_finished(soundId: i32) -> bool {
     value
 }
 
-pub fn _play_ambient_speech1(ped: i32, speechName: String, speechParam: String, p3: u32) -> () {
-    let speechName_cstring = std::ffi::CString::new(speechName).unwrap();
-
-    let speechParam_cstring = std::ffi::CString::new(speechParam).unwrap();
+pub fn _play_ambient_speech1(
+    ped: i32,
+    speechName: &std::ffi::CString,
+    speechParam: &std::ffi::CString,
+    p3: u32,
+) -> () {
     let value = native!(
         (),
         0x8E04FEDD28D42462,
-        native_parameters!(
-            ped,
-            speechName_cstring.as_ptr(),
-            speechParam_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(ped, speechName.as_ptr(), speechParam.as_ptr(), p3)
     );
 
     value
 }
 
-pub fn _play_ambient_speech2(ped: i32, speechName: String, speechParam: String, p3: u32) -> () {
-    let speechName_cstring = std::ffi::CString::new(speechName).unwrap();
-
-    let speechParam_cstring = std::ffi::CString::new(speechParam).unwrap();
+pub fn _play_ambient_speech2(
+    ped: i32,
+    speechName: &std::ffi::CString,
+    speechParam: &std::ffi::CString,
+    p3: u32,
+) -> () {
     let value = native!(
         (),
         0xC6941B4A3A8FBBB9,
-        native_parameters!(
-            ped,
-            speechName_cstring.as_ptr(),
-            speechParam_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(ped, speechName.as_ptr(), speechParam.as_ptr(), p3)
     );
 
     value
@@ -599,24 +560,19 @@ pub fn _play_ambient_speech2(ped: i32, speechName: String, speechParam: String, 
 
 pub fn _play_ambient_speech_with_voice(
     p0: i32,
-    speechName: String,
-    voiceName: String,
-    speechParam: String,
+    speechName: &std::ffi::CString,
+    voiceName: &std::ffi::CString,
+    speechParam: &std::ffi::CString,
     p4: bool,
 ) -> () {
-    let speechName_cstring = std::ffi::CString::new(speechName).unwrap();
-
-    let voiceName_cstring = std::ffi::CString::new(voiceName).unwrap();
-
-    let speechParam_cstring = std::ffi::CString::new(speechParam).unwrap();
     let value = native!(
         (),
         0x3523634255FC3318,
         native_parameters!(
             p0,
-            speechName_cstring.as_ptr(),
-            voiceName_cstring.as_ptr(),
-            speechParam_cstring.as_ptr(),
+            speechName.as_ptr(),
+            voiceName.as_ptr(),
+            speechParam.as_ptr(),
             p4
         )
     );
@@ -625,41 +581,24 @@ pub fn _play_ambient_speech_with_voice(
 }
 
 pub fn _play_ambient_speech_at_coords(
-    p0: String,
-    p1: String,
+    p0: &std::ffi::CString,
+    p1: &std::ffi::CString,
     p2: f32,
     p3: f32,
     p4: f32,
-    p5: String,
+    p5: &std::ffi::CString,
 ) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p5_cstring = std::ffi::CString::new(p5).unwrap();
     let value = native!(
         (),
         0xED640017ED337E45,
-        native_parameters!(
-            p0_cstring.as_ptr(),
-            p1_cstring.as_ptr(),
-            p2,
-            p3,
-            p4,
-            p5_cstring.as_ptr()
-        )
+        native_parameters!(p0.as_ptr(), p1.as_ptr(), p2, p3, p4, p5.as_ptr())
     );
 
     value
 }
 
-pub fn override_trevor_rage(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x13AD665062541A7E,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn override_trevor_rage(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x13AD665062541A7E, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -692,34 +631,23 @@ pub fn release_weapon_audio() -> () {
     value
 }
 
-pub fn activate_audio_slowmo_mode(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xD01005D2BA2EB778,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn activate_audio_slowmo_mode(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0xD01005D2BA2EB778, native_parameters!(p0.as_ptr()));
 
     value
 }
 
-pub fn deactivate_audio_slowmo_mode(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xDDC635D5B3262C56,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn deactivate_audio_slowmo_mode(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0xDDC635D5B3262C56, native_parameters!(p0.as_ptr()));
 
     value
 }
 
-pub fn set_ambient_voice_name(ped: i32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn set_ambient_voice_name(ped: i32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x6C8065A3B780185B,
-        native_parameters!(ped, name_cstring.as_ptr())
+        native_parameters!(ped, name.as_ptr())
     );
 
     value
@@ -795,12 +723,11 @@ pub fn is_any_speech_playing(ped: i32) -> bool {
     value
 }
 
-pub fn _can_ped_speak(ped: i32, speechName: String, unk: bool) -> bool {
-    let speechName_cstring = std::ffi::CString::new(speechName).unwrap();
+pub fn _can_ped_speak(ped: i32, speechName: &std::ffi::CString, unk: bool) -> bool {
     let value = native!(
         bool,
         0x49B99BF3FDA89A7A,
-        native_parameters!(ped, speechName_cstring.as_ptr(), unk)
+        native_parameters!(ped, speechName.as_ptr(), unk)
     );
 
     value
@@ -906,23 +833,21 @@ pub fn _0xdd6bcf9e94425df9() -> () {
     value
 }
 
-pub fn set_radio_to_station_name(stationName: String) -> () {
-    let stationName_cstring = std::ffi::CString::new(stationName).unwrap();
+pub fn set_radio_to_station_name(stationName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xC69EDA28699D5107,
-        native_parameters!(stationName_cstring.as_ptr())
+        native_parameters!(stationName.as_ptr())
     );
 
     value
 }
 
-pub fn set_veh_radio_station(vehicle: i32, radioStation: String) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
+pub fn set_veh_radio_station(vehicle: i32, radioStation: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x1B9C0099CB942AC6,
-        native_parameters!(vehicle, radioStation_cstring.as_ptr())
+        native_parameters!(vehicle, radioStation.as_ptr())
     );
 
     value
@@ -940,36 +865,34 @@ pub fn _0xc1805d05e6d4fe10(vehicle: i32) -> () {
     value
 }
 
-pub fn set_emitter_radio_station(emitterName: String, radioStation: String) -> () {
-    let emitterName_cstring = std::ffi::CString::new(emitterName).unwrap();
-
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
+pub fn set_emitter_radio_station(
+    emitterName: &std::ffi::CString,
+    radioStation: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0xACF57305B12AF907,
-        native_parameters!(emitterName_cstring.as_ptr(), radioStation_cstring.as_ptr())
+        native_parameters!(emitterName.as_ptr(), radioStation.as_ptr())
     );
 
     value
 }
 
-pub fn set_static_emitter_enabled(emitterName: String, toggle: bool) -> () {
-    let emitterName_cstring = std::ffi::CString::new(emitterName).unwrap();
+pub fn set_static_emitter_enabled(emitterName: &std::ffi::CString, toggle: bool) -> () {
     let value = native!(
         (),
         0x399D2D3B33F1B8EB,
-        native_parameters!(emitterName_cstring.as_ptr(), toggle)
+        native_parameters!(emitterName.as_ptr(), toggle)
     );
 
     value
 }
 
-pub fn _link_static_emitter_to_entity(emitterName: String, entity: i32) -> () {
-    let emitterName_cstring = std::ffi::CString::new(emitterName).unwrap();
+pub fn _link_static_emitter_to_entity(emitterName: &std::ffi::CString, entity: i32) -> () {
     let value = native!(
         (),
         0x651D3228960D08AF,
-        native_parameters!(emitterName_cstring.as_ptr(), entity)
+        native_parameters!(emitterName.as_ptr(), entity)
     );
 
     value
@@ -1017,23 +940,21 @@ pub fn skip_radio_forward() -> () {
     value
 }
 
-pub fn freeze_radio_station(radioStation: String) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
+pub fn freeze_radio_station(radioStation: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x344F393B027E38C3,
-        native_parameters!(radioStation_cstring.as_ptr())
+        native_parameters!(radioStation.as_ptr())
     );
 
     value
 }
 
-pub fn unfreeze_radio_station(radioStation: String) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
+pub fn unfreeze_radio_station(radioStation: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xFC00454CF60B91DD,
-        native_parameters!(radioStation_cstring.as_ptr())
+        native_parameters!(radioStation.as_ptr())
     );
 
     value
@@ -1045,12 +966,11 @@ pub fn set_radio_auto_unfreeze(toggle: bool) -> () {
     value
 }
 
-pub fn set_initial_player_station(radioStation: String) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
+pub fn set_initial_player_station(radioStation: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x88795F13FACDA88D,
-        native_parameters!(radioStation_cstring.as_ptr())
+        native_parameters!(radioStation.as_ptr())
     );
 
     value
@@ -1062,31 +982,25 @@ pub fn set_user_radio_control_enabled(toggle: bool) -> () {
     value
 }
 
-pub fn set_radio_track(radioStation: String, radioTrack: String) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
-
-    let radioTrack_cstring = std::ffi::CString::new(radioTrack).unwrap();
+pub fn set_radio_track(radioStation: &std::ffi::CString, radioTrack: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xB39786F201FEE30B,
-        native_parameters!(radioStation_cstring.as_ptr(), radioTrack_cstring.as_ptr())
+        native_parameters!(radioStation.as_ptr(), radioTrack.as_ptr())
     );
 
     value
 }
 
-pub fn _set_radio_track_mix(radioStationName: String, mixName: String, p2: i32) -> () {
-    let radioStationName_cstring = std::ffi::CString::new(radioStationName).unwrap();
-
-    let mixName_cstring = std::ffi::CString::new(mixName).unwrap();
+pub fn _set_radio_track_mix(
+    radioStationName: &std::ffi::CString,
+    mixName: &std::ffi::CString,
+    p2: i32,
+) -> () {
     let value = native!(
         (),
         0x2CB0075110BE1E56,
-        native_parameters!(
-            radioStationName_cstring.as_ptr(),
-            mixName_cstring.as_ptr(),
-            p2
-        )
+        native_parameters!(radioStationName.as_ptr(), mixName.as_ptr(), p2)
     );
 
     value
@@ -1140,29 +1054,25 @@ pub fn _0xda07819e452ffe8f(p0: u32) -> () {
     value
 }
 
-pub fn set_custom_radio_track_list(radioStation: String, trackListName: String, p2: bool) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
-
-    let trackListName_cstring = std::ffi::CString::new(trackListName).unwrap();
+pub fn set_custom_radio_track_list(
+    radioStation: &std::ffi::CString,
+    trackListName: &std::ffi::CString,
+    p2: bool,
+) -> () {
     let value = native!(
         (),
         0x4E404A9361F75BB2,
-        native_parameters!(
-            radioStation_cstring.as_ptr(),
-            trackListName_cstring.as_ptr(),
-            p2
-        )
+        native_parameters!(radioStation.as_ptr(), trackListName.as_ptr(), p2)
     );
 
     value
 }
 
-pub fn clear_custom_radio_track_list(radioStation: String) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
+pub fn clear_custom_radio_track_list(radioStation: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x1654F24A88A8E3FE,
-        native_parameters!(radioStation_cstring.as_ptr())
+        native_parameters!(radioStation.as_ptr())
     );
 
     value
@@ -1180,12 +1090,11 @@ pub fn find_radio_station_index(station: i32) -> i32 {
     value
 }
 
-pub fn set_radio_station_music_only(radioStation: String, toggle: bool) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
+pub fn set_radio_station_music_only(radioStation: &std::ffi::CString, toggle: bool) -> () {
     let value = native!(
         (),
         0x774BD811F656A122,
-        native_parameters!(radioStation_cstring.as_ptr(), toggle)
+        native_parameters!(radioStation.as_ptr(), toggle)
     );
 
     value
@@ -1197,17 +1106,14 @@ pub fn set_radio_frontend_fade_time(p0: f32) -> () {
     value
 }
 
-pub fn unlock_radio_station_track_list(radioStation: String, trackListName: String) -> () {
-    let radioStation_cstring = std::ffi::CString::new(radioStation).unwrap();
-
-    let trackListName_cstring = std::ffi::CString::new(trackListName).unwrap();
+pub fn unlock_radio_station_track_list(
+    radioStation: &std::ffi::CString,
+    trackListName: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x031ACB6ABA18C729,
-        native_parameters!(
-            radioStation_cstring.as_ptr(),
-            trackListName_cstring.as_ptr()
-        )
+        native_parameters!(radioStation.as_ptr(), trackListName.as_ptr())
     );
 
     value
@@ -1219,12 +1125,11 @@ pub fn _update_lsur(enableMixes: bool) -> () {
     value
 }
 
-pub fn _lock_radio_station(radioStationName: String, toggle: bool) -> () {
-    let radioStationName_cstring = std::ffi::CString::new(radioStationName).unwrap();
+pub fn _lock_radio_station(radioStationName: &std::ffi::CString, toggle: bool) -> () {
     let value = native!(
         (),
         0x477D9DB48F889591,
-        native_parameters!(radioStationName_cstring.as_ptr(), toggle)
+        native_parameters!(radioStationName.as_ptr(), toggle)
     );
 
     value
@@ -1236,23 +1141,21 @@ pub fn _0xc64a06d939f826f5(p0: *mut f32, p1: *mut u32, p2: *mut i32) -> bool {
     value
 }
 
-pub fn _0x3e65cde5215832c1(radioStationName: String) -> i32 {
-    let radioStationName_cstring = std::ffi::CString::new(radioStationName).unwrap();
+pub fn _0x3e65cde5215832c1(radioStationName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x3E65CDE5215832C1,
-        native_parameters!(radioStationName_cstring.as_ptr())
+        native_parameters!(radioStationName.as_ptr())
     );
 
     value
 }
 
-pub fn _0x34d66bc058019ce0(radioStationName: String) -> u32 {
-    let radioStationName_cstring = std::ffi::CString::new(radioStationName).unwrap();
+pub fn _0x34d66bc058019ce0(radioStationName: &std::ffi::CString) -> u32 {
     let value = native!(
         u32,
         0x34D66BC058019CE0,
-        native_parameters!(radioStationName_cstring.as_ptr())
+        native_parameters!(radioStationName.as_ptr())
     );
 
     value
@@ -1264,23 +1167,21 @@ pub fn _0xf3365489e0dd50f9(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn set_ambient_zone_state(zoneName: String, p1: bool, p2: bool) -> () {
-    let zoneName_cstring = std::ffi::CString::new(zoneName).unwrap();
+pub fn set_ambient_zone_state(zoneName: &std::ffi::CString, p1: bool, p2: bool) -> () {
     let value = native!(
         (),
         0xBDA07E5950085E46,
-        native_parameters!(zoneName_cstring.as_ptr(), p1, p2)
+        native_parameters!(zoneName.as_ptr(), p1, p2)
     );
 
     value
 }
 
-pub fn clear_ambient_zone_state(zoneName: String, p1: bool) -> () {
-    let zoneName_cstring = std::ffi::CString::new(zoneName).unwrap();
+pub fn clear_ambient_zone_state(zoneName: &std::ffi::CString, p1: bool) -> () {
     let value = native!(
         (),
         0x218DD44AAAC964FF,
-        native_parameters!(zoneName_cstring.as_ptr(), p1)
+        native_parameters!(zoneName.as_ptr(), p1)
     );
 
     value
@@ -1298,34 +1199,39 @@ pub fn clear_ambient_zone_list_state(p0: *mut u32, p1: bool) -> () {
     value
 }
 
-pub fn set_ambient_zone_state_persistent(ambientZone: String, p1: bool, p2: bool) -> () {
-    let ambientZone_cstring = std::ffi::CString::new(ambientZone).unwrap();
+pub fn set_ambient_zone_state_persistent(
+    ambientZone: &std::ffi::CString,
+    p1: bool,
+    p2: bool,
+) -> () {
     let value = native!(
         (),
         0x1D6650420CEC9D3B,
-        native_parameters!(ambientZone_cstring.as_ptr(), p1, p2)
+        native_parameters!(ambientZone.as_ptr(), p1, p2)
     );
 
     value
 }
 
-pub fn set_ambient_zone_list_state_persistent(ambientZone: String, p1: bool, p2: bool) -> () {
-    let ambientZone_cstring = std::ffi::CString::new(ambientZone).unwrap();
+pub fn set_ambient_zone_list_state_persistent(
+    ambientZone: &std::ffi::CString,
+    p1: bool,
+    p2: bool,
+) -> () {
     let value = native!(
         (),
         0xF3638DAE8C4045E1,
-        native_parameters!(ambientZone_cstring.as_ptr(), p1, p2)
+        native_parameters!(ambientZone.as_ptr(), p1, p2)
     );
 
     value
 }
 
-pub fn is_ambient_zone_enabled(ambientZone: String) -> bool {
-    let ambientZone_cstring = std::ffi::CString::new(ambientZone).unwrap();
+pub fn is_ambient_zone_enabled(ambientZone: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x01E2817A479A7F9B,
-        native_parameters!(ambientZone_cstring.as_ptr())
+        native_parameters!(ambientZone.as_ptr())
     );
 
     value
@@ -1337,34 +1243,27 @@ pub fn _0x5d2bfaab8d956e0e() -> () {
     value
 }
 
-pub fn set_cutscene_audio_override(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x3B4BF5F0859204D9,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn set_cutscene_audio_override(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x3B4BF5F0859204D9, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn _set_variable_on_cutscene_audio(variableName: String, value: f32) -> () {
-    let variableName_cstring = std::ffi::CString::new(variableName).unwrap();
+pub fn _set_variable_on_cutscene_audio(variableName: &std::ffi::CString, value: f32) -> () {
     let value = native!(
         (),
         0xBCC29F935ED07688,
-        native_parameters!(variableName_cstring.as_ptr(), value)
+        native_parameters!(variableName.as_ptr(), value)
     );
 
     value
 }
 
-pub fn play_police_report(name: String, p1: f32) -> i32 {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn play_police_report(name: &std::ffi::CString, p1: f32) -> i32 {
     let value = native!(
         i32,
         0xDFEBD56D9BD1EB16,
-        native_parameters!(name_cstring.as_ptr(), p1)
+        native_parameters!(name.as_ptr(), p1)
     );
 
     value
@@ -1434,35 +1333,25 @@ pub fn get_stream_play_time() -> i32 {
     value
 }
 
-pub fn load_stream(streamName: String, soundSet: String) -> bool {
-    let streamName_cstring = std::ffi::CString::new(streamName).unwrap();
-
-    let soundSet_cstring = std::ffi::CString::new(soundSet).unwrap();
+pub fn load_stream(streamName: &std::ffi::CString, soundSet: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x1F1F957154EC51DF,
-        native_parameters!(streamName_cstring.as_ptr(), soundSet_cstring.as_ptr())
+        native_parameters!(streamName.as_ptr(), soundSet.as_ptr())
     );
 
     value
 }
 
 pub fn load_stream_with_start_offset(
-    streamName: String,
+    streamName: &std::ffi::CString,
     startOffset: i32,
-    soundSet: String,
+    soundSet: &std::ffi::CString,
 ) -> bool {
-    let streamName_cstring = std::ffi::CString::new(streamName).unwrap();
-
-    let soundSet_cstring = std::ffi::CString::new(soundSet).unwrap();
     let value = native!(
         bool,
         0x59C16B79F53B3712,
-        native_parameters!(
-            streamName_cstring.as_ptr(),
-            startOffset,
-            soundSet_cstring.as_ptr()
-        )
+        native_parameters!(streamName.as_ptr(), startOffset, soundSet.as_ptr())
     );
 
     value
@@ -1534,24 +1423,14 @@ pub fn is_ambient_speech_disabled(ped: i32) -> bool {
     value
 }
 
-pub fn _0xa8a7d434afb4b97b(p0: String, p1: i32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xA8A7D434AFB4B97B,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn _0xa8a7d434afb4b97b(p0: &std::ffi::CString, p1: i32) -> () {
+    let value = native!((), 0xA8A7D434AFB4B97B, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
 
-pub fn _0x2acabed337622df2(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x2ACABED337622DF2,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x2acabed337622df2(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x2ACABED337622DF2, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -1598,12 +1477,11 @@ pub fn use_siren_as_horn(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _force_vehicle_engine_audio(vehicle: i32, audioName: String) -> () {
-    let audioName_cstring = std::ffi::CString::new(audioName).unwrap();
+pub fn _force_vehicle_engine_audio(vehicle: i32, audioName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x4F0C413926060B38,
-        native_parameters!(vehicle, audioName_cstring.as_ptr())
+        native_parameters!(vehicle, audioName.as_ptr())
     );
 
     value
@@ -1615,14 +1493,11 @@ pub fn _0xca4cea6ae0000a7e(p0: u32) -> () {
     value
 }
 
-pub fn _0xf1f8157b8c3f171c(vehicle: i32, p1: String, p2: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
+pub fn _0xf1f8157b8c3f171c(vehicle: i32, p1: &std::ffi::CString, p2: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xF1F8157B8C3F171C,
-        native_parameters!(vehicle, p1_cstring.as_ptr(), p2_cstring.as_ptr())
+        native_parameters!(vehicle, p1.as_ptr(), p2.as_ptr())
     );
 
     value
@@ -1724,12 +1599,11 @@ pub fn set_gps_active(active: bool) -> () {
     value
 }
 
-pub fn play_mission_complete_audio(audioName: String) -> () {
-    let audioName_cstring = std::ffi::CString::new(audioName).unwrap();
+pub fn play_mission_complete_audio(audioName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xB138AAB8A70D3C69,
-        native_parameters!(audioName_cstring.as_ptr())
+        native_parameters!(audioName.as_ptr())
     );
 
     value
@@ -1753,24 +1627,14 @@ pub fn block_death_jingle(toggle: bool) -> () {
     value
 }
 
-pub fn start_audio_scene(scene: String) -> bool {
-    let scene_cstring = std::ffi::CString::new(scene).unwrap();
-    let value = native!(
-        bool,
-        0x013A80FC08F6E4F2,
-        native_parameters!(scene_cstring.as_ptr())
-    );
+pub fn start_audio_scene(scene: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x013A80FC08F6E4F2, native_parameters!(scene.as_ptr()));
 
     value
 }
 
-pub fn stop_audio_scene(scene: String) -> () {
-    let scene_cstring = std::ffi::CString::new(scene).unwrap();
-    let value = native!(
-        (),
-        0xDFE8422B3B94E688,
-        native_parameters!(scene_cstring.as_ptr())
-    );
+pub fn stop_audio_scene(scene: &std::ffi::CString) -> () {
+    let value = native!((), 0xDFE8422B3B94E688, native_parameters!(scene.as_ptr()));
 
     value
 }
@@ -1781,25 +1645,21 @@ pub fn stop_audio_scenes() -> () {
     value
 }
 
-pub fn is_audio_scene_active(scene: String) -> bool {
-    let scene_cstring = std::ffi::CString::new(scene).unwrap();
-    let value = native!(
-        bool,
-        0xB65B60556E2A9225,
-        native_parameters!(scene_cstring.as_ptr())
-    );
+pub fn is_audio_scene_active(scene: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0xB65B60556E2A9225, native_parameters!(scene.as_ptr()));
 
     value
 }
 
-pub fn set_audio_scene_variable(scene: String, variable: String, value: f32) -> () {
-    let scene_cstring = std::ffi::CString::new(scene).unwrap();
-
-    let variable_cstring = std::ffi::CString::new(variable).unwrap();
+pub fn set_audio_scene_variable(
+    scene: &std::ffi::CString,
+    variable: &std::ffi::CString,
+    value: f32,
+) -> () {
     let value = native!(
         (),
         0xEF21A9EF089A2668,
-        native_parameters!(scene_cstring.as_ptr(), variable_cstring.as_ptr(), value)
+        native_parameters!(scene.as_ptr(), variable.as_ptr(), value)
     );
 
     value
@@ -1811,12 +1671,11 @@ pub fn _0xa5f377b175a699c5(p0: i32) -> () {
     value
 }
 
-pub fn add_entity_to_audio_mix_group(entity: i32, groupName: String, p2: f32) -> () {
-    let groupName_cstring = std::ffi::CString::new(groupName).unwrap();
+pub fn add_entity_to_audio_mix_group(entity: i32, groupName: &std::ffi::CString, p2: f32) -> () {
     let value = native!(
         (),
         0x153973AB99FE8980,
-        native_parameters!(entity, groupName_cstring.as_ptr(), p2)
+        native_parameters!(entity, groupName.as_ptr(), p2)
     );
 
     value
@@ -1840,34 +1699,31 @@ pub fn _0x2dd39bf3e2f9c47f() -> u32 {
     value
 }
 
-pub fn prepare_music_event(eventName: String) -> bool {
-    let eventName_cstring = std::ffi::CString::new(eventName).unwrap();
+pub fn prepare_music_event(eventName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x1E5185B72EF5158A,
-        native_parameters!(eventName_cstring.as_ptr())
+        native_parameters!(eventName.as_ptr())
     );
 
     value
 }
 
-pub fn cancel_music_event(eventName: String) -> bool {
-    let eventName_cstring = std::ffi::CString::new(eventName).unwrap();
+pub fn cancel_music_event(eventName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x5B17A90291133DA5,
-        native_parameters!(eventName_cstring.as_ptr())
+        native_parameters!(eventName.as_ptr())
     );
 
     value
 }
 
-pub fn trigger_music_event(eventName: String) -> bool {
-    let eventName_cstring = std::ffi::CString::new(eventName).unwrap();
+pub fn trigger_music_event(eventName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x706D57B0F50DA710,
-        native_parameters!(eventName_cstring.as_ptr())
+        native_parameters!(eventName.as_ptr())
     );
 
     value
@@ -1927,34 +1783,31 @@ pub fn _0x062d5ead4da2fa6a() -> () {
     value
 }
 
-pub fn prepare_alarm(alarmName: String) -> bool {
-    let alarmName_cstring = std::ffi::CString::new(alarmName).unwrap();
+pub fn prepare_alarm(alarmName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x9D74AE343DB65533,
-        native_parameters!(alarmName_cstring.as_ptr())
+        native_parameters!(alarmName.as_ptr())
     );
 
     value
 }
 
-pub fn start_alarm(alarmName: String, p2: bool) -> () {
-    let alarmName_cstring = std::ffi::CString::new(alarmName).unwrap();
+pub fn start_alarm(alarmName: &std::ffi::CString, p2: bool) -> () {
     let value = native!(
         (),
         0x0355EF116C4C97B2,
-        native_parameters!(alarmName_cstring.as_ptr(), p2)
+        native_parameters!(alarmName.as_ptr(), p2)
     );
 
     value
 }
 
-pub fn stop_alarm(alarmName: String, toggle: bool) -> () {
-    let alarmName_cstring = std::ffi::CString::new(alarmName).unwrap();
+pub fn stop_alarm(alarmName: &std::ffi::CString, toggle: bool) -> () {
     let value = native!(
         (),
         0xA1CADDCD98415A41,
-        native_parameters!(alarmName_cstring.as_ptr(), toggle)
+        native_parameters!(alarmName.as_ptr(), toggle)
     );
 
     value
@@ -1966,12 +1819,11 @@ pub fn stop_all_alarms(stop: bool) -> () {
     value
 }
 
-pub fn is_alarm_playing(alarmName: String) -> bool {
-    let alarmName_cstring = std::ffi::CString::new(alarmName).unwrap();
+pub fn is_alarm_playing(alarmName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x226435CB96CCFC8C,
-        native_parameters!(alarmName_cstring.as_ptr())
+        native_parameters!(alarmName.as_ptr())
     );
 
     value
@@ -2049,24 +1901,18 @@ pub fn _0xb81cf134aeb56ffb() -> () {
     value
 }
 
-pub fn set_audio_flag(flagName: String, toggle: bool) -> () {
-    let flagName_cstring = std::ffi::CString::new(flagName).unwrap();
+pub fn set_audio_flag(flagName: &std::ffi::CString, toggle: bool) -> () {
     let value = native!(
         (),
         0xB9EFD5C25018725A,
-        native_parameters!(flagName_cstring.as_ptr(), toggle)
+        native_parameters!(flagName.as_ptr(), toggle)
     );
 
     value
 }
 
-pub fn prepare_synchronized_audio_event(p0: String, p1: u32) -> u32 {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        u32,
-        0xC7ABCACA4985A766,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn prepare_synchronized_audio_event(p0: &std::ffi::CString, p1: u32) -> u32 {
+    let value = native!(u32, 0xC7ABCACA4985A766, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
@@ -2095,13 +1941,8 @@ pub fn _0xc8ede9bdbccba6d4(p0: *mut u32, p1: f32, p2: f32, p3: f32) -> () {
     value
 }
 
-pub fn _set_synchronized_audio_event_position_this_frame(p0: String, p1: i32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x950A154B8DAB6185,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn _set_synchronized_audio_event_position_this_frame(p0: &std::ffi::CString, p1: i32) -> () {
+    let value = native!((), 0x950A154B8DAB6185, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
@@ -2112,26 +1953,18 @@ pub fn set_audio_special_effect_mode(mode: i32) -> () {
     value
 }
 
-pub fn set_portal_settings_override(p0: String, p1: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn set_portal_settings_override(p0: &std::ffi::CString, p1: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x044DBAD7A7FA2BE5,
-        native_parameters!(p0_cstring.as_ptr(), p1_cstring.as_ptr())
+        native_parameters!(p0.as_ptr(), p1.as_ptr())
     );
 
     value
 }
 
-pub fn remove_portal_settings_override(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xB4BBFD9CD8B3922B,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn remove_portal_settings_override(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0xB4BBFD9CD8B3922B, native_parameters!(p0.as_ptr()));
 
     value
 }

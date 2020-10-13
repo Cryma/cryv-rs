@@ -60,19 +60,16 @@ pub fn network_can_share_job_cash() -> bool {
     value
 }
 
-pub fn network_refund_cash(index: i32, context: String, reason: String, unk: bool) -> () {
-    let context_cstring = std::ffi::CString::new(context).unwrap();
-
-    let reason_cstring = std::ffi::CString::new(reason).unwrap();
+pub fn network_refund_cash(
+    index: i32,
+    context: &std::ffi::CString,
+    reason: &std::ffi::CString,
+    unk: bool,
+) -> () {
     let value = native!(
         (),
         0xF9C812CD7C46E817,
-        native_parameters!(
-            index,
-            context_cstring.as_ptr(),
-            reason_cstring.as_ptr(),
-            unk
-        )
+        native_parameters!(index, context.as_ptr(), reason.as_ptr(), unk)
     );
 
     value
@@ -80,19 +77,16 @@ pub fn network_refund_cash(index: i32, context: String, reason: String, unk: boo
 
 pub fn _network_deduct_cash(
     amount: i32,
-    p1: String,
-    p2: String,
+    p1: &std::ffi::CString,
+    p2: &std::ffi::CString,
     p3: bool,
     p4: bool,
     p5: bool,
 ) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
     let value = native!(
         (),
         0x18B7AE224B087E26,
-        native_parameters!(amount, p1_cstring.as_ptr(), p2_cstring.as_ptr(), p3, p4, p5)
+        native_parameters!(amount, p1.as_ptr(), p2.as_ptr(), p3, p4, p5)
     );
 
     value
@@ -204,56 +198,51 @@ pub fn network_earn_from_crate_drop(amount: i32) -> () {
     value
 }
 
-pub fn network_earn_from_betting(amount: i32, p1: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn network_earn_from_betting(amount: i32, p1: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x827A5BA1A44ACA6D,
-        native_parameters!(amount, p1_cstring.as_ptr())
+        native_parameters!(amount, p1.as_ptr())
     );
 
     value
 }
 
-pub fn network_earn_from_job(amount: i32, p1: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn network_earn_from_job(amount: i32, p1: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xB2CC4836834E8A98,
-        native_parameters!(amount, p1_cstring.as_ptr())
+        native_parameters!(amount, p1.as_ptr())
     );
 
     value
 }
 
-pub fn _network_earn_from_job_x2(amount: i32, p1: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _network_earn_from_job_x2(amount: i32, p1: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xDEBBF584665411D0,
-        native_parameters!(amount, p1_cstring.as_ptr())
+        native_parameters!(amount, p1.as_ptr())
     );
 
     value
 }
 
-pub fn _network_earn_from_premium_job(amount: i32, p1: String) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _network_earn_from_premium_job(amount: i32, p1: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xC8407624CEF2354B,
-        native_parameters!(amount, p1_cstring.as_ptr())
+        native_parameters!(amount, p1.as_ptr())
     );
 
     value
 }
 
-pub fn network_earn_from_bend_job(amount: i32, heistHash: String) -> () {
-    let heistHash_cstring = std::ffi::CString::new(heistHash).unwrap();
+pub fn network_earn_from_bend_job(amount: i32, heistHash: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x61326EE6DF15B0CA,
-        native_parameters!(amount, heistHash_cstring.as_ptr())
+        native_parameters!(amount, heistHash.as_ptr())
     );
 
     value
@@ -358,23 +347,21 @@ pub fn network_earn_from_personal_vehicle(
     value
 }
 
-pub fn network_earn_from_daily_objectives(p0: i32, p1: String, p2: i32) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn network_earn_from_daily_objectives(p0: i32, p1: &std::ffi::CString, p2: i32) -> () {
     let value = native!(
         (),
         0x6EA318C91C1A8786,
-        native_parameters!(p0, p1_cstring.as_ptr(), p2)
+        native_parameters!(p0, p1.as_ptr(), p2)
     );
 
     value
 }
 
-pub fn network_earn_from_ambient_job(p0: i32, p1: String, p2: *mut u32) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn network_earn_from_ambient_job(p0: i32, p1: &std::ffi::CString, p2: *mut u32) -> () {
     let value = native!(
         (),
         0xFB6DB092FBAE29E6,
-        native_parameters!(p0, p1_cstring.as_ptr(), p2)
+        native_parameters!(p0, p1.as_ptr(), p2)
     );
 
     value
@@ -564,28 +551,16 @@ pub fn network_buy_item(
     p2: u32,
     p3: u32,
     p4: bool,
-    item_name: String,
+    item_name: &std::ffi::CString,
     p6: u32,
     p7: u32,
     p8: u32,
     p9: bool,
 ) -> () {
-    let item_name_cstring = std::ffi::CString::new(item_name).unwrap();
     let value = native!(
         (),
         0xF0077C797F66A355,
-        native_parameters!(
-            amount,
-            item,
-            p2,
-            p3,
-            p4,
-            item_name_cstring.as_ptr(),
-            p6,
-            p7,
-            p8,
-            p9
-        )
+        native_parameters!(amount, item, p2, p3, p4, item_name.as_ptr(), p6, p7, p8, p9)
     );
 
     value
@@ -609,23 +584,32 @@ pub fn network_pay_utility_bill(amount: i32, p1: bool, p2: bool) -> () {
     value
 }
 
-pub fn network_pay_match_entry_fee(amount: i32, matchId: String, p2: bool, p3: bool) -> () {
-    let matchId_cstring = std::ffi::CString::new(matchId).unwrap();
+pub fn network_pay_match_entry_fee(
+    amount: i32,
+    matchId: &std::ffi::CString,
+    p2: bool,
+    p3: bool,
+) -> () {
     let value = native!(
         (),
         0x9346E14F2AF74D46,
-        native_parameters!(amount, matchId_cstring.as_ptr(), p2, p3)
+        native_parameters!(amount, matchId.as_ptr(), p2, p3)
     );
 
     value
 }
 
-pub fn network_spent_betting(amount: i32, p1: i32, matchId: String, p3: bool, p4: bool) -> () {
-    let matchId_cstring = std::ffi::CString::new(matchId).unwrap();
+pub fn network_spent_betting(
+    amount: i32,
+    p1: i32,
+    matchId: &std::ffi::CString,
+    p3: bool,
+    p4: bool,
+) -> () {
     let value = native!(
         (),
         0x1C436FD11FFA692F,
-        native_parameters!(amount, p1, matchId_cstring.as_ptr(), p3, p4)
+        native_parameters!(amount, p1, matchId.as_ptr(), p3, p4)
     );
 
     value
@@ -857,12 +841,11 @@ pub fn _0x9b5016a6433a68c5() -> u32 {
     value
 }
 
-pub fn process_cash_gift(p0: *mut i32, p1: *mut i32, p2: String) -> String {
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
+pub fn process_cash_gift(p0: *mut i32, p1: *mut i32, p2: &std::ffi::CString) -> String {
     let value = native!(
         *const i8,
         0x20194D48EAEC9A41,
-        native_parameters!(p0, p1, p2_cstring.as_ptr())
+        native_parameters!(p0, p1, p2.as_ptr())
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();
@@ -915,12 +898,11 @@ pub fn _0x7c4fccd2e4deb394() -> bool {
     value
 }
 
-pub fn _network_spent_job_skip(amount: i32, matchId: String, p2: bool, p3: bool) -> () {
-    let matchId_cstring = std::ffi::CString::new(matchId).unwrap();
+pub fn _network_spent_job_skip(amount: i32, matchId: &std::ffi::CString, p2: bool, p3: bool) -> () {
     let value = native!(
         (),
         0x28F174A67B8D0C2F,
-        native_parameters!(amount, matchId_cstring.as_ptr(), p2, p3)
+        native_parameters!(amount, matchId.as_ptr(), p2, p3)
     );
 
     value
@@ -1337,23 +1319,21 @@ pub fn _network_earn_from_doomsday_finale_bonus(amount: i32, vehicleHash: u32) -
     value
 }
 
-pub fn _network_earn_from_gangops_awards(amount: i32, unk: String, p2: u32) -> () {
-    let unk_cstring = std::ffi::CString::new(unk).unwrap();
+pub fn _network_earn_from_gangops_awards(amount: i32, unk: &std::ffi::CString, p2: u32) -> () {
     let value = native!(
         (),
         0xA9A31475F530DFDA,
-        native_parameters!(amount, unk_cstring.as_ptr(), p2)
+        native_parameters!(amount, unk.as_ptr(), p2)
     );
 
     value
 }
 
-pub fn _network_earn_from_gangops_elite(amount: i32, unk: String, actIndex: i32) -> () {
-    let unk_cstring = std::ffi::CString::new(unk).unwrap();
+pub fn _network_earn_from_gangops_elite(amount: i32, unk: &std::ffi::CString, actIndex: i32) -> () {
     let value = native!(
         (),
         0x2597A0D4A4FC2C77,
-        native_parameters!(amount, unk_cstring.as_ptr(), actIndex)
+        native_parameters!(amount, unk.as_ptr(), actIndex)
     );
 
     value
@@ -1387,23 +1367,21 @@ pub fn _network_earn_from_gangops_jobs_prep_participation(amount: i32) -> () {
     value
 }
 
-pub fn _network_earn_from_gangops_jobs_setup(amount: i32, unk: String) -> () {
-    let unk_cstring = std::ffi::CString::new(unk).unwrap();
+pub fn _network_earn_from_gangops_jobs_setup(amount: i32, unk: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xA9160796D47A2CF8,
-        native_parameters!(amount, unk_cstring.as_ptr())
+        native_parameters!(amount, unk.as_ptr())
     );
 
     value
 }
 
-pub fn _network_earn_from_gangops_jobs_finale(amount: i32, unk: String) -> () {
-    let unk_cstring = std::ffi::CString::new(unk).unwrap();
+pub fn _network_earn_from_gangops_jobs_finale(amount: i32, unk: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x1C121FC9545E0D52,
-        native_parameters!(amount, unk_cstring.as_ptr())
+        native_parameters!(amount, unk.as_ptr())
     );
 
     value
@@ -1563,23 +1541,21 @@ pub fn _network_spent_make_it_rain(amount: i32, p1: bool, p2: bool) -> () {
     value
 }
 
-pub fn _network_spent_buy_arena(amount: i32, p1: bool, p2: bool, p3: String) -> () {
-    let p3_cstring = std::ffi::CString::new(p3).unwrap();
+pub fn _network_spent_buy_arena(amount: i32, p1: bool, p2: bool, p3: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x40D5DA9550B7CB46,
-        native_parameters!(amount, p1, p2, p3_cstring.as_ptr())
+        native_parameters!(amount, p1, p2, p3.as_ptr())
     );
 
     value
 }
 
-pub fn _network_spent_upgrade_arena(amount: i32, p1: bool, p2: bool, p3: String) -> () {
-    let p3_cstring = std::ffi::CString::new(p3).unwrap();
+pub fn _network_spent_upgrade_arena(amount: i32, p1: bool, p2: bool, p3: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x037ABB06825D7AB1,
-        native_parameters!(amount, p1, p2, p3_cstring.as_ptr())
+        native_parameters!(amount, p1, p2, p3.as_ptr())
     );
 
     value

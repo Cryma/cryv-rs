@@ -837,12 +837,11 @@ pub fn network_session_is_voice_session_busy() -> bool {
     value
 }
 
-pub fn network_send_text_message(message: String, networkHandle: *mut i32) -> bool {
-    let message_cstring = std::ffi::CString::new(message).unwrap();
+pub fn network_send_text_message(message: &std::ffi::CString, networkHandle: *mut i32) -> bool {
     let value = native!(
         bool,
         0x3A214F2EC889B100,
-        native_parameters!(message_cstring.as_ptr(), networkHandle)
+        native_parameters!(message.as_ptr(), networkHandle)
     );
 
     value
@@ -1139,12 +1138,15 @@ pub fn network_apply_transition_parameter(p0: i32, p1: i32) -> () {
     value
 }
 
-pub fn network_apply_transition_parameter_string(p0: i32, string: String, p2: bool) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn network_apply_transition_parameter_string(
+    p0: i32,
+    string: &std::ffi::CString,
+    p2: bool,
+) -> () {
     let value = native!(
         (),
         0xEBEFC2E77084F599,
-        native_parameters!(p0, string_cstring.as_ptr(), p2)
+        native_parameters!(p0, string.as_ptr(), p2)
     );
 
     value
@@ -1152,16 +1154,15 @@ pub fn network_apply_transition_parameter_string(p0: i32, string: String, p2: bo
 
 pub fn network_send_transition_gamer_instruction(
     networkHandle: *mut i32,
-    p1: String,
+    p1: &std::ffi::CString,
     p2: i32,
     p3: i32,
     p4: bool,
 ) -> bool {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
     let value = native!(
         bool,
         0x31D1D2B858D25E6B,
-        native_parameters!(networkHandle, p1_cstring.as_ptr(), p2, p3, p4)
+        native_parameters!(networkHandle, p1.as_ptr(), p2, p3, p4)
     );
 
     value
@@ -1859,12 +1860,11 @@ pub fn network_get_host_of_this_script() -> i32 {
     value
 }
 
-pub fn network_get_host_of_script(scriptName: String, p1: i32, p2: i32) -> i32 {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn network_get_host_of_script(scriptName: &std::ffi::CString, p1: i32, p2: i32) -> i32 {
     let value = native!(
         i32,
         0x1D6A14F1F9A736FC,
-        native_parameters!(scriptName_cstring.as_ptr(), p1, p2)
+        native_parameters!(scriptName.as_ptr(), p1, p2)
     );
 
     value
@@ -1876,12 +1876,16 @@ pub fn network_set_mission_finished() -> () {
     value
 }
 
-pub fn network_is_script_active(scriptName: String, player: i32, p2: bool, p3: u32) -> bool {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn network_is_script_active(
+    scriptName: &std::ffi::CString,
+    player: i32,
+    p2: bool,
+    p3: u32,
+) -> bool {
     let value = native!(
         bool,
         0x9D40DF90FAD26098,
-        native_parameters!(scriptName_cstring.as_ptr(), player, p2, p3)
+        native_parameters!(scriptName.as_ptr(), player, p2, p3)
     );
 
     value
@@ -2185,27 +2189,29 @@ pub fn network_get_local_handle(networkHandle: *mut i32, bufferSize: i32) -> () 
     value
 }
 
-pub fn network_handle_from_user_id(userId: String, networkHandle: *mut i32, bufferSize: i32) -> () {
-    let userId_cstring = std::ffi::CString::new(userId).unwrap();
+pub fn network_handle_from_user_id(
+    userId: &std::ffi::CString,
+    networkHandle: *mut i32,
+    bufferSize: i32,
+) -> () {
     let value = native!(
         (),
         0xDCD51DD8F87AEC5C,
-        native_parameters!(userId_cstring.as_ptr(), networkHandle, bufferSize)
+        native_parameters!(userId.as_ptr(), networkHandle, bufferSize)
     );
 
     value
 }
 
 pub fn network_handle_from_member_id(
-    memberId: String,
+    memberId: &std::ffi::CString,
     networkHandle: *mut i32,
     bufferSize: i32,
 ) -> () {
-    let memberId_cstring = std::ffi::CString::new(memberId).unwrap();
     let value = native!(
         (),
         0xA0FD21BED61E5C4C,
-        native_parameters!(memberId_cstring.as_ptr(), networkHandle, bufferSize)
+        native_parameters!(memberId.as_ptr(), networkHandle, bufferSize)
     );
 
     value
@@ -2419,13 +2425,8 @@ pub fn _network_get_friend_name_from_index(friendIndex: i32) -> String {
     value
 }
 
-pub fn network_is_friend_online(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0x425A44533437B64D,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn network_is_friend_online(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x425A44533437B64D, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -2436,23 +2437,21 @@ pub fn network_is_friend_handle_online(networkHandle: *mut i32) -> bool {
     value
 }
 
-pub fn network_is_friend_in_same_title(friendName: String) -> bool {
-    let friendName_cstring = std::ffi::CString::new(friendName).unwrap();
+pub fn network_is_friend_in_same_title(friendName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x2EA9A3BEDF3F17B8,
-        native_parameters!(friendName_cstring.as_ptr())
+        native_parameters!(friendName.as_ptr())
     );
 
     value
 }
 
-pub fn network_is_friend_in_multiplayer(friendName: String) -> bool {
-    let friendName_cstring = std::ffi::CString::new(friendName).unwrap();
+pub fn network_is_friend_in_multiplayer(friendName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x57005C18827F3A28,
-        native_parameters!(friendName_cstring.as_ptr())
+        native_parameters!(friendName.as_ptr())
     );
 
     value
@@ -2476,12 +2475,11 @@ pub fn network_is_adding_friend() -> u32 {
     value
 }
 
-pub fn network_add_friend(networkHandle: *mut i32, message: String) -> bool {
-    let message_cstring = std::ffi::CString::new(message).unwrap();
+pub fn network_add_friend(networkHandle: *mut i32, message: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x8E02D73914064223,
-        native_parameters!(networkHandle, message_cstring.as_ptr())
+        native_parameters!(networkHandle, message.as_ptr())
     );
 
     value
@@ -2853,12 +2851,11 @@ pub fn network_set_rich_presence(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     value
 }
 
-pub fn network_set_rich_presence_string(p0: i32, textLabel: String) -> () {
-    let textLabel_cstring = std::ffi::CString::new(textLabel).unwrap();
+pub fn network_set_rich_presence_string(p0: i32, textLabel: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x3E200C2BCF4164EB,
-        native_parameters!(p0, textLabel_cstring.as_ptr())
+        native_parameters!(p0, textLabel.as_ptr())
     );
 
     value
@@ -2947,13 +2944,12 @@ pub fn network_clan_is_rockstar_clan(clanDesc: *mut i32, bufferSize: i32) -> boo
 pub fn network_clan_get_ui_formatted_tag(
     clanDesc: *mut i32,
     bufferSize: i32,
-    formattedTag: String,
+    formattedTag: &std::ffi::CString,
 ) -> () {
-    let formattedTag_cstring = std::ffi::CString::new(formattedTag).unwrap();
     let value = native!(
         (),
         0xF45352426FF3A4F0,
-        native_parameters!(clanDesc, bufferSize, formattedTag_cstring.as_ptr())
+        native_parameters!(clanDesc, bufferSize, formattedTag.as_ptr())
     );
 
     value
@@ -3023,25 +3019,21 @@ pub fn network_clan_join(clanDesc: i32) -> bool {
     value
 }
 
-pub fn _network_clan_animation(animDict: String, animName: String) -> bool {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
+pub fn _network_clan_animation(animDict: &std::ffi::CString, animName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x729E3401F0430686,
-        native_parameters!(animDict_cstring.as_ptr(), animName_cstring.as_ptr())
+        native_parameters!(animDict.as_ptr(), animName.as_ptr())
     );
 
     value
 }
 
-pub fn _0x2b51edbefc301339(p0: i32, p1: String) -> bool {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x2b51edbefc301339(p0: i32, p1: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x2B51EDBEFC301339,
-        native_parameters!(p0, p1_cstring.as_ptr())
+        native_parameters!(p0, p1.as_ptr())
     );
 
     value
@@ -3053,12 +3045,11 @@ pub fn _0xc32ea7a2f6ca7557() -> u32 {
     value
 }
 
-pub fn network_clan_get_emblem_txd_name(netHandle: *mut u32, txdName: String) -> bool {
-    let txdName_cstring = std::ffi::CString::new(txdName).unwrap();
+pub fn network_clan_get_emblem_txd_name(netHandle: *mut u32, txdName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x5835D9CD92E83184,
-        native_parameters!(netHandle, txdName_cstring.as_ptr())
+        native_parameters!(netHandle, txdName.as_ptr())
     );
 
     value
@@ -3730,8 +3721,8 @@ pub fn network_create_synchronised_scene(
 pub fn network_add_ped_to_synchronised_scene(
     ped: i32,
     netScene: i32,
-    animDict: String,
-    animnName: String,
+    animDict: &std::ffi::CString,
+    animnName: &std::ffi::CString,
     speed: f32,
     speedMultiplier: f32,
     duration: i32,
@@ -3739,17 +3730,14 @@ pub fn network_add_ped_to_synchronised_scene(
     playbackRate: f32,
     p9: u32,
 ) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animnName_cstring = std::ffi::CString::new(animnName).unwrap();
     let value = native!(
         (),
         0x742A637471BCECD9,
         native_parameters!(
             ped,
             netScene,
-            animDict_cstring.as_ptr(),
-            animnName_cstring.as_ptr(),
+            animDict.as_ptr(),
+            animnName.as_ptr(),
             speed,
             speedMultiplier,
             duration,
@@ -3786,23 +3774,20 @@ pub fn _0xa5eafe473e45c442(
 pub fn network_add_entity_to_synchronised_scene(
     entity: i32,
     netScene: i32,
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
     speed: f32,
     speedMulitiplier: f32,
     flag: i32,
 ) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         (),
         0xF2404D68CBC855FA,
         native_parameters!(
             entity,
             netScene,
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
+            animDict.as_ptr(),
+            animName.as_ptr(),
             speed,
             speedMulitiplier,
             flag
@@ -3819,27 +3804,15 @@ pub fn _0x45f35c0edc33b03b(
     y: f32,
     z: f32,
     p5: f32,
-    p6: String,
+    p6: &std::ffi::CString,
     p7: f32,
     p8: f32,
     flags: i32,
 ) -> () {
-    let p6_cstring = std::ffi::CString::new(p6).unwrap();
     let value = native!(
         (),
         0x45F35C0EDC33B03B,
-        native_parameters!(
-            netScene,
-            modelHash,
-            x,
-            y,
-            z,
-            p5,
-            p6_cstring.as_ptr(),
-            p7,
-            p8,
-            flags
-        )
+        native_parameters!(netScene, modelHash, x, y, z, p5, p6.as_ptr(), p7, p8, flags)
     );
 
     value
@@ -3847,20 +3820,13 @@ pub fn _0x45f35c0edc33b03b(
 
 pub fn _network_force_local_use_of_synced_scene_camera(
     netScene: i32,
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
 ) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         (),
         0xCF8BD3B0BD6D42D7,
-        native_parameters!(
-            netScene,
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr()
-        )
+        native_parameters!(netScene, animDict.as_ptr(), animName.as_ptr())
     );
 
     value
@@ -4212,75 +4178,55 @@ pub fn network_get_tunable_cloud_crc() -> i32 {
     value
 }
 
-pub fn network_does_tunable_exist(tunableContext: String, tunableName: String) -> bool {
-    let tunableContext_cstring = std::ffi::CString::new(tunableContext).unwrap();
-
-    let tunableName_cstring = std::ffi::CString::new(tunableName).unwrap();
+pub fn network_does_tunable_exist(
+    tunableContext: &std::ffi::CString,
+    tunableName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0x85E5F8B9B898B20A,
-        native_parameters!(
-            tunableContext_cstring.as_ptr(),
-            tunableName_cstring.as_ptr()
-        )
+        native_parameters!(tunableContext.as_ptr(), tunableName.as_ptr())
     );
 
     value
 }
 
 pub fn network_access_tunable_int(
-    tunableContext: String,
-    tunableName: String,
+    tunableContext: &std::ffi::CString,
+    tunableName: &std::ffi::CString,
     value: *mut i32,
 ) -> bool {
-    let tunableContext_cstring = std::ffi::CString::new(tunableContext).unwrap();
-
-    let tunableName_cstring = std::ffi::CString::new(tunableName).unwrap();
     let value = native!(
         bool,
         0x8BE1146DFD5D4468,
-        native_parameters!(
-            tunableContext_cstring.as_ptr(),
-            tunableName_cstring.as_ptr(),
-            value
-        )
+        native_parameters!(tunableContext.as_ptr(), tunableName.as_ptr(), value)
     );
 
     value
 }
 
 pub fn network_access_tunable_float(
-    tunableContext: String,
-    tunableName: String,
+    tunableContext: &std::ffi::CString,
+    tunableName: &std::ffi::CString,
     value: *mut f32,
 ) -> bool {
-    let tunableContext_cstring = std::ffi::CString::new(tunableContext).unwrap();
-
-    let tunableName_cstring = std::ffi::CString::new(tunableName).unwrap();
     let value = native!(
         bool,
         0xE5608CA7BC163A5F,
-        native_parameters!(
-            tunableContext_cstring.as_ptr(),
-            tunableName_cstring.as_ptr(),
-            value
-        )
+        native_parameters!(tunableContext.as_ptr(), tunableName.as_ptr(), value)
     );
 
     value
 }
 
-pub fn network_access_tunable_bool(tunableContext: String, tunableName: String) -> bool {
-    let tunableContext_cstring = std::ffi::CString::new(tunableContext).unwrap();
-
-    let tunableName_cstring = std::ffi::CString::new(tunableName).unwrap();
+pub fn network_access_tunable_bool(
+    tunableContext: &std::ffi::CString,
+    tunableName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0xAA6A47A573ABB75A,
-        native_parameters!(
-            tunableContext_cstring.as_ptr(),
-            tunableName_cstring.as_ptr()
-        )
+        native_parameters!(tunableContext.as_ptr(), tunableName.as_ptr())
     );
 
     value
@@ -4598,14 +4544,11 @@ pub fn get_commerce_item_cat(index: i32, index2: i32) -> String {
     value
 }
 
-pub fn open_commerce_store(p0: String, p1: String, p2: i32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn open_commerce_store(p0: &std::ffi::CString, p1: &std::ffi::CString, p2: i32) -> () {
     let value = native!(
         (),
         0x58C21165F6545892,
-        native_parameters!(p0_cstring.as_ptr(), p1_cstring.as_ptr(), p2)
+        native_parameters!(p0.as_ptr(), p1.as_ptr(), p2)
     );
 
     value
@@ -4684,13 +4627,8 @@ pub fn _0x155467aca0f55705() -> i32 {
     value
 }
 
-pub fn cloud_delete_member_file(p0: String) -> i32 {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        i32,
-        0xC64DED7EF0D2FE37,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn cloud_delete_member_file(p0: &std::ffi::CString) -> i32 {
+    let value = native!(i32, 0xC64DED7EF0D2FE37, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -4812,21 +4750,14 @@ pub fn _0x692d58df40657e8c(p0: u32, p1: u32, p2: u32, p3: *mut u32, p4: u32, p5:
 }
 
 pub fn ugc_query_by_content_id(
-    contentId: String,
+    contentId: &std::ffi::CString,
     latestVersion: bool,
-    contentTypeName: String,
+    contentTypeName: &std::ffi::CString,
 ) -> bool {
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
     let value = native!(
         bool,
         0x158EC424F35EC469,
-        native_parameters!(
-            contentId_cstring.as_ptr(),
-            latestVersion,
-            contentTypeName_cstring.as_ptr()
-        )
+        native_parameters!(contentId.as_ptr(), latestVersion, contentTypeName.as_ptr())
     );
 
     value
@@ -4836,13 +4767,12 @@ pub fn ugc_query_by_content_ids(
     data: *mut u32,
     count: i32,
     latestVersion: bool,
-    contentTypeName: String,
+    contentTypeName: &std::ffi::CString,
 ) -> bool {
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
     let value = native!(
         bool,
         0xC7397A83F7A2A462,
-        native_parameters!(data, count, latestVersion, contentTypeName_cstring.as_ptr())
+        native_parameters!(data, count, latestVersion, contentTypeName.as_ptr())
     );
 
     value
@@ -4851,14 +4781,13 @@ pub fn ugc_query_by_content_ids(
 pub fn _ugc_query_recently_created_content(
     offset: i32,
     count: i32,
-    contentTypeName: String,
+    contentTypeName: &std::ffi::CString,
     p3: i32,
 ) -> bool {
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
     let value = native!(
         bool,
         0x6D4CB481FAC835E8,
-        native_parameters!(offset, count, contentTypeName_cstring.as_ptr(), p3)
+        native_parameters!(offset, count, contentTypeName.as_ptr(), p3)
     );
 
     value
@@ -4902,25 +4831,28 @@ pub fn ugc_get_get_by_category(p0: u32, p1: u32, p2: u32, p3: *mut u32, p4: *mut
     value
 }
 
-pub fn set_balance_add_machine(contentId: String, contentTypeName: String) -> bool {
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
+pub fn set_balance_add_machine(
+    contentId: &std::ffi::CString,
+    contentTypeName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0x815E5E3073DA1D67,
-        native_parameters!(contentId_cstring.as_ptr(), contentTypeName_cstring.as_ptr())
+        native_parameters!(contentId.as_ptr(), contentTypeName.as_ptr())
     );
 
     value
 }
 
-pub fn set_balance_add_machines(data: *mut u32, dataCount: i32, contentTypeName: String) -> bool {
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
+pub fn set_balance_add_machines(
+    data: *mut u32,
+    dataCount: i32,
+    contentTypeName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0xB8322EEB38BE7C26,
-        native_parameters!(data, dataCount, contentTypeName_cstring.as_ptr())
+        native_parameters!(data, dataCount, contentTypeName.as_ptr())
     );
 
     value
@@ -5159,25 +5091,16 @@ pub fn ugc_request_content_data_from_index(p0: i32, p1: i32) -> i32 {
 }
 
 pub fn ugc_request_content_data_from_params(
-    contentTypeName: String,
-    contentId: String,
+    contentTypeName: &std::ffi::CString,
+    contentId: &std::ffi::CString,
     p2: i32,
     p3: i32,
     p4: i32,
 ) -> i32 {
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
-
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
     let value = native!(
         i32,
         0x7FD2990AF016795E,
-        native_parameters!(
-            contentTypeName_cstring.as_ptr(),
-            contentId_cstring.as_ptr(),
-            p2,
-            p3,
-            p4
-        )
+        native_parameters!(contentTypeName.as_ptr(), contentId.as_ptr(), p2, p3, p4)
     );
 
     value
@@ -5225,37 +5148,33 @@ pub fn _0x68103e2247887242() -> () {
     value
 }
 
-pub fn ugc_publish(contentId: String, baseContentId: String, contentTypeName: String) -> bool {
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
-
-    let baseContentId_cstring = std::ffi::CString::new(baseContentId).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
+pub fn ugc_publish(
+    contentId: &std::ffi::CString,
+    baseContentId: &std::ffi::CString,
+    contentTypeName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0x1DE0F5F50D723CAA,
         native_parameters!(
-            contentId_cstring.as_ptr(),
-            baseContentId_cstring.as_ptr(),
-            contentTypeName_cstring.as_ptr()
+            contentId.as_ptr(),
+            baseContentId.as_ptr(),
+            contentTypeName.as_ptr()
         )
     );
 
     value
 }
 
-pub fn ugc_set_bookmarked(contentId: String, bookmarked: bool, contentTypeName: String) -> bool {
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
+pub fn ugc_set_bookmarked(
+    contentId: &std::ffi::CString,
+    bookmarked: bool,
+    contentTypeName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0x274A1519DFC1094F,
-        native_parameters!(
-            contentId_cstring.as_ptr(),
-            bookmarked,
-            contentTypeName_cstring.as_ptr()
-        )
+        native_parameters!(contentId.as_ptr(), bookmarked, contentTypeName.as_ptr())
     );
 
     value
@@ -5351,12 +5270,15 @@ pub fn ugc_is_language_supported(p0: u32) -> bool {
     value
 }
 
-pub fn _facebook_set_heist_complete(heistName: String, cashEarned: i32, xpEarned: i32) -> bool {
-    let heistName_cstring = std::ffi::CString::new(heistName).unwrap();
+pub fn _facebook_set_heist_complete(
+    heistName: &std::ffi::CString,
+    cashEarned: i32,
+    xpEarned: i32,
+) -> bool {
     let value = native!(
         bool,
         0x098AB65B9ED9A9EC,
-        native_parameters!(heistName_cstring.as_ptr(), cashEarned, xpEarned)
+        native_parameters!(heistName.as_ptr(), cashEarned, xpEarned)
     );
 
     value
@@ -5394,35 +5316,28 @@ pub fn _facebook_is_available() -> bool {
 
 pub fn texture_download_request(
     PlayerHandle: *mut i32,
-    FilePath: String,
-    Name: String,
+    FilePath: &std::ffi::CString,
+    Name: &std::ffi::CString,
     p3: bool,
 ) -> i32 {
-    let FilePath_cstring = std::ffi::CString::new(FilePath).unwrap();
-
-    let Name_cstring = std::ffi::CString::new(Name).unwrap();
     let value = native!(
         i32,
         0x16160DA74A8E74A2,
-        native_parameters!(
-            PlayerHandle,
-            FilePath_cstring.as_ptr(),
-            Name_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(PlayerHandle, FilePath.as_ptr(), Name.as_ptr(), p3)
     );
 
     value
 }
 
-pub fn title_texture_download_request(FilePath: String, Name: String, p2: bool) -> i32 {
-    let FilePath_cstring = std::ffi::CString::new(FilePath).unwrap();
-
-    let Name_cstring = std::ffi::CString::new(Name).unwrap();
+pub fn title_texture_download_request(
+    FilePath: &std::ffi::CString,
+    Name: &std::ffi::CString,
+    p2: bool,
+) -> i32 {
     let value = native!(
         i32,
         0x0B203B4AFDE53A4F,
-        native_parameters!(FilePath_cstring.as_ptr(), Name_cstring.as_ptr(), p2)
+        native_parameters!(FilePath.as_ptr(), Name.as_ptr(), p2)
     );
 
     value

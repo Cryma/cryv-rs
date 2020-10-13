@@ -24,36 +24,35 @@ pub fn _sc_inbox_message_pop(p0: i32) -> bool {
     value
 }
 
-pub fn sc_inbox_message_get_data_int(p0: i32, context: String, out: *mut i32) -> bool {
-    let context_cstring = std::ffi::CString::new(context).unwrap();
+pub fn sc_inbox_message_get_data_int(p0: i32, context: &std::ffi::CString, out: *mut i32) -> bool {
     let value = native!(
         bool,
         0xA00EFE4082C4056E,
-        native_parameters!(p0, context_cstring.as_ptr(), out)
+        native_parameters!(p0, context.as_ptr(), out)
     );
 
     value
 }
 
-pub fn _sc_inbox_message_get_data_bool(p0: i32, p1: String) -> bool {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _sc_inbox_message_get_data_bool(p0: i32, p1: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xFFE5C16F402D851D,
-        native_parameters!(p0, p1_cstring.as_ptr())
+        native_parameters!(p0, p1.as_ptr())
     );
 
     value
 }
 
-pub fn sc_inbox_message_get_data_string(p0: i32, context: String, out: String) -> bool {
-    let context_cstring = std::ffi::CString::new(context).unwrap();
-
-    let out_cstring = std::ffi::CString::new(out).unwrap();
+pub fn sc_inbox_message_get_data_string(
+    p0: i32,
+    context: &std::ffi::CString,
+    out: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0x7572EF42FC6A9B6D,
-        native_parameters!(p0, context_cstring.as_ptr(), out_cstring.as_ptr())
+        native_parameters!(p0, context.as_ptr(), out.as_ptr())
     );
 
     value
@@ -144,13 +143,8 @@ pub fn sc_email_message_clear_recip_list() -> () {
     value
 }
 
-pub fn _0x116fb94dc4b79f17(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x116FB94DC4B79F17,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x116fb94dc4b79f17(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x116FB94DC4B79F17, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -200,12 +194,11 @@ pub fn sc_presence_attr_set_float(attrHash: u32, value: f32) -> bool {
     value
 }
 
-pub fn sc_presence_attr_set_string(attrHash: u32, value: String) -> bool {
-    let value_cstring = std::ffi::CString::new(value).unwrap();
+pub fn sc_presence_attr_set_string(attrHash: u32, value: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x287F1F75D2803595,
-        native_parameters!(attrHash, value_cstring.as_ptr())
+        native_parameters!(attrHash, value.as_ptr())
     );
 
     value
@@ -229,13 +222,8 @@ pub fn _0xa770c8eec6fb2ac5() -> u32 {
     value
 }
 
-pub fn _sc_get_is_profile_attribute_set(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0x8416FE4E4629D7D7,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn _sc_get_is_profile_attribute_set(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x8416FE4E4629D7D7, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -252,23 +240,21 @@ pub fn _0x2d874d4ae612a65f() -> u32 {
     value
 }
 
-pub fn sc_profanity_check_string(string: String, token: *mut i32) -> bool {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn sc_profanity_check_string(string: &std::ffi::CString, token: *mut i32) -> bool {
     let value = native!(
         bool,
         0x75632C5ECD7ED843,
-        native_parameters!(string_cstring.as_ptr(), token)
+        native_parameters!(string.as_ptr(), token)
     );
 
     value
 }
 
-pub fn _sc_profanity_check_ugc_string(string: String, token: *mut i32) -> bool {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn _sc_profanity_check_ugc_string(string: &std::ffi::CString, token: *mut i32) -> bool {
     let value = native!(
         bool,
         0xEB2BF817463DFA28,
-        native_parameters!(string_cstring.as_ptr(), token)
+        native_parameters!(string.as_ptr(), token)
     );
 
     value
@@ -298,12 +284,11 @@ pub fn sc_profanity_get_string_status(token: i32) -> i32 {
     value
 }
 
-pub fn _0xf6baaaf762e1bf40(p0: String, p1: *mut i32) -> bool {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
+pub fn _0xf6baaaf762e1bf40(p0: &std::ffi::CString, p1: *mut i32) -> bool {
     let value = native!(
         bool,
         0xF6BAAAF762E1BF40,
-        native_parameters!(p0_cstring.as_ptr(), p1)
+        native_parameters!(p0.as_ptr(), p1)
     );
 
     value
@@ -459,12 +444,11 @@ pub fn _0xa468e0be12b12c70() -> u32 {
     value
 }
 
-pub fn _0x8cc469ab4d349b7c(p0: i32, p1: String, p2: *mut u32) -> bool {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x8cc469ab4d349b7c(p0: i32, p1: &std::ffi::CString, p2: *mut u32) -> bool {
     let value = native!(
         bool,
         0x8CC469AB4D349B7C,
-        native_parameters!(p0, p1_cstring.as_ptr(), p2)
+        native_parameters!(p0, p1.as_ptr(), p2)
     );
 
     value
@@ -476,12 +460,11 @@ pub fn _0xc5a35c73b68f3c49() -> u32 {
     value
 }
 
-pub fn _0x699e4a5c8c893a18(p0: i32, p1: String, p2: *mut u32) -> bool {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x699e4a5c8c893a18(p0: i32, p1: &std::ffi::CString, p2: *mut u32) -> bool {
     let value = native!(
         bool,
         0x699E4A5C8C893A18,
-        native_parameters!(p0, p1_cstring.as_ptr(), p2)
+        native_parameters!(p0, p1.as_ptr(), p2)
     );
 
     value
@@ -517,12 +500,11 @@ pub fn _0x3001bef2feca3680() -> bool {
     value
 }
 
-pub fn _0x92da6e70ef249bd1(p0: String, p1: *mut i32) -> bool {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
+pub fn _0x92da6e70ef249bd1(p0: &std::ffi::CString, p1: *mut i32) -> bool {
     let value = native!(
         bool,
         0x92DA6E70EF249BD1,
-        native_parameters!(p0_cstring.as_ptr(), p1)
+        native_parameters!(p0.as_ptr(), p1)
     );
 
     value

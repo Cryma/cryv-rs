@@ -105,12 +105,11 @@ pub fn force_room_for_game_viewport(interiorID: i32, roomHashKey: u32) -> () {
     value
 }
 
-pub fn _0xaf348afcb575a441(roomName: String) -> () {
-    let roomName_cstring = std::ffi::CString::new(roomName).unwrap();
+pub fn _0xaf348afcb575a441(roomName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xAF348AFCB575A441,
-        native_parameters!(roomName_cstring.as_ptr())
+        native_parameters!(roomName.as_ptr())
     );
 
     value
@@ -146,12 +145,11 @@ pub fn get_interior_at_coords(x: f32, y: f32, z: f32) -> i32 {
     value
 }
 
-pub fn add_pickup_to_interior_room_by_name(pickup: i32, roomName: String) -> () {
-    let roomName_cstring = std::ffi::CString::new(roomName).unwrap();
+pub fn add_pickup_to_interior_room_by_name(pickup: i32, roomName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x3F6167F351168730,
-        native_parameters!(pickup, roomName_cstring.as_ptr())
+        native_parameters!(pickup, roomName.as_ptr())
     );
 
     value
@@ -181,12 +179,16 @@ pub fn _0x4c2330e61d3deb56(interior: i32) -> u32 {
     value
 }
 
-pub fn get_interior_at_coords_with_type(x: f32, y: f32, z: f32, interiorType: String) -> i32 {
-    let interiorType_cstring = std::ffi::CString::new(interiorType).unwrap();
+pub fn get_interior_at_coords_with_type(
+    x: f32,
+    y: f32,
+    z: f32,
+    interiorType: &std::ffi::CString,
+) -> i32 {
     let value = native!(
         i32,
         0x05B7A89BD78797FC,
-        native_parameters!(x, y, z, interiorType_cstring.as_ptr())
+        native_parameters!(x, y, z, interiorType.as_ptr())
     );
 
     value
@@ -226,45 +228,45 @@ pub fn _0x7ecdf98587e92dec(p0: u32) -> () {
     value
 }
 
-pub fn activate_interior_entity_set(interior: i32, entitySetName: String) -> () {
-    let entitySetName_cstring = std::ffi::CString::new(entitySetName).unwrap();
+pub fn activate_interior_entity_set(interior: i32, entitySetName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x55E86AF2712B36A1,
-        native_parameters!(interior, entitySetName_cstring.as_ptr())
+        native_parameters!(interior, entitySetName.as_ptr())
     );
 
     value
 }
 
-pub fn deactivate_interior_entity_set(interior: i32, entitySetName: String) -> () {
-    let entitySetName_cstring = std::ffi::CString::new(entitySetName).unwrap();
+pub fn deactivate_interior_entity_set(interior: i32, entitySetName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x420BD37289EEE162,
-        native_parameters!(interior, entitySetName_cstring.as_ptr())
+        native_parameters!(interior, entitySetName.as_ptr())
     );
 
     value
 }
 
-pub fn is_interior_entity_set_active(interior: i32, entitySetName: String) -> bool {
-    let entitySetName_cstring = std::ffi::CString::new(entitySetName).unwrap();
+pub fn is_interior_entity_set_active(interior: i32, entitySetName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x35F7DD45E8C0A16D,
-        native_parameters!(interior, entitySetName_cstring.as_ptr())
+        native_parameters!(interior, entitySetName.as_ptr())
     );
 
     value
 }
 
-pub fn _set_interior_entity_set_color(interior: i32, entitySetName: String, color: i32) -> () {
-    let entitySetName_cstring = std::ffi::CString::new(entitySetName).unwrap();
+pub fn _set_interior_entity_set_color(
+    interior: i32,
+    entitySetName: &std::ffi::CString,
+    color: i32,
+) -> () {
     let value = native!(
         (),
         0xC1F1920BAF281317,
-        native_parameters!(interior, entitySetName_cstring.as_ptr(), color)
+        native_parameters!(interior, entitySetName.as_ptr(), color)
     );
 
     value

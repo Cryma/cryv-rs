@@ -138,12 +138,11 @@ pub fn stat_set_bool(statName: u32, value: bool, save: bool) -> bool {
     value
 }
 
-pub fn stat_set_gxt_label(statName: u32, value: String, save: bool) -> bool {
-    let value_cstring = std::ffi::CString::new(value).unwrap();
+pub fn stat_set_gxt_label(statName: u32, value: &std::ffi::CString, save: bool) -> bool {
     let value = native!(
         bool,
         0x17695002FD8B2AE0,
-        native_parameters!(statName, value_cstring.as_ptr(), save)
+        native_parameters!(statName, value.as_ptr(), save)
     );
 
     value
@@ -159,12 +158,11 @@ pub fn stat_set_date(statName: u32, value: *mut u32, numFields: i32, save: bool)
     value
 }
 
-pub fn stat_set_string(statName: u32, value: String, save: bool) -> bool {
-    let value_cstring = std::ffi::CString::new(value).unwrap();
+pub fn stat_set_string(statName: u32, value: &std::ffi::CString, save: bool) -> bool {
     let value = native!(
         bool,
         0xA87B2335D12531D7,
-        native_parameters!(statName, value_cstring.as_ptr(), save)
+        native_parameters!(statName, value.as_ptr(), save)
     );
 
     value
@@ -190,12 +188,11 @@ pub fn stat_set_masked_int(statName: u32, p1: u32, p2: u32, p3: i32, save: bool)
     value
 }
 
-pub fn stat_set_user_id(statName: u32, value: String, save: bool) -> bool {
-    let value_cstring = std::ffi::CString::new(value).unwrap();
+pub fn stat_set_user_id(statName: u32, value: &std::ffi::CString, save: bool) -> bool {
     let value = native!(
         bool,
         0x8CDDF1E452BABE11,
-        native_parameters!(statName, value_cstring.as_ptr(), save)
+        native_parameters!(statName, value.as_ptr(), save)
     );
 
     value
@@ -292,12 +289,11 @@ pub fn stat_get_license_plate(statName: u32) -> String {
     value
 }
 
-pub fn stat_set_license_plate(statName: u32, str: String) -> bool {
-    let str_cstring = std::ffi::CString::new(str).unwrap();
+pub fn stat_set_license_plate(statName: u32, str: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x69FF13266D7296DA,
-        native_parameters!(statName, str_cstring.as_ptr())
+        native_parameters!(statName, str.as_ptr())
     );
 
     value
@@ -444,13 +440,12 @@ pub fn _get_ngstat_bool_hash(
     spStat: bool,
     charStat: bool,
     character: i32,
-    section: String,
+    section: &std::ffi::CString,
 ) -> u32 {
-    let section_cstring = std::ffi::CString::new(section).unwrap();
     let value = native!(
         u32,
         0xBA52FF538ED2BC71,
-        native_parameters!(index, spStat, charStat, character, section_cstring.as_ptr())
+        native_parameters!(index, spStat, charStat, character, section.as_ptr())
     );
 
     value
@@ -461,13 +456,12 @@ pub fn _get_ngstat_int_hash(
     spStat: bool,
     charStat: bool,
     character: i32,
-    section: String,
+    section: &std::ffi::CString,
 ) -> u32 {
-    let section_cstring = std::ffi::CString::new(section).unwrap();
     let value = native!(
         u32,
         0x2B4CDCA6F07FF3DA,
-        native_parameters!(index, spStat, charStat, character, section_cstring.as_ptr())
+        native_parameters!(index, spStat, charStat, character, section.as_ptr())
     );
 
     value
@@ -493,12 +487,11 @@ pub fn stat_set_bool_masked(statName: u32, value: bool, mask: i32, save: bool) -
     value
 }
 
-pub fn playstats_background_script_action(action: String, value: i32) -> () {
-    let action_cstring = std::ffi::CString::new(action).unwrap();
+pub fn playstats_background_script_action(action: &std::ffi::CString, value: i32) -> () {
     let value = native!(
         (),
         0x5009DFD741329729,
-        native_parameters!(action_cstring.as_ptr(), value)
+        native_parameters!(action.as_ptr(), value)
     );
 
     value
@@ -570,12 +563,11 @@ pub fn playstats_mission_checkpoint(p0: *mut u32, p1: u32, p2: u32, p3: u32) -> 
     value
 }
 
-pub fn playstats_random_mission_done(name: String, p1: u32, p2: u32, p3: u32) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn playstats_random_mission_done(name: &std::ffi::CString, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!(
         (),
         0x71862B1D855F32E1,
-        native_parameters!(name_cstring.as_ptr(), p1, p2, p3)
+        native_parameters!(name.as_ptr(), p1, p2, p3)
     );
 
     value
@@ -743,13 +735,8 @@ pub fn playstats_weapon_mode_change(
     value
 }
 
-pub fn playstats_cheat_applied(cheat: String) -> () {
-    let cheat_cstring = std::ffi::CString::new(cheat).unwrap();
-    let value = native!(
-        (),
-        0x6058665D72302D3F,
-        native_parameters!(cheat_cstring.as_ptr())
-    );
+pub fn playstats_cheat_applied(cheat: &std::ffi::CString) -> () {
+    let value = native!((), 0x6058665D72302D3F, native_parameters!(cheat.as_ptr()));
 
     value
 }
@@ -778,12 +765,11 @@ pub fn _0x14e0b2d1ad1044e0(p0: *mut u32, p1: *mut u32, p2: *mut u32, p3: *mut u3
     value
 }
 
-pub fn playstats_quickfix_tool(element: i32, item: String) -> () {
-    let item_cstring = std::ffi::CString::new(item).unwrap();
+pub fn playstats_quickfix_tool(element: i32, item: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x90D0622866E80445,
-        native_parameters!(element, item_cstring.as_ptr())
+        native_parameters!(element, item.as_ptr())
     );
 
     value
@@ -1030,20 +1016,13 @@ pub fn leaderboards2_read_rank_prediction(p0: *mut u32, p1: *mut u32, p2: *mut u
 
 pub fn _leaderboards2_read_by_platform(
     p0: *mut u32,
-    gamerHandleCsv: String,
-    platformName: String,
+    gamerHandleCsv: &std::ffi::CString,
+    platformName: &std::ffi::CString,
 ) -> bool {
-    let gamerHandleCsv_cstring = std::ffi::CString::new(gamerHandleCsv).unwrap();
-
-    let platformName_cstring = std::ffi::CString::new(platformName).unwrap();
     let value = native!(
         bool,
         0xF1AE5DCDBFCA2721,
-        native_parameters!(
-            p0,
-            gamerHandleCsv_cstring.as_ptr(),
-            platformName_cstring.as_ptr()
-        )
+        native_parameters!(p0, gamerHandleCsv.as_ptr(), platformName.as_ptr())
     );
 
     value
@@ -1249,12 +1228,11 @@ pub fn _0xc847b43f369ac0b5() -> () {
     value
 }
 
-pub fn _stat_migrate_save(platformName: String) -> bool {
-    let platformName_cstring = std::ffi::CString::new(platformName).unwrap();
+pub fn _stat_migrate_save(platformName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xA5C80D8E768A9E66,
-        native_parameters!(platformName_cstring.as_ptr())
+        native_parameters!(platformName.as_ptr())
     );
 
     value
@@ -1316,20 +1294,13 @@ pub fn _stat_get_cancel_save_migration_status() -> i32 {
 
 pub fn _stat_save_migration_consume_content_unlock(
     contentId: u32,
-    srcPlatform: String,
-    srcGamerHandle: String,
+    srcPlatform: &std::ffi::CString,
+    srcGamerHandle: &std::ffi::CString,
 ) -> bool {
-    let srcPlatform_cstring = std::ffi::CString::new(srcPlatform).unwrap();
-
-    let srcGamerHandle_cstring = std::ffi::CString::new(srcGamerHandle).unwrap();
     let value = native!(
         bool,
         0x3270F67EED31FBC1,
-        native_parameters!(
-            contentId,
-            srcPlatform_cstring.as_ptr(),
-            srcGamerHandle_cstring.as_ptr()
-        )
+        native_parameters!(contentId, srcPlatform.as_ptr(), srcGamerHandle.as_ptr())
     );
 
     value

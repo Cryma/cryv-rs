@@ -76,12 +76,11 @@ pub fn rope_draw_shadow_enabled(ropeId: *mut i32, toggle: bool) -> () {
     value
 }
 
-pub fn load_rope_data(ropeId: i32, rope_preset: String) -> () {
-    let rope_preset_cstring = std::ffi::CString::new(rope_preset).unwrap();
+pub fn load_rope_data(ropeId: i32, rope_preset: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xCBB203C04D1ABD27,
-        native_parameters!(ropeId, rope_preset_cstring.as_ptr())
+        native_parameters!(ropeId, rope_preset.as_ptr())
     );
 
     value

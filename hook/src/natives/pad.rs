@@ -362,24 +362,14 @@ pub fn enable_all_control_actions(padIndex: i32) -> () {
     value
 }
 
-pub fn _switch_to_input_mapping_scheme(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0x3D42B92563939375,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn _switch_to_input_mapping_scheme(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x3D42B92563939375, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn _switch_to_input_mapping_scheme_2(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0x4683149ED1DDE7A1,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn _switch_to_input_mapping_scheme_2(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x4683149ED1DDE7A1, native_parameters!(name.as_ptr()));
 
     value
 }

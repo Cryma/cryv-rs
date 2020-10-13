@@ -112,7 +112,7 @@ pub fn draw_debug_cross(
 }
 
 pub fn draw_debug_text(
-    text: String,
+    text: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
@@ -121,18 +121,17 @@ pub fn draw_debug_text(
     blue: i32,
     alpha: i32,
 ) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
     let value = native!(
         (),
         0x3903E216620488E8,
-        native_parameters!(text_cstring.as_ptr(), x, y, z, red, green, blue, alpha)
+        native_parameters!(text.as_ptr(), x, y, z, red, green, blue, alpha)
     );
 
     value
 }
 
 pub fn draw_debug_text_2d(
-    text: String,
+    text: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
@@ -141,11 +140,10 @@ pub fn draw_debug_text_2d(
     blue: i32,
     alpha: i32,
 ) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
     let value = native!(
         (),
         0xA3BB2E9555C05A8F,
-        native_parameters!(text_cstring.as_ptr(), x, y, z, red, green, blue, alpha)
+        native_parameters!(text.as_ptr(), x, y, z, red, green, blue, alpha)
     );
 
     value
@@ -210,8 +208,8 @@ pub fn _draw_sprite_poly(
     green: i32,
     blue: i32,
     alpha: i32,
-    textureDict: String,
-    textureName: String,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     p15: f32,
     p16: f32,
     p17: f32,
@@ -222,9 +220,6 @@ pub fn _draw_sprite_poly(
     p22: f32,
     p23: f32,
 ) -> () {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
-
-    let textureName_cstring = std::ffi::CString::new(textureName).unwrap();
     let value = native!(
         (),
         0x29280002282F1928,
@@ -242,8 +237,8 @@ pub fn _draw_sprite_poly(
             green,
             blue,
             alpha,
-            textureDict_cstring.as_ptr(),
-            textureName_cstring.as_ptr(),
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
             p15,
             p16,
             p17,
@@ -281,8 +276,8 @@ pub fn _draw_sprite_poly_2(
     green3: f32,
     blue3: f32,
     alpha3: i32,
-    textureDict: String,
-    textureName: String,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     p23: f32,
     p24: f32,
     p25: f32,
@@ -293,9 +288,6 @@ pub fn _draw_sprite_poly_2(
     p30: f32,
     p31: f32,
 ) -> () {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
-
-    let textureName_cstring = std::ffi::CString::new(textureName).unwrap();
     let value = native!(
         (),
         0x736D7AA1B750856B,
@@ -321,8 +313,8 @@ pub fn _draw_sprite_poly_2(
             green3,
             blue3,
             alpha3,
-            textureDict_cstring.as_ptr(),
-            textureName_cstring.as_ptr(),
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
             p23,
             p24,
             p25,
@@ -681,13 +673,10 @@ pub fn draw_marker(
     faceCamera: bool,
     p19: i32,
     rotate: bool,
-    textureDict: String,
-    textureName: String,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     drawOnEnts: bool,
 ) -> () {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
-
-    let textureName_cstring = std::ffi::CString::new(textureName).unwrap();
     let value = native!(
         (),
         0x28477EC23D892089,
@@ -713,8 +702,8 @@ pub fn draw_marker(
             faceCamera,
             p19,
             rotate,
-            textureDict_cstring.as_ptr(),
-            textureName_cstring.as_ptr(),
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
             drawOnEnts
         )
     );
@@ -921,34 +910,31 @@ pub fn _0xdc459cfa0cce245b(toggle: bool) -> () {
     value
 }
 
-pub fn request_streamed_texture_dict(textureDict: String, p1: bool) -> () {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
+pub fn request_streamed_texture_dict(textureDict: &std::ffi::CString, p1: bool) -> () {
     let value = native!(
         (),
         0xDFA2EF8E04127DD5,
-        native_parameters!(textureDict_cstring.as_ptr(), p1)
+        native_parameters!(textureDict.as_ptr(), p1)
     );
 
     value
 }
 
-pub fn has_streamed_texture_dict_loaded(textureDict: String) -> bool {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
+pub fn has_streamed_texture_dict_loaded(textureDict: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x0145F696AAAAD2E4,
-        native_parameters!(textureDict_cstring.as_ptr())
+        native_parameters!(textureDict.as_ptr())
     );
 
     value
 }
 
-pub fn set_streamed_texture_dict_as_no_longer_needed(textureDict: String) -> () {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
+pub fn set_streamed_texture_dict_as_no_longer_needed(textureDict: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xBE2CACCF5A8AA805,
-        native_parameters!(textureDict_cstring.as_ptr())
+        native_parameters!(textureDict.as_ptr())
     );
 
     value
@@ -1030,8 +1016,8 @@ pub fn get_safe_zone_size() -> f32 {
 }
 
 pub fn draw_sprite(
-    textureDict: String,
-    textureName: String,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     screenX: f32,
     screenY: f32,
     width: f32,
@@ -1043,15 +1029,12 @@ pub fn draw_sprite(
     alpha: i32,
     p11: bool,
 ) -> () {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
-
-    let textureName_cstring = std::ffi::CString::new(textureName).unwrap();
     let value = native!(
         (),
         0xE7FFAE5EBF23D890,
         native_parameters!(
-            textureDict_cstring.as_ptr(),
-            textureName_cstring.as_ptr(),
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
             screenX,
             screenY,
             width,
@@ -1139,12 +1122,11 @@ pub fn _0x95812f9b26074726(
     value
 }
 
-pub fn add_entity_icon(entity: i32, icon: String) -> u32 {
-    let icon_cstring = std::ffi::CString::new(icon).unwrap();
+pub fn add_entity_icon(entity: i32, icon: &std::ffi::CString) -> u32 {
     let value = native!(
         u32,
         0x9CD43EEE12BF4DD0,
-        native_parameters!(entity, icon_cstring.as_ptr())
+        native_parameters!(entity, icon.as_ptr())
     );
 
     value
@@ -1178,13 +1160,8 @@ pub fn clear_draw_origin() -> () {
     value
 }
 
-pub fn _set_bink_movie(name: String) -> i32 {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        i32,
-        0x338D9F609FD632DB,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn _set_bink_movie(name: &std::ffi::CString) -> i32 {
+    let value = native!(i32, 0x338D9F609FD632DB, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -1278,12 +1255,11 @@ pub fn _set_bink_should_skip(binkMovie: i32, bShouldSkip: bool) -> () {
     value
 }
 
-pub fn load_movie_mesh_set(movieMeshSetName: String) -> i32 {
-    let movieMeshSetName_cstring = std::ffi::CString::new(movieMeshSetName).unwrap();
+pub fn load_movie_mesh_set(movieMeshSetName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0xB66064452270E8F1,
-        native_parameters!(movieMeshSetName_cstring.as_ptr())
+        native_parameters!(movieMeshSetName.as_ptr())
     );
 
     value
@@ -1407,14 +1383,14 @@ pub fn get_screen_coord_from_world_coord(
     value
 }
 
-pub fn get_texture_resolution(textureDict: String, textureName: String) -> NativeVector3 {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
-
-    let textureName_cstring = std::ffi::CString::new(textureName).unwrap();
+pub fn get_texture_resolution(
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
+) -> NativeVector3 {
     let value = native!(
         NativeVector3,
         0x35736EE65BD00C11,
-        native_parameters!(textureDict_cstring.as_ptr(), textureName_cstring.as_ptr())
+        native_parameters!(textureDict.as_ptr(), textureName.as_ptr())
     );
 
     value
@@ -1656,12 +1632,11 @@ pub fn _0x25fc3e33a31ad0c9(p0: bool) -> () {
     value
 }
 
-pub fn _cascadeshadows_set_type(type_esc: String) -> () {
-    let type_esc_cstring = std::ffi::CString::new(type_esc).unwrap();
+pub fn _cascadeshadows_set_type(type_esc: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xB11D94BC55F41932,
-        native_parameters!(type_esc_cstring.as_ptr())
+        native_parameters!(type_esc.as_ptr())
     );
 
     value
@@ -2008,19 +1983,18 @@ pub fn _0xbcedb009461da156() -> u32 {
     value
 }
 
-pub fn _0x27feb5254759cde3(textureDict: String, p1: bool) -> bool {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
+pub fn _0x27feb5254759cde3(textureDict: &std::ffi::CString, p1: bool) -> bool {
     let value = native!(
         bool,
         0x27FEB5254759CDE3,
-        native_parameters!(textureDict_cstring.as_ptr(), p1)
+        native_parameters!(textureDict.as_ptr(), p1)
     );
 
     value
 }
 
 pub fn start_particle_fx_non_looped_at_coord(
-    effectName: String,
+    effectName: &std::ffi::CString,
     xPos: f32,
     yPos: f32,
     zPos: f32,
@@ -2032,12 +2006,11 @@ pub fn start_particle_fx_non_looped_at_coord(
     yAxis: bool,
     zAxis: bool,
 ) -> i32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         i32,
         0x25129531F77B9ED3,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             xPos,
             yPos,
             zPos,
@@ -2055,7 +2028,7 @@ pub fn start_particle_fx_non_looped_at_coord(
 }
 
 pub fn start_networked_particle_fx_non_looped_at_coord(
-    effectName: String,
+    effectName: &std::ffi::CString,
     xPos: f32,
     yPos: f32,
     zPos: f32,
@@ -2068,12 +2041,11 @@ pub fn start_networked_particle_fx_non_looped_at_coord(
     zAxis: bool,
     p11: bool,
 ) -> bool {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         bool,
         0xF56B8137DF10135D,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             xPos,
             yPos,
             zPos,
@@ -2092,7 +2064,7 @@ pub fn start_networked_particle_fx_non_looped_at_coord(
 }
 
 pub fn start_particle_fx_non_looped_on_ped_bone(
-    effectName: String,
+    effectName: &std::ffi::CString,
     ped: i32,
     offsetX: f32,
     offsetY: f32,
@@ -2106,12 +2078,11 @@ pub fn start_particle_fx_non_looped_on_ped_bone(
     axisY: bool,
     axisZ: bool,
 ) -> bool {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         bool,
         0x0E7E72961BA18619,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             ped,
             offsetX,
             offsetY,
@@ -2131,7 +2102,7 @@ pub fn start_particle_fx_non_looped_on_ped_bone(
 }
 
 pub fn start_networked_particle_fx_non_looped_on_ped_bone(
-    effectName: String,
+    effectName: &std::ffi::CString,
     ped: i32,
     offsetX: f32,
     offsetY: f32,
@@ -2145,12 +2116,11 @@ pub fn start_networked_particle_fx_non_looped_on_ped_bone(
     axisY: bool,
     axisZ: bool,
 ) -> bool {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         bool,
         0xA41B6A43642AC2CF,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             ped,
             offsetX,
             offsetY,
@@ -2170,7 +2140,7 @@ pub fn start_networked_particle_fx_non_looped_on_ped_bone(
 }
 
 pub fn start_particle_fx_non_looped_on_entity(
-    effectName: String,
+    effectName: &std::ffi::CString,
     entity: i32,
     offsetX: f32,
     offsetY: f32,
@@ -2183,12 +2153,11 @@ pub fn start_particle_fx_non_looped_on_entity(
     axisY: bool,
     axisZ: bool,
 ) -> bool {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         bool,
         0x0D53A3B8DA0809D2,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             entity,
             offsetX,
             offsetY,
@@ -2207,7 +2176,7 @@ pub fn start_particle_fx_non_looped_on_entity(
 }
 
 pub fn start_networked_particle_fx_non_looped_on_entity(
-    effectName: String,
+    effectName: &std::ffi::CString,
     entity: i32,
     offsetX: f32,
     offsetY: f32,
@@ -2220,12 +2189,11 @@ pub fn start_networked_particle_fx_non_looped_on_entity(
     axisY: bool,
     axisZ: bool,
 ) -> bool {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         bool,
         0xC95EB1DB6E92113D,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             entity,
             offsetX,
             offsetY,
@@ -2262,7 +2230,7 @@ pub fn _0x8cde909a0370bb3a(toggle: bool) -> () {
 }
 
 pub fn start_particle_fx_looped_at_coord(
-    effectName: String,
+    effectName: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
@@ -2275,12 +2243,11 @@ pub fn start_particle_fx_looped_at_coord(
     zAxis: bool,
     p11: bool,
 ) -> i32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         i32,
         0xE184F4F0DC5910E7,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             x,
             y,
             z,
@@ -2299,7 +2266,7 @@ pub fn start_particle_fx_looped_at_coord(
 }
 
 pub fn start_particle_fx_looped_on_ped_bone(
-    effectName: String,
+    effectName: &std::ffi::CString,
     ped: i32,
     xOffset: f32,
     yOffset: f32,
@@ -2313,12 +2280,11 @@ pub fn start_particle_fx_looped_on_ped_bone(
     yAxis: bool,
     zAxis: bool,
 ) -> i32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         i32,
         0xF28DA9F38CD1787C,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             ped,
             xOffset,
             yOffset,
@@ -2338,7 +2304,7 @@ pub fn start_particle_fx_looped_on_ped_bone(
 }
 
 pub fn start_particle_fx_looped_on_entity(
-    effectName: String,
+    effectName: &std::ffi::CString,
     entity: i32,
     xOffset: f32,
     yOffset: f32,
@@ -2351,12 +2317,11 @@ pub fn start_particle_fx_looped_on_entity(
     yAxis: bool,
     zAxis: bool,
 ) -> i32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         i32,
         0x1AE42C1660FD6517,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             entity,
             xOffset,
             yOffset,
@@ -2375,7 +2340,7 @@ pub fn start_particle_fx_looped_on_entity(
 }
 
 pub fn start_particle_fx_looped_on_entity_bone(
-    effectName: String,
+    effectName: &std::ffi::CString,
     entity: i32,
     xOffset: f32,
     yOffset: f32,
@@ -2389,12 +2354,11 @@ pub fn start_particle_fx_looped_on_entity_bone(
     yAxis: bool,
     zAxis: bool,
 ) -> i32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         i32,
         0xC6EB449E33977F0B,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             entity,
             xOffset,
             yOffset,
@@ -2414,7 +2378,7 @@ pub fn start_particle_fx_looped_on_entity_bone(
 }
 
 pub fn start_networked_particle_fx_looped_on_entity(
-    effectName: String,
+    effectName: &std::ffi::CString,
     entity: i32,
     xOffset: f32,
     yOffset: f32,
@@ -2431,12 +2395,11 @@ pub fn start_networked_particle_fx_looped_on_entity(
     p14: u32,
     p15: u32,
 ) -> i32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         i32,
         0x6F60E89A7B64EE1D,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             entity,
             xOffset,
             yOffset,
@@ -2459,7 +2422,7 @@ pub fn start_networked_particle_fx_looped_on_entity(
 }
 
 pub fn start_networked_particle_fx_looped_on_entity_bone(
-    effectName: String,
+    effectName: &std::ffi::CString,
     entity: i32,
     xOffset: f32,
     yOffset: f32,
@@ -2477,12 +2440,11 @@ pub fn start_networked_particle_fx_looped_on_entity_bone(
     p15: u32,
     p16: u32,
 ) -> i32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
     let value = native!(
         i32,
         0xDDE23F30CC5A0F03,
         native_parameters!(
-            effectName_cstring.as_ptr(),
+            effectName.as_ptr(),
             entity,
             xOffset,
             yOffset,
@@ -2561,15 +2523,14 @@ pub fn set_particle_fx_looped_offsets(
 
 pub fn set_particle_fx_looped_evolution(
     ptfxHandle: i32,
-    propertyName: String,
+    propertyName: &std::ffi::CString,
     amount: f32,
     noNetwork: bool,
 ) -> () {
-    let propertyName_cstring = std::ffi::CString::new(propertyName).unwrap();
     let value = native!(
         (),
         0x5F0C4B5B1C393BE2,
-        native_parameters!(ptfxHandle, propertyName_cstring.as_ptr(), amount, noNetwork)
+        native_parameters!(ptfxHandle, propertyName.as_ptr(), amount, noNetwork)
     );
 
     value
@@ -2705,13 +2666,8 @@ pub fn _0x949f397a288b28b3(p0: f32) -> () {
     value
 }
 
-pub fn _0xba3d194057c79a7b(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xBA3D194057C79A7B,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0xba3d194057c79a7b(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0xBA3D194057C79A7B, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -2728,37 +2684,24 @@ pub fn _0x9b079e5221d984d3(p0: bool) -> () {
     value
 }
 
-pub fn use_particle_fx_asset(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x6C38AF3693A69A91,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn use_particle_fx_asset(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x6C38AF3693A69A91, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn set_particle_fx_override(oldAsset: String, newAsset: String) -> () {
-    let oldAsset_cstring = std::ffi::CString::new(oldAsset).unwrap();
-
-    let newAsset_cstring = std::ffi::CString::new(newAsset).unwrap();
+pub fn set_particle_fx_override(oldAsset: &std::ffi::CString, newAsset: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xEA1E2D93F6F75ED9,
-        native_parameters!(oldAsset_cstring.as_ptr(), newAsset_cstring.as_ptr())
+        native_parameters!(oldAsset.as_ptr(), newAsset.as_ptr())
     );
 
     value
 }
 
-pub fn reset_particle_fx_override(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x89C8553DD3274AAE,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn reset_particle_fx_override(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x89C8553DD3274AAE, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -2940,18 +2883,15 @@ pub fn get_is_petrol_decal_in_range(xCoord: f32, yCoord: f32, zCoord: f32, radiu
     value
 }
 
-pub fn _override_decal_texture(decalType: i32, textureDict: String, textureName: String) -> () {
-    let textureDict_cstring = std::ffi::CString::new(textureDict).unwrap();
-
-    let textureName_cstring = std::ffi::CString::new(textureName).unwrap();
+pub fn _override_decal_texture(
+    decalType: i32,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x8A35C742130C6080,
-        native_parameters!(
-            decalType,
-            textureDict_cstring.as_ptr(),
-            textureName_cstring.as_ptr()
-        )
+        native_parameters!(decalType, textureDict.as_ptr(), textureName.as_ptr())
     );
 
     value
@@ -3039,13 +2979,8 @@ pub fn _0x46d1a61a21f566fc(p0: f32) -> () {
     value
 }
 
-pub fn override_interior_smoke_name(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x2A2A52824DB96700,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn override_interior_smoke_name(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x2A2A52824DB96700, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -3104,23 +3039,21 @@ pub fn _disable_script_ambient_effects(p0: u32) -> () {
     value
 }
 
-pub fn preset_interior_ambient_cache(timecycleModifierName: String) -> () {
-    let timecycleModifierName_cstring = std::ffi::CString::new(timecycleModifierName).unwrap();
+pub fn preset_interior_ambient_cache(timecycleModifierName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xD7021272EB0A451E,
-        native_parameters!(timecycleModifierName_cstring.as_ptr())
+        native_parameters!(timecycleModifierName.as_ptr())
     );
 
     value
 }
 
-pub fn set_timecycle_modifier(modifierName: String) -> () {
-    let modifierName_cstring = std::ffi::CString::new(modifierName).unwrap();
+pub fn set_timecycle_modifier(modifierName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x2C933ABF17A1DF41,
-        native_parameters!(modifierName_cstring.as_ptr())
+        native_parameters!(modifierName.as_ptr())
     );
 
     value
@@ -3132,12 +3065,11 @@ pub fn set_timecycle_modifier_strength(strength: f32) -> () {
     value
 }
 
-pub fn set_transition_timecycle_modifier(modifierName: String, transition: f32) -> () {
-    let modifierName_cstring = std::ffi::CString::new(modifierName).unwrap();
+pub fn set_transition_timecycle_modifier(modifierName: &std::ffi::CString, transition: f32) -> () {
     let value = native!(
         (),
         0x3BCF567485E1971C,
-        native_parameters!(modifierName_cstring.as_ptr(), transition)
+        native_parameters!(modifierName.as_ptr(), transition)
     );
 
     value
@@ -3185,12 +3117,11 @@ pub fn pop_timecycle_modifier() -> () {
     value
 }
 
-pub fn set_current_player_tcmodifier(modifierName: String) -> () {
-    let modifierName_cstring = std::ffi::CString::new(modifierName).unwrap();
+pub fn set_current_player_tcmodifier(modifierName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xBBF327DED94E4DEB,
-        native_parameters!(modifierName_cstring.as_ptr())
+        native_parameters!(modifierName.as_ptr())
     );
 
     value
@@ -3202,50 +3133,40 @@ pub fn set_player_tcmodifier_transition(value: f32) -> () {
     value
 }
 
-pub fn set_next_player_tcmodifier(modifierName: String) -> () {
-    let modifierName_cstring = std::ffi::CString::new(modifierName).unwrap();
+pub fn set_next_player_tcmodifier(modifierName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xBF59707B3E5ED531,
-        native_parameters!(modifierName_cstring.as_ptr())
+        native_parameters!(modifierName.as_ptr())
     );
 
     value
 }
 
-pub fn add_tcmodifier_override(modifierName1: String, modifierName2: String) -> () {
-    let modifierName1_cstring = std::ffi::CString::new(modifierName1).unwrap();
-
-    let modifierName2_cstring = std::ffi::CString::new(modifierName2).unwrap();
+pub fn add_tcmodifier_override(
+    modifierName1: &std::ffi::CString,
+    modifierName2: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x1A8E2C8B9CF4549C,
-        native_parameters!(
-            modifierName1_cstring.as_ptr(),
-            modifierName2_cstring.as_ptr()
-        )
+        native_parameters!(modifierName1.as_ptr(), modifierName2.as_ptr())
     );
 
     value
 }
 
-pub fn _0x15e33297c3e8dc60(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x15E33297C3E8DC60,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x15e33297c3e8dc60(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x15E33297C3E8DC60, native_parameters!(p0.as_ptr()));
 
     value
 }
 
-pub fn _set_extra_timecycle_modifier(modifierName: String) -> () {
-    let modifierName_cstring = std::ffi::CString::new(modifierName).unwrap();
+pub fn _set_extra_timecycle_modifier(modifierName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x5096FD9CCB49056D,
-        native_parameters!(modifierName_cstring.as_ptr())
+        native_parameters!(modifierName.as_ptr())
     );
 
     value
@@ -3275,45 +3196,41 @@ pub fn _reset_extra_timecycle_modifier_strength() -> () {
     value
 }
 
-pub fn request_scaleform_movie(scaleformName: String) -> i32 {
-    let scaleformName_cstring = std::ffi::CString::new(scaleformName).unwrap();
+pub fn request_scaleform_movie(scaleformName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x11FE353CF9733E6F,
-        native_parameters!(scaleformName_cstring.as_ptr())
+        native_parameters!(scaleformName.as_ptr())
     );
 
     value
 }
 
-pub fn _request_scaleform_movie_2(scaleformName: String) -> i32 {
-    let scaleformName_cstring = std::ffi::CString::new(scaleformName).unwrap();
+pub fn _request_scaleform_movie_2(scaleformName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x65E7E78842E74CDB,
-        native_parameters!(scaleformName_cstring.as_ptr())
+        native_parameters!(scaleformName.as_ptr())
     );
 
     value
 }
 
-pub fn request_scaleform_movie_instance(scaleformName: String) -> i32 {
-    let scaleformName_cstring = std::ffi::CString::new(scaleformName).unwrap();
+pub fn request_scaleform_movie_instance(scaleformName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0xC514489CFB8AF806,
-        native_parameters!(scaleformName_cstring.as_ptr())
+        native_parameters!(scaleformName.as_ptr())
     );
 
     value
 }
 
-pub fn _request_scaleform_movie_interactive(scaleformName: String) -> i32 {
-    let scaleformName_cstring = std::ffi::CString::new(scaleformName).unwrap();
+pub fn _request_scaleform_movie_interactive(scaleformName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0xBD06C611BB9048C2,
-        native_parameters!(scaleformName_cstring.as_ptr())
+        native_parameters!(scaleformName.as_ptr())
     );
 
     value
@@ -3341,12 +3258,11 @@ pub fn _0x86255b1fc929e33e(p0: u32) -> u32 {
     value
 }
 
-pub fn has_scaleform_movie_filename_loaded(scaleformName: String) -> bool {
-    let scaleformName_cstring = std::ffi::CString::new(scaleformName).unwrap();
+pub fn has_scaleform_movie_filename_loaded(scaleformName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x0C1C5D756FB5F337,
-        native_parameters!(scaleformName_cstring.as_ptr())
+        native_parameters!(scaleformName.as_ptr())
     );
 
     value
@@ -3510,12 +3426,11 @@ pub fn draw_scaleform_movie_3d_solid(
     value
 }
 
-pub fn call_scaleform_movie_method(scaleform: i32, method: String) -> () {
-    let method_cstring = std::ffi::CString::new(method).unwrap();
+pub fn call_scaleform_movie_method(scaleform: i32, method: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xFBD96D87AC96D533,
-        native_parameters!(scaleform, method_cstring.as_ptr())
+        native_parameters!(scaleform, method.as_ptr())
     );
 
     value
@@ -3523,20 +3438,19 @@ pub fn call_scaleform_movie_method(scaleform: i32, method: String) -> () {
 
 pub fn call_scaleform_movie_method_with_number(
     scaleform: i32,
-    methodName: String,
+    methodName: &std::ffi::CString,
     param1: f32,
     param2: f32,
     param3: f32,
     param4: f32,
     param5: f32,
 ) -> () {
-    let methodName_cstring = std::ffi::CString::new(methodName).unwrap();
     let value = native!(
         (),
         0xD0837058AE2E4BEE,
         native_parameters!(
             scaleform,
-            methodName_cstring.as_ptr(),
+            methodName.as_ptr(),
             param1,
             param2,
             param3,
@@ -3550,35 +3464,24 @@ pub fn call_scaleform_movie_method_with_number(
 
 pub fn call_scaleform_movie_method_with_string(
     scaleform: i32,
-    methodName: String,
-    param1: String,
-    param2: String,
-    param3: String,
-    param4: String,
-    param5: String,
+    methodName: &std::ffi::CString,
+    param1: &std::ffi::CString,
+    param2: &std::ffi::CString,
+    param3: &std::ffi::CString,
+    param4: &std::ffi::CString,
+    param5: &std::ffi::CString,
 ) -> () {
-    let methodName_cstring = std::ffi::CString::new(methodName).unwrap();
-
-    let param1_cstring = std::ffi::CString::new(param1).unwrap();
-
-    let param2_cstring = std::ffi::CString::new(param2).unwrap();
-
-    let param3_cstring = std::ffi::CString::new(param3).unwrap();
-
-    let param4_cstring = std::ffi::CString::new(param4).unwrap();
-
-    let param5_cstring = std::ffi::CString::new(param5).unwrap();
     let value = native!(
         (),
         0x51BC1ED3CC44E8F7,
         native_parameters!(
             scaleform,
-            methodName_cstring.as_ptr(),
-            param1_cstring.as_ptr(),
-            param2_cstring.as_ptr(),
-            param3_cstring.as_ptr(),
-            param4_cstring.as_ptr(),
-            param5_cstring.as_ptr()
+            methodName.as_ptr(),
+            param1.as_ptr(),
+            param2.as_ptr(),
+            param3.as_ptr(),
+            param4.as_ptr(),
+            param5.as_ptr()
         )
     );
 
@@ -3587,90 +3490,78 @@ pub fn call_scaleform_movie_method_with_string(
 
 pub fn call_scaleform_movie_method_with_number_and_string(
     scaleform: i32,
-    methodName: String,
+    methodName: &std::ffi::CString,
     floatParam1: f32,
     floatParam2: f32,
     floatParam3: f32,
     floatParam4: f32,
     floatParam5: f32,
-    stringParam1: String,
-    stringParam2: String,
-    stringParam3: String,
-    stringParam4: String,
-    stringParam5: String,
+    stringParam1: &std::ffi::CString,
+    stringParam2: &std::ffi::CString,
+    stringParam3: &std::ffi::CString,
+    stringParam4: &std::ffi::CString,
+    stringParam5: &std::ffi::CString,
 ) -> () {
-    let methodName_cstring = std::ffi::CString::new(methodName).unwrap();
-
-    let stringParam1_cstring = std::ffi::CString::new(stringParam1).unwrap();
-
-    let stringParam2_cstring = std::ffi::CString::new(stringParam2).unwrap();
-
-    let stringParam3_cstring = std::ffi::CString::new(stringParam3).unwrap();
-
-    let stringParam4_cstring = std::ffi::CString::new(stringParam4).unwrap();
-
-    let stringParam5_cstring = std::ffi::CString::new(stringParam5).unwrap();
     let value = native!(
         (),
         0xEF662D8D57E290B1,
         native_parameters!(
             scaleform,
-            methodName_cstring.as_ptr(),
+            methodName.as_ptr(),
             floatParam1,
             floatParam2,
             floatParam3,
             floatParam4,
             floatParam5,
-            stringParam1_cstring.as_ptr(),
-            stringParam2_cstring.as_ptr(),
-            stringParam3_cstring.as_ptr(),
-            stringParam4_cstring.as_ptr(),
-            stringParam5_cstring.as_ptr()
+            stringParam1.as_ptr(),
+            stringParam2.as_ptr(),
+            stringParam3.as_ptr(),
+            stringParam4.as_ptr(),
+            stringParam5.as_ptr()
         )
     );
 
     value
 }
 
-pub fn begin_scaleform_script_hud_movie_method(hudComponent: i32, methodName: String) -> bool {
-    let methodName_cstring = std::ffi::CString::new(methodName).unwrap();
+pub fn begin_scaleform_script_hud_movie_method(
+    hudComponent: i32,
+    methodName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0x98C494FD5BDFBFD5,
-        native_parameters!(hudComponent, methodName_cstring.as_ptr())
+        native_parameters!(hudComponent, methodName.as_ptr())
     );
 
     value
 }
 
-pub fn begin_scaleform_movie_method(scaleform: i32, methodName: String) -> bool {
-    let methodName_cstring = std::ffi::CString::new(methodName).unwrap();
+pub fn begin_scaleform_movie_method(scaleform: i32, methodName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xF6E48914C7A8694E,
-        native_parameters!(scaleform, methodName_cstring.as_ptr())
+        native_parameters!(scaleform, methodName.as_ptr())
     );
 
     value
 }
 
-pub fn begin_scaleform_movie_method_on_frontend(methodName: String) -> bool {
-    let methodName_cstring = std::ffi::CString::new(methodName).unwrap();
+pub fn begin_scaleform_movie_method_on_frontend(methodName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xAB58C27C2E6123C6,
-        native_parameters!(methodName_cstring.as_ptr())
+        native_parameters!(methodName.as_ptr())
     );
 
     value
 }
 
-pub fn begin_scaleform_movie_method_on_frontend_header(methodName: String) -> bool {
-    let methodName_cstring = std::ffi::CString::new(methodName).unwrap();
+pub fn begin_scaleform_movie_method_on_frontend_header(methodName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xB9449845F73F5E9C,
-        native_parameters!(methodName_cstring.as_ptr())
+        native_parameters!(methodName.as_ptr())
     );
 
     value
@@ -3743,12 +3634,11 @@ pub fn scaleform_movie_method_add_param_bool(value: bool) -> () {
     value
 }
 
-pub fn begin_text_command_scaleform_string(componentType: String) -> () {
-    let componentType_cstring = std::ffi::CString::new(componentType).unwrap();
+pub fn begin_text_command_scaleform_string(componentType: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x80338406F3475E55,
-        native_parameters!(componentType_cstring.as_ptr())
+        native_parameters!(componentType.as_ptr())
     );
 
     value
@@ -3766,35 +3656,20 @@ pub fn _end_text_command_scaleform_string_2() -> () {
     value
 }
 
-pub fn _scaleform_movie_method_add_param_texture_name_string_2(string: String) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        (),
-        0x77FE3402004CD1B0,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn _scaleform_movie_method_add_param_texture_name_string_2(string: &std::ffi::CString) -> () {
+    let value = native!((), 0x77FE3402004CD1B0, native_parameters!(string.as_ptr()));
 
     value
 }
 
-pub fn scaleform_movie_method_add_param_texture_name_string(string: String) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        (),
-        0xBA7148484BD90365,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn scaleform_movie_method_add_param_texture_name_string(string: &std::ffi::CString) -> () {
+    let value = native!((), 0xBA7148484BD90365, native_parameters!(string.as_ptr()));
 
     value
 }
 
-pub fn scaleform_movie_method_add_param_player_name_string(string: String) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        (),
-        0xE83A3E3557A56640,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn scaleform_movie_method_add_param_player_name_string(string: &std::ffi::CString) -> () {
+    let value = native!((), 0xE83A3E3557A56640, native_parameters!(string.as_ptr()));
 
     value
 }
@@ -3883,23 +3758,29 @@ pub fn draw_tv_channel(
     value
 }
 
-pub fn set_tv_channel_playlist(tvChannel: i32, playlistName: String, restart: bool) -> () {
-    let playlistName_cstring = std::ffi::CString::new(playlistName).unwrap();
+pub fn set_tv_channel_playlist(
+    tvChannel: i32,
+    playlistName: &std::ffi::CString,
+    restart: bool,
+) -> () {
     let value = native!(
         (),
         0xF7B38B8305F1FE8B,
-        native_parameters!(tvChannel, playlistName_cstring.as_ptr(), restart)
+        native_parameters!(tvChannel, playlistName.as_ptr(), restart)
     );
 
     value
 }
 
-pub fn set_tv_channel_playlist_at_hour(tvChannel: i32, playlistName: String, hour: i32) -> () {
-    let playlistName_cstring = std::ffi::CString::new(playlistName).unwrap();
+pub fn set_tv_channel_playlist_at_hour(
+    tvChannel: i32,
+    playlistName: &std::ffi::CString,
+    hour: i32,
+) -> () {
     let value = native!(
         (),
         0x2201C576FACAEBE8,
-        native_parameters!(tvChannel, playlistName_cstring.as_ptr(), hour)
+        native_parameters!(tvChannel, playlistName.as_ptr(), hour)
     );
 
     value
@@ -3953,30 +3834,28 @@ pub fn ui3dscene_is_available() -> bool {
     value
 }
 
-pub fn ui3dscene_push_preset(presetName: String) -> bool {
-    let presetName_cstring = std::ffi::CString::new(presetName).unwrap();
+pub fn ui3dscene_push_preset(presetName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xF1CEA8A4198D8E9A,
-        native_parameters!(presetName_cstring.as_ptr())
+        native_parameters!(presetName.as_ptr())
     );
 
     value
 }
 
 pub fn _0x98c4fe6ec34154ca(
-    presetName: String,
+    presetName: &std::ffi::CString,
     ped: i32,
     p2: i32,
     posX: f32,
     posY: f32,
     posZ: f32,
 ) -> bool {
-    let presetName_cstring = std::ffi::CString::new(presetName).unwrap();
     let value = native!(
         bool,
         0x98C4FE6EC34154CA,
-        native_parameters!(presetName_cstring.as_ptr(), ped, p2, posX, posY, posZ)
+        native_parameters!(presetName.as_ptr(), ped, p2, posX, posY, posZ)
     );
 
     value
@@ -4063,45 +3942,41 @@ pub fn terraingrid_set_colours(
     value
 }
 
-pub fn animpostfx_play(effectName: String, duration: i32, looped: bool) -> () {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
+pub fn animpostfx_play(effectName: &std::ffi::CString, duration: i32, looped: bool) -> () {
     let value = native!(
         (),
         0x2206BF9A37B7F724,
-        native_parameters!(effectName_cstring.as_ptr(), duration, looped)
+        native_parameters!(effectName.as_ptr(), duration, looped)
     );
 
     value
 }
 
-pub fn animpostfx_stop(effectName: String) -> () {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
+pub fn animpostfx_stop(effectName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x068E835A1D0DC0E3,
-        native_parameters!(effectName_cstring.as_ptr())
+        native_parameters!(effectName.as_ptr())
     );
 
     value
 }
 
-pub fn _animpostfx_get_unk(effectName: String) -> f32 {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
+pub fn _animpostfx_get_unk(effectName: &std::ffi::CString) -> f32 {
     let value = native!(
         f32,
         0xE35B38A27E8E7179,
-        native_parameters!(effectName_cstring.as_ptr())
+        native_parameters!(effectName.as_ptr())
     );
 
     value
 }
 
-pub fn animpostfx_is_running(effectName: String) -> bool {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
+pub fn animpostfx_is_running(effectName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x36AD3E690DA5ACEB,
-        native_parameters!(effectName_cstring.as_ptr())
+        native_parameters!(effectName.as_ptr())
     );
 
     value
@@ -4113,12 +3988,11 @@ pub fn animpostfx_stop_all() -> () {
     value
 }
 
-pub fn _animpostfx_stop_and_do_unk(effectName: String) -> () {
-    let effectName_cstring = std::ffi::CString::new(effectName).unwrap();
+pub fn _animpostfx_stop_and_do_unk(effectName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xD2209BE128B5418C,
-        native_parameters!(effectName_cstring.as_ptr())
+        native_parameters!(effectName.as_ptr())
     );
 
     value

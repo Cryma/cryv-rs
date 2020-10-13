@@ -55,37 +55,24 @@ pub fn _get_global_char_buffer() -> String {
     value
 }
 
-pub fn _0x4dcdf92bf64236cd(p0: String, p1: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x4dcdf92bf64236cd(p0: &std::ffi::CString, p1: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x4DCDF92BF64236CD,
-        native_parameters!(p0_cstring.as_ptr(), p1_cstring.as_ptr())
+        native_parameters!(p0.as_ptr(), p1.as_ptr())
     );
 
     value
 }
 
-pub fn _0x31125fd509d9043f(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x31125FD509D9043F,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x31125fd509d9043f(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x31125FD509D9043F, native_parameters!(p0.as_ptr()));
 
     value
 }
 
-pub fn _0xebd3205a207939ed(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xEBD3205A207939ED,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0xebd3205a207939ed(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0xEBD3205A207939ED, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -96,37 +83,24 @@ pub fn _0x97e7e2c04245115b(p0: u32) -> () {
     value
 }
 
-pub fn _0x916ca67d26fd1e37(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x916CA67D26FD1E37,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x916ca67d26fd1e37(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x916CA67D26FD1E37, native_parameters!(p0.as_ptr()));
 
     value
 }
 
-pub fn _0xeb078ca2b5e82add(p0: String, p1: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0xeb078ca2b5e82add(p0: &std::ffi::CString, p1: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xEB078CA2B5E82ADD,
-        native_parameters!(p0_cstring.as_ptr(), p1_cstring.as_ptr())
+        native_parameters!(p0.as_ptr(), p1.as_ptr())
     );
 
     value
 }
 
-pub fn _0x703cc7f60cbb2b57(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x703CC7F60CBB2B57,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x703cc7f60cbb2b57(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x703CC7F60CBB2B57, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -137,13 +111,8 @@ pub fn _0x8951eb9c6906d3c8() -> () {
     value
 }
 
-pub fn _0xba4b8d83bdc75551(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xBA4B8D83BDC75551,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0xba4b8d83bdc75551(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0xBA4B8D83BDC75551, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -166,13 +135,8 @@ pub fn _0x6f2135b6129620c1(toggle: bool) -> () {
     value
 }
 
-pub fn _0x8d74e26f54b4e5c3(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x8D74E26F54B4E5C3,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x8d74e26f54b4e5c3(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x8D74E26F54B4E5C3, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -195,67 +159,61 @@ pub fn get_next_weather_type_hash_name() -> u32 {
     value
 }
 
-pub fn is_prev_weather_type(weatherType: String) -> bool {
-    let weatherType_cstring = std::ffi::CString::new(weatherType).unwrap();
+pub fn is_prev_weather_type(weatherType: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x44F28F86433B10A9,
-        native_parameters!(weatherType_cstring.as_ptr())
+        native_parameters!(weatherType.as_ptr())
     );
 
     value
 }
 
-pub fn is_next_weather_type(weatherType: String) -> bool {
-    let weatherType_cstring = std::ffi::CString::new(weatherType).unwrap();
+pub fn is_next_weather_type(weatherType: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x2FAA3A30BEC0F25D,
-        native_parameters!(weatherType_cstring.as_ptr())
+        native_parameters!(weatherType.as_ptr())
     );
 
     value
 }
 
-pub fn set_weather_type_persist(weatherType: String) -> () {
-    let weatherType_cstring = std::ffi::CString::new(weatherType).unwrap();
+pub fn set_weather_type_persist(weatherType: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x704983DF373B198F,
-        native_parameters!(weatherType_cstring.as_ptr())
+        native_parameters!(weatherType.as_ptr())
     );
 
     value
 }
 
-pub fn set_weather_type_now_persist(weatherType: String) -> () {
-    let weatherType_cstring = std::ffi::CString::new(weatherType).unwrap();
+pub fn set_weather_type_now_persist(weatherType: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xED712CA327900C8A,
-        native_parameters!(weatherType_cstring.as_ptr())
+        native_parameters!(weatherType.as_ptr())
     );
 
     value
 }
 
-pub fn set_weather_type_now(weatherType: String) -> () {
-    let weatherType_cstring = std::ffi::CString::new(weatherType).unwrap();
+pub fn set_weather_type_now(weatherType: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x29B487C359E19889,
-        native_parameters!(weatherType_cstring.as_ptr())
+        native_parameters!(weatherType.as_ptr())
     );
 
     value
 }
 
-pub fn set_weather_type_overtime_persist(weatherType: String, time: f32) -> () {
-    let weatherType_cstring = std::ffi::CString::new(weatherType).unwrap();
+pub fn set_weather_type_overtime_persist(weatherType: &std::ffi::CString, time: f32) -> () {
     let value = native!(
         (),
         0xFB5045B7C42B75BF,
-        native_parameters!(weatherType_cstring.as_ptr(), time)
+        native_parameters!(weatherType.as_ptr(), time)
     );
 
     value
@@ -307,12 +265,11 @@ pub fn _set_weather_type_transition(
     value
 }
 
-pub fn set_override_weather(weatherType: String) -> () {
-    let weatherType_cstring = std::ffi::CString::new(weatherType).unwrap();
+pub fn set_override_weather(weatherType: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xA43D5C6FE51ADBEF,
-        native_parameters!(weatherType_cstring.as_ptr())
+        native_parameters!(weatherType.as_ptr())
     );
 
     value
@@ -468,45 +425,33 @@ pub fn force_lightning_flash() -> () {
     value
 }
 
-pub fn _0x02deaac8f8ea7fe7(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x02DEAAC8F8EA7FE7,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _0x02deaac8f8ea7fe7(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x02DEAAC8F8EA7FE7, native_parameters!(p0.as_ptr()));
 
     value
 }
 
-pub fn preload_cloud_hat(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x11B56FBBF7224868,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn preload_cloud_hat(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x11B56FBBF7224868, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn load_cloud_hat(name: String, transitionTime: f32) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn load_cloud_hat(name: &std::ffi::CString, transitionTime: f32) -> () {
     let value = native!(
         (),
         0xFC4842A34657BFCB,
-        native_parameters!(name_cstring.as_ptr(), transitionTime)
+        native_parameters!(name.as_ptr(), transitionTime)
     );
 
     value
 }
 
-pub fn unload_cloud_hat(name: String, p1: f32) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn unload_cloud_hat(name: &std::ffi::CString, p1: f32) -> () {
     let value = native!(
         (),
         0xA74802FB8D0B7814,
-        native_parameters!(name_cstring.as_ptr(), p1)
+        native_parameters!(name.as_ptr(), p1)
     );
 
     value
@@ -765,13 +710,8 @@ pub fn clear_bit(address: *mut i32, offset: i32) -> () {
     value
 }
 
-pub fn get_hash_key(string: String) -> u32 {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        u32,
-        0xD24D37CC275948CC,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn get_hash_key(string: &std::ffi::CString) -> u32 {
+    let value = native!(u32, 0xD24D37CC275948CC, native_parameters!(string.as_ptr()));
 
     value
 }
@@ -1047,12 +987,11 @@ pub fn have_credits_reached_end() -> bool {
     value
 }
 
-pub fn terminate_all_scripts_with_this_name(scriptName: String) -> () {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn terminate_all_scripts_with_this_name(scriptName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x9DC711BC69C548DF,
-        native_parameters!(scriptName_cstring.as_ptr())
+        native_parameters!(scriptName.as_ptr())
     );
 
     value
@@ -1536,32 +1475,26 @@ pub fn get_profile_setting(profileSetting: i32) -> i32 {
     value
 }
 
-pub fn are_strings_equal(string1: String, string2: String) -> bool {
-    let string1_cstring = std::ffi::CString::new(string1).unwrap();
-
-    let string2_cstring = std::ffi::CString::new(string2).unwrap();
+pub fn are_strings_equal(string1: &std::ffi::CString, string2: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x0C515FAB3FF9EA92,
-        native_parameters!(string1_cstring.as_ptr(), string2_cstring.as_ptr())
+        native_parameters!(string1.as_ptr(), string2.as_ptr())
     );
 
     value
 }
 
-pub fn compare_strings(str1: String, str2: String, matchCase: bool, maxLength: i32) -> i32 {
-    let str1_cstring = std::ffi::CString::new(str1).unwrap();
-
-    let str2_cstring = std::ffi::CString::new(str2).unwrap();
+pub fn compare_strings(
+    str1: &std::ffi::CString,
+    str2: &std::ffi::CString,
+    matchCase: bool,
+    maxLength: i32,
+) -> i32 {
     let value = native!(
         i32,
         0x1E34710ECD4AB0EB,
-        native_parameters!(
-            str1_cstring.as_ptr(),
-            str2_cstring.as_ptr(),
-            matchCase,
-            maxLength
-        )
+        native_parameters!(str1.as_ptr(), str2.as_ptr(), matchCase, maxLength)
     );
 
     value
@@ -1820,34 +1753,31 @@ pub fn is_aussie_version() -> bool {
     value
 }
 
-pub fn is_string_null(string: String) -> bool {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn is_string_null(string: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xF22B6C47C6EAB066,
-        native_parameters!(string_cstring.as_ptr())
+        native_parameters!(string.as_ptr())
     );
 
     value
 }
 
-pub fn is_string_null_or_empty(string: String) -> bool {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn is_string_null_or_empty(string: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xCA042B6957743895,
-        native_parameters!(string_cstring.as_ptr())
+        native_parameters!(string.as_ptr())
     );
 
     value
 }
 
-pub fn string_to_int(string: String, outInteger: *mut i32) -> bool {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn string_to_int(string: &std::ffi::CString, outInteger: *mut i32) -> bool {
     let value = native!(
         bool,
         0x5A5F40FE637EB584,
-        native_parameters!(string_cstring.as_ptr(), outInteger)
+        native_parameters!(string.as_ptr(), outInteger)
     );
 
     value
@@ -2088,122 +2018,111 @@ pub fn _0xa09f896ce912481f(p0: bool) -> i32 {
     value
 }
 
-pub fn register_int_to_save(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn register_int_to_save(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x34C9EE5986258415,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn _register_int64_to_save(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn _register_int64_to_save(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xA735353C77334EA0,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn register_enum_to_save(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn register_enum_to_save(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x10C2FA78D0E128A1,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn register_float_to_save(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn register_float_to_save(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x7CAEC29ECB5DFEBB,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn register_bool_to_save(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn register_bool_to_save(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xC8F4131414C835A1,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn register_text_label_to_save(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn register_text_label_to_save(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xEDB1232C5BEAE62F,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn _register_text_label_to_save_2(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn _register_text_label_to_save_2(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x6F7794F28C6B2535,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn _0x48f069265a0e4bec(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn _0x48f069265a0e4bec(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x48F069265A0E4BEC,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn _0x8269816f6cfd40f8(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn _0x8269816f6cfd40f8(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x8269816F6CFD40F8,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn _0xfaa457ef263e8763(p0: *mut u32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn _0xfaa457ef263e8763(p0: *mut u32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xFAA457EF263E8763,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn start_save_struct_with_size(p0: *mut u32, size: i32, structName: String) -> () {
-    let structName_cstring = std::ffi::CString::new(structName).unwrap();
+pub fn start_save_struct_with_size(p0: *mut u32, size: i32, structName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xBF737600CDDBEADD,
-        native_parameters!(p0, size, structName_cstring.as_ptr())
+        native_parameters!(p0, size, structName.as_ptr())
     );
 
     value
@@ -2215,12 +2134,11 @@ pub fn stop_save_struct() -> () {
     value
 }
 
-pub fn start_save_array_with_size(p0: *mut u32, size: i32, arrayName: String) -> () {
-    let arrayName_cstring = std::ffi::CString::new(arrayName).unwrap();
+pub fn start_save_array_with_size(p0: *mut u32, size: i32, arrayName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x60FE567DF1B1AF9D,
-        native_parameters!(p0, size, arrayName_cstring.as_ptr())
+        native_parameters!(p0, size, arrayName.as_ptr())
     );
 
     value
@@ -2451,26 +2369,16 @@ pub fn is_tennis_mode(ped: i32) -> bool {
 
 pub fn play_tennis_swing_anim(
     ped: i32,
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
     p3: f32,
     p4: f32,
     p5: bool,
 ) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         (),
         0xE266ED23311F24D4,
-        native_parameters!(
-            ped,
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
-            p3,
-            p4,
-            p5
-        )
+        native_parameters!(ped, animDict.as_ptr(), animName.as_ptr(), p3, p4, p5)
     );
 
     value
@@ -2504,12 +2412,11 @@ pub fn play_tennis_dive_anim(ped: i32, p1: i32, p2: f32, p3: f32, p4: f32, p5: b
     value
 }
 
-pub fn _0x54f157e0336a3822(ped: i32, p1: String, p2: f32) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x54f157e0336a3822(ped: i32, p1: &std::ffi::CString, p2: f32) -> () {
     let value = native!(
         (),
         0x54F157E0336A3822,
-        native_parameters!(ped, p1_cstring.as_ptr(), p2)
+        native_parameters!(ped, p1.as_ptr(), p2)
     );
 
     value
@@ -2625,50 +2532,33 @@ pub fn _0x2587a48bc88dfadf(p0: bool) -> () {
 
 pub fn display_onscreen_keyboard_with_longer_initial_string(
     p0: i32,
-    windowTitle: String,
+    windowTitle: &std::ffi::CString,
     p2: *mut u32,
-    defaultText: String,
-    defaultConcat1: String,
-    defaultConcat2: String,
-    defaultConcat3: String,
-    defaultConcat4: String,
-    defaultConcat5: String,
-    defaultConcat6: String,
-    defaultConcat7: String,
+    defaultText: &std::ffi::CString,
+    defaultConcat1: &std::ffi::CString,
+    defaultConcat2: &std::ffi::CString,
+    defaultConcat3: &std::ffi::CString,
+    defaultConcat4: &std::ffi::CString,
+    defaultConcat5: &std::ffi::CString,
+    defaultConcat6: &std::ffi::CString,
+    defaultConcat7: &std::ffi::CString,
     maxInputLength: i32,
 ) -> () {
-    let windowTitle_cstring = std::ffi::CString::new(windowTitle).unwrap();
-
-    let defaultText_cstring = std::ffi::CString::new(defaultText).unwrap();
-
-    let defaultConcat1_cstring = std::ffi::CString::new(defaultConcat1).unwrap();
-
-    let defaultConcat2_cstring = std::ffi::CString::new(defaultConcat2).unwrap();
-
-    let defaultConcat3_cstring = std::ffi::CString::new(defaultConcat3).unwrap();
-
-    let defaultConcat4_cstring = std::ffi::CString::new(defaultConcat4).unwrap();
-
-    let defaultConcat5_cstring = std::ffi::CString::new(defaultConcat5).unwrap();
-
-    let defaultConcat6_cstring = std::ffi::CString::new(defaultConcat6).unwrap();
-
-    let defaultConcat7_cstring = std::ffi::CString::new(defaultConcat7).unwrap();
     let value = native!(
         (),
         0xCA78CFA0366592FE,
         native_parameters!(
             p0,
-            windowTitle_cstring.as_ptr(),
+            windowTitle.as_ptr(),
             p2,
-            defaultText_cstring.as_ptr(),
-            defaultConcat1_cstring.as_ptr(),
-            defaultConcat2_cstring.as_ptr(),
-            defaultConcat3_cstring.as_ptr(),
-            defaultConcat4_cstring.as_ptr(),
-            defaultConcat5_cstring.as_ptr(),
-            defaultConcat6_cstring.as_ptr(),
-            defaultConcat7_cstring.as_ptr(),
+            defaultText.as_ptr(),
+            defaultConcat1.as_ptr(),
+            defaultConcat2.as_ptr(),
+            defaultConcat3.as_ptr(),
+            defaultConcat4.as_ptr(),
+            defaultConcat5.as_ptr(),
+            defaultConcat6.as_ptr(),
+            defaultConcat7.as_ptr(),
             maxInputLength
         )
     );
@@ -2678,36 +2568,25 @@ pub fn display_onscreen_keyboard_with_longer_initial_string(
 
 pub fn display_onscreen_keyboard(
     p0: i32,
-    windowTitle: String,
-    p2: String,
-    defaultText: String,
-    defaultConcat1: String,
-    defaultConcat2: String,
-    defaultConcat3: String,
+    windowTitle: &std::ffi::CString,
+    p2: &std::ffi::CString,
+    defaultText: &std::ffi::CString,
+    defaultConcat1: &std::ffi::CString,
+    defaultConcat2: &std::ffi::CString,
+    defaultConcat3: &std::ffi::CString,
     maxInputLength: i32,
 ) -> () {
-    let windowTitle_cstring = std::ffi::CString::new(windowTitle).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
-
-    let defaultText_cstring = std::ffi::CString::new(defaultText).unwrap();
-
-    let defaultConcat1_cstring = std::ffi::CString::new(defaultConcat1).unwrap();
-
-    let defaultConcat2_cstring = std::ffi::CString::new(defaultConcat2).unwrap();
-
-    let defaultConcat3_cstring = std::ffi::CString::new(defaultConcat3).unwrap();
     let value = native!(
         (),
         0x00DC833F2568DBF6,
         native_parameters!(
             p0,
-            windowTitle_cstring.as_ptr(),
-            p2_cstring.as_ptr(),
-            defaultText_cstring.as_ptr(),
-            defaultConcat1_cstring.as_ptr(),
-            defaultConcat2_cstring.as_ptr(),
-            defaultConcat3_cstring.as_ptr(),
+            windowTitle.as_ptr(),
+            p2.as_ptr(),
+            defaultText.as_ptr(),
+            defaultConcat1.as_ptr(),
+            defaultConcat2.as_ptr(),
+            defaultConcat3.as_ptr(),
             maxInputLength
         )
     );

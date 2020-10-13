@@ -622,12 +622,14 @@ pub fn force_cleanup(cleanupFlags: i32) -> () {
     value
 }
 
-pub fn force_cleanup_for_all_threads_with_this_name(name: String, cleanupFlags: i32) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn force_cleanup_for_all_threads_with_this_name(
+    name: &std::ffi::CString,
+    cleanupFlags: i32,
+) -> () {
     let value = native!(
         (),
         0x4C68DDDDF0097317,
-        native_parameters!(name_cstring.as_ptr(), cleanupFlags)
+        native_parameters!(name.as_ptr(), cleanupFlags)
     );
 
     value

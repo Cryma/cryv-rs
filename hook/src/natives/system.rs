@@ -6,28 +6,26 @@ pub fn wait(ms: i32) -> () {
     value
 }
 
-pub fn start_new_script(scriptName: String, stackSize: i32) -> i32 {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn start_new_script(scriptName: &std::ffi::CString, stackSize: i32) -> i32 {
     let value = native!(
         i32,
         0xE81651AD79516E48,
-        native_parameters!(scriptName_cstring.as_ptr(), stackSize)
+        native_parameters!(scriptName.as_ptr(), stackSize)
     );
 
     value
 }
 
 pub fn start_new_script_with_args(
-    scriptName: String,
+    scriptName: &std::ffi::CString,
     args: *mut u32,
     argCount: i32,
     stackSize: i32,
 ) -> i32 {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
     let value = native!(
         i32,
         0xB8BA7F44DF1575E1,
-        native_parameters!(scriptName_cstring.as_ptr(), args, argCount, stackSize)
+        native_parameters!(scriptName.as_ptr(), args, argCount, stackSize)
     );
 
     value

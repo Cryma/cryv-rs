@@ -647,8 +647,8 @@ pub fn task_go_to_coord_any_means_extra_params_with_cruise_speed(
 
 pub fn task_play_anim(
     ped: i32,
-    animDictionary: String,
-    animationName: String,
+    animDictionary: &std::ffi::CString,
+    animationName: &std::ffi::CString,
     speed: f32,
     speedMultiplier: f32,
     duration: i32,
@@ -658,16 +658,13 @@ pub fn task_play_anim(
     lockY: bool,
     lockZ: bool,
 ) -> () {
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
-
-    let animationName_cstring = std::ffi::CString::new(animationName).unwrap();
     let value = native!(
         (),
         0xEA47FE3719165B94,
         native_parameters!(
             ped,
-            animDictionary_cstring.as_ptr(),
-            animationName_cstring.as_ptr(),
+            animDictionary.as_ptr(),
+            animationName.as_ptr(),
             speed,
             speedMultiplier,
             duration,
@@ -684,8 +681,8 @@ pub fn task_play_anim(
 
 pub fn task_play_anim_advanced(
     ped: i32,
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
     posX: f32,
     posY: f32,
     posZ: f32,
@@ -700,16 +697,13 @@ pub fn task_play_anim_advanced(
     p14: u32,
     p15: u32,
 ) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         (),
         0x83CDB10EA29B370B,
         native_parameters!(
             ped,
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
+            animDict.as_ptr(),
+            animName.as_ptr(),
             posX,
             posY,
             posZ,
@@ -729,19 +723,16 @@ pub fn task_play_anim_advanced(
     value
 }
 
-pub fn stop_anim_task(ped: i32, animDictionary: String, animationName: String, p3: f32) -> () {
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
-
-    let animationName_cstring = std::ffi::CString::new(animationName).unwrap();
+pub fn stop_anim_task(
+    ped: i32,
+    animDictionary: &std::ffi::CString,
+    animationName: &std::ffi::CString,
+    p3: f32,
+) -> () {
     let value = native!(
         (),
         0x97FF36A1D40EA00A,
-        native_parameters!(
-            ped,
-            animDictionary_cstring.as_ptr(),
-            animationName_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(ped, animDictionary.as_ptr(), animationName.as_ptr(), p3)
     );
 
     value
@@ -811,27 +802,22 @@ pub fn set_anim_looped(p0: u32, p1: bool, p2: u32, p3: bool) -> () {
 
 pub fn task_play_phone_gesture_animation(
     ped: i32,
-    animDict: String,
-    animation: String,
-    boneMaskType: String,
+    animDict: &std::ffi::CString,
+    animation: &std::ffi::CString,
+    boneMaskType: &std::ffi::CString,
     p4: f32,
     p5: f32,
     p6: bool,
     p7: bool,
 ) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animation_cstring = std::ffi::CString::new(animation).unwrap();
-
-    let boneMaskType_cstring = std::ffi::CString::new(boneMaskType).unwrap();
     let value = native!(
         (),
         0x8FBB6758B3B3E9EC,
         native_parameters!(
             ped,
-            animDict_cstring.as_ptr(),
-            animation_cstring.as_ptr(),
-            boneMaskType_cstring.as_ptr(),
+            animDict.as_ptr(),
+            animation.as_ptr(),
+            boneMaskType.as_ptr(),
             p4,
             p5,
             p6,
@@ -866,18 +852,15 @@ pub fn get_phone_gesture_anim_total_time(ped: i32) -> f32 {
     value
 }
 
-pub fn task_vehicle_play_anim(vehicle: i32, animation_set: String, animation_name: String) -> () {
-    let animation_set_cstring = std::ffi::CString::new(animation_set).unwrap();
-
-    let animation_name_cstring = std::ffi::CString::new(animation_name).unwrap();
+pub fn task_vehicle_play_anim(
+    vehicle: i32,
+    animation_set: &std::ffi::CString,
+    animation_name: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x69F5C3BD0F3EBD89,
-        native_parameters!(
-            vehicle,
-            animation_set_cstring.as_ptr(),
-            animation_name_cstring.as_ptr()
-        )
+        native_parameters!(vehicle, animation_set.as_ptr(), animation_name.as_ptr())
     );
 
     value
@@ -2107,13 +2090,12 @@ pub fn task_stand_guard(
     y: f32,
     z: f32,
     heading: f32,
-    scenarioName: String,
+    scenarioName: &std::ffi::CString,
 ) -> () {
-    let scenarioName_cstring = std::ffi::CString::new(scenarioName).unwrap();
     let value = native!(
         (),
         0xAE032F8BBA959E90,
-        native_parameters!(ped, x, y, z, heading, scenarioName_cstring.as_ptr())
+        native_parameters!(ped, x, y, z, heading, scenarioName.as_ptr())
     );
 
     value
@@ -2201,15 +2183,14 @@ pub fn _0x1f351cf1c6475734(
 
 pub fn task_start_scenario_in_place(
     ped: i32,
-    scenarioName: String,
+    scenarioName: &std::ffi::CString,
     unkDelay: i32,
     playEnterAnim: bool,
 ) -> () {
-    let scenarioName_cstring = std::ffi::CString::new(scenarioName).unwrap();
     let value = native!(
         (),
         0x142A02425FF02BD9,
-        native_parameters!(ped, scenarioName_cstring.as_ptr(), unkDelay, playEnterAnim)
+        native_parameters!(ped, scenarioName.as_ptr(), unkDelay, playEnterAnim)
     );
 
     value
@@ -2217,7 +2198,7 @@ pub fn task_start_scenario_in_place(
 
 pub fn task_start_scenario_at_position(
     ped: i32,
-    scenarioName: String,
+    scenarioName: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
@@ -2226,13 +2207,12 @@ pub fn task_start_scenario_at_position(
     sittingScenario: bool,
     teleport: bool,
 ) -> () {
-    let scenarioName_cstring = std::ffi::CString::new(scenarioName).unwrap();
     let value = native!(
         (),
         0xFA4EFC79F69D4F07,
         native_parameters!(
             ped,
-            scenarioName_cstring.as_ptr(),
+            scenarioName.as_ptr(),
             x,
             y,
             z,
@@ -2357,47 +2337,45 @@ pub fn ped_has_use_scenario_task(ped: i32) -> bool {
     value
 }
 
-pub fn play_anim_on_running_scenario(ped: i32, animDict: String, animName: String) -> () {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
+pub fn play_anim_on_running_scenario(
+    ped: i32,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x748040460F8DF5DC,
-        native_parameters!(ped, animDict_cstring.as_ptr(), animName_cstring.as_ptr())
+        native_parameters!(ped, animDict.as_ptr(), animName.as_ptr())
     );
 
     value
 }
 
-pub fn does_scenario_group_exist(scenarioGroup: String) -> bool {
-    let scenarioGroup_cstring = std::ffi::CString::new(scenarioGroup).unwrap();
+pub fn does_scenario_group_exist(scenarioGroup: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xF9034C136C9E00D3,
-        native_parameters!(scenarioGroup_cstring.as_ptr())
+        native_parameters!(scenarioGroup.as_ptr())
     );
 
     value
 }
 
-pub fn is_scenario_group_enabled(scenarioGroup: String) -> bool {
-    let scenarioGroup_cstring = std::ffi::CString::new(scenarioGroup).unwrap();
+pub fn is_scenario_group_enabled(scenarioGroup: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x367A09DED4E05B99,
-        native_parameters!(scenarioGroup_cstring.as_ptr())
+        native_parameters!(scenarioGroup.as_ptr())
     );
 
     value
 }
 
-pub fn set_scenario_group_enabled(scenarioGroup: String, p1: bool) -> () {
-    let scenarioGroup_cstring = std::ffi::CString::new(scenarioGroup).unwrap();
+pub fn set_scenario_group_enabled(scenarioGroup: &std::ffi::CString, p1: bool) -> () {
     let value = native!(
         (),
         0x02C8E5B49848664E,
-        native_parameters!(scenarioGroup_cstring.as_ptr(), p1)
+        native_parameters!(scenarioGroup.as_ptr(), p1)
     );
 
     value
@@ -2409,12 +2387,11 @@ pub fn reset_scenario_groups_enabled() -> () {
     value
 }
 
-pub fn set_exclusive_scenario_group(scenarioGroup: String) -> () {
-    let scenarioGroup_cstring = std::ffi::CString::new(scenarioGroup).unwrap();
+pub fn set_exclusive_scenario_group(scenarioGroup: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x535E97E1F7FC0C6A,
-        native_parameters!(scenarioGroup_cstring.as_ptr())
+        native_parameters!(scenarioGroup.as_ptr())
     );
 
     value
@@ -2426,23 +2403,21 @@ pub fn reset_exclusive_scenario_group() -> () {
     value
 }
 
-pub fn is_scenario_type_enabled(scenarioType: String) -> bool {
-    let scenarioType_cstring = std::ffi::CString::new(scenarioType).unwrap();
+pub fn is_scenario_type_enabled(scenarioType: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x3A815DB3EA088722,
-        native_parameters!(scenarioType_cstring.as_ptr())
+        native_parameters!(scenarioType.as_ptr())
     );
 
     value
 }
 
-pub fn set_scenario_type_enabled(scenarioType: String, toggle: bool) -> () {
-    let scenarioType_cstring = std::ffi::CString::new(scenarioType).unwrap();
+pub fn set_scenario_type_enabled(scenarioType: &std::ffi::CString, toggle: bool) -> () {
     let value = native!(
         (),
         0xEB47EC4E34FB7EE1,
-        native_parameters!(scenarioType_cstring.as_ptr(), toggle)
+        native_parameters!(scenarioType.as_ptr(), toggle)
     );
 
     value
@@ -2545,12 +2520,11 @@ pub fn is_ped_in_writhe(ped: i32) -> bool {
     value
 }
 
-pub fn open_patrol_route(patrolRoute: String) -> () {
-    let patrolRoute_cstring = std::ffi::CString::new(patrolRoute).unwrap();
+pub fn open_patrol_route(patrolRoute: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xA36BFB5EE89F3D82,
-        native_parameters!(patrolRoute_cstring.as_ptr())
+        native_parameters!(patrolRoute.as_ptr())
     );
 
     value
@@ -2564,7 +2538,7 @@ pub fn close_patrol_route() -> () {
 
 pub fn add_patrol_route_node(
     p0: i32,
-    p1: String,
+    p1: &std::ffi::CString,
     x1: f32,
     y1: f32,
     z1: f32,
@@ -2573,11 +2547,10 @@ pub fn add_patrol_route_node(
     z2: f32,
     p8: i32,
 ) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
     let value = native!(
         (),
         0x8EDF950167586B7C,
-        native_parameters!(p0, p1_cstring.as_ptr(), x1, y1, z1, x2, y2, z2, p8)
+        native_parameters!(p0, p1.as_ptr(), x1, y1, z1, x2, y2, z2, p8)
     );
 
     value
@@ -2595,23 +2568,21 @@ pub fn create_patrol_route() -> () {
     value
 }
 
-pub fn delete_patrol_route(patrolRoute: String) -> () {
-    let patrolRoute_cstring = std::ffi::CString::new(patrolRoute).unwrap();
+pub fn delete_patrol_route(patrolRoute: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x7767DD9D65E91319,
-        native_parameters!(patrolRoute_cstring.as_ptr())
+        native_parameters!(patrolRoute.as_ptr())
     );
 
     value
 }
 
-pub fn task_patrol(ped: i32, p1: String, p2: u32, p3: bool, p4: bool) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn task_patrol(ped: i32, p1: &std::ffi::CString, p2: u32, p3: bool, p4: bool) -> () {
     let value = native!(
         (),
         0xBDA5DF49D080FE4E,
-        native_parameters!(ped, p1_cstring.as_ptr(), p2, p3, p4)
+        native_parameters!(ped, p1.as_ptr(), p2, p3, p4)
     );
 
     value
@@ -2848,84 +2819,69 @@ pub fn set_high_fall_task(ped: i32, p1: u32, p2: u32, p3: u32) -> () {
     value
 }
 
-pub fn request_waypoint_recording(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x9EEFB62EB27B5792,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn request_waypoint_recording(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x9EEFB62EB27B5792, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn get_is_waypoint_recording_loaded(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0xCB4E8BE8A0063C5D,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn get_is_waypoint_recording_loaded(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0xCB4E8BE8A0063C5D, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn remove_waypoint_recording(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0xFF1B8B4AA1C25DC8,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn remove_waypoint_recording(name: &std::ffi::CString) -> () {
+    let value = native!((), 0xFF1B8B4AA1C25DC8, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn waypoint_recording_get_num_points(name: String, points: *mut i32) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn waypoint_recording_get_num_points(name: &std::ffi::CString, points: *mut i32) -> bool {
     let value = native!(
         bool,
         0x5343532C01A07234,
-        native_parameters!(name_cstring.as_ptr(), points)
+        native_parameters!(name.as_ptr(), points)
     );
 
     value
 }
 
-pub fn waypoint_recording_get_coord(name: String, point: i32, coord: *mut NativeVector3) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn waypoint_recording_get_coord(
+    name: &std::ffi::CString,
+    point: i32,
+    coord: *mut NativeVector3,
+) -> bool {
     let value = native!(
         bool,
         0x2FB897405C90B361,
-        native_parameters!(name_cstring.as_ptr(), point, coord)
+        native_parameters!(name.as_ptr(), point, coord)
     );
 
     value
 }
 
-pub fn waypoint_recording_get_speed_at_point(name: String, point: i32) -> f32 {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn waypoint_recording_get_speed_at_point(name: &std::ffi::CString, point: i32) -> f32 {
     let value = native!(
         f32,
         0x005622AEBC33ACA9,
-        native_parameters!(name_cstring.as_ptr(), point)
+        native_parameters!(name.as_ptr(), point)
     );
 
     value
 }
 
 pub fn waypoint_recording_get_closest_waypoint(
-    name: String,
+    name: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
     point: *mut i32,
 ) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
     let value = native!(
         bool,
         0xB629A298081F876F,
-        native_parameters!(name_cstring.as_ptr(), x, y, z, point)
+        native_parameters!(name.as_ptr(), x, y, z, point)
     );
 
     value
@@ -2965,13 +2921,8 @@ pub fn set_ped_waypoint_route_offset(p0: u32, p1: u32, p2: u32, p3: u32) -> u32 
     value
 }
 
-pub fn get_waypoint_distance_along_route(p0: String, p1: i32) -> f32 {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        f32,
-        0xA5B769058763E497,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn get_waypoint_distance_along_route(p0: &std::ffi::CString, p1: i32) -> f32 {
+    let value = native!(f32, 0xA5B769058763E497, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
@@ -3062,45 +3013,29 @@ pub fn waypoint_playback_stop_aiming_or_shooting(p0: u32) -> () {
     value
 }
 
-pub fn assisted_movement_request_route(route: String) -> () {
-    let route_cstring = std::ffi::CString::new(route).unwrap();
-    let value = native!(
-        (),
-        0x817268968605947A,
-        native_parameters!(route_cstring.as_ptr())
-    );
+pub fn assisted_movement_request_route(route: &std::ffi::CString) -> () {
+    let value = native!((), 0x817268968605947A, native_parameters!(route.as_ptr()));
 
     value
 }
 
-pub fn assisted_movement_remove_route(route: String) -> () {
-    let route_cstring = std::ffi::CString::new(route).unwrap();
-    let value = native!(
-        (),
-        0x3548536485DD792B,
-        native_parameters!(route_cstring.as_ptr())
-    );
+pub fn assisted_movement_remove_route(route: &std::ffi::CString) -> () {
+    let value = native!((), 0x3548536485DD792B, native_parameters!(route.as_ptr()));
 
     value
 }
 
-pub fn assisted_movement_is_route_loaded(route: String) -> bool {
-    let route_cstring = std::ffi::CString::new(route).unwrap();
-    let value = native!(
-        bool,
-        0x60F9A4393A21F741,
-        native_parameters!(route_cstring.as_ptr())
-    );
+pub fn assisted_movement_is_route_loaded(route: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x60F9A4393A21F741, native_parameters!(route.as_ptr()));
 
     value
 }
 
-pub fn assisted_movement_set_route_properties(route: String, props: i32) -> () {
-    let route_cstring = std::ffi::CString::new(route).unwrap();
+pub fn assisted_movement_set_route_properties(route: &std::ffi::CString, props: i32) -> () {
     let value = native!(
         (),
         0xD5002D78B7162E1B,
-        native_parameters!(route_cstring.as_ptr(), props)
+        native_parameters!(route.as_ptr(), props)
     );
 
     value
@@ -3115,7 +3050,7 @@ pub fn assisted_movement_override_load_distance_this_frame(dist: f32) -> () {
 pub fn task_vehicle_follow_waypoint_recording(
     ped: i32,
     vehicle: i32,
-    WPRecording: String,
+    WPRecording: &std::ffi::CString,
     p3: i32,
     p4: i32,
     p5: i32,
@@ -3124,14 +3059,13 @@ pub fn task_vehicle_follow_waypoint_recording(
     p8: bool,
     p9: f32,
 ) -> () {
-    let WPRecording_cstring = std::ffi::CString::new(WPRecording).unwrap();
     let value = native!(
         (),
         0x3123FAA6DB1CF7ED,
         native_parameters!(
             ped,
             vehicle,
-            WPRecording_cstring.as_ptr(),
+            WPRecording.as_ptr(),
             p3,
             p4,
             p5,
@@ -3201,26 +3135,16 @@ pub fn task_force_motion_state(ped: i32, state: u32, p2: bool) -> () {
 
 pub fn task_move_network_by_name(
     ped: i32,
-    task: String,
+    task: &std::ffi::CString,
     multiplier: f32,
     p3: bool,
-    animDict: String,
+    animDict: &std::ffi::CString,
     flags: i32,
 ) -> () {
-    let task_cstring = std::ffi::CString::new(task).unwrap();
-
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
     let value = native!(
         (),
         0x2D537BA194896636,
-        native_parameters!(
-            ped,
-            task_cstring.as_ptr(),
-            multiplier,
-            p3,
-            animDict_cstring.as_ptr(),
-            flags
-        )
+        native_parameters!(ped, task.as_ptr(), multiplier, p3, animDict.as_ptr(), flags)
     );
 
     value
@@ -3228,7 +3152,7 @@ pub fn task_move_network_by_name(
 
 pub fn task_move_network_advanced_by_name(
     ped: i32,
-    p1: String,
+    p1: &std::ffi::CString,
     p2: f32,
     p3: f32,
     p4: f32,
@@ -3238,18 +3162,15 @@ pub fn task_move_network_advanced_by_name(
     p8: u32,
     p9: f32,
     p10: bool,
-    animDict: String,
+    animDict: &std::ffi::CString,
     flags: i32,
 ) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
     let value = native!(
         (),
         0xD5B35BEA41919ACB,
         native_parameters!(
             ped,
-            p1_cstring.as_ptr(),
+            p1.as_ptr(),
             p2,
             p3,
             p4,
@@ -3259,7 +3180,7 @@ pub fn task_move_network_advanced_by_name(
             p8,
             p9,
             p10,
-            animDict_cstring.as_ptr(),
+            animDict.as_ptr(),
             flags
         )
     );
@@ -3269,28 +3190,17 @@ pub fn task_move_network_advanced_by_name(
 
 pub fn _task_move_network_by_name_with_init_params(
     ped: i32,
-    p1: String,
+    p1: &std::ffi::CString,
     data: *mut u32,
     p3: f32,
     p4: bool,
-    animDict: String,
+    animDict: &std::ffi::CString,
     flags: i32,
 ) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
     let value = native!(
         (),
         0x3D45B0B355C5E0C9,
-        native_parameters!(
-            ped,
-            p1_cstring.as_ptr(),
-            data,
-            p3,
-            p4,
-            animDict_cstring.as_ptr(),
-            flags
-        )
+        native_parameters!(ped, p1.as_ptr(), data, p3, p4, animDict.as_ptr(), flags)
     );
 
     value
@@ -3333,23 +3243,21 @@ pub fn is_task_move_network_ready_for_transition(ped: i32) -> bool {
     value
 }
 
-pub fn request_task_move_network_state_transition(ped: i32, name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn request_task_move_network_state_transition(ped: i32, name: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xD01015C7316AE176,
-        native_parameters!(ped, name_cstring.as_ptr())
+        native_parameters!(ped, name.as_ptr())
     );
 
     value
 }
 
-pub fn _0xab13a5565480b6d9(ped: i32, p1: String) -> u32 {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0xab13a5565480b6d9(ped: i32, p1: &std::ffi::CString) -> u32 {
     let value = native!(
         u32,
         0xAB13A5565480B6D9,
-        native_parameters!(ped, p1_cstring.as_ptr())
+        native_parameters!(ped, p1.as_ptr())
     );
 
     value
@@ -3368,78 +3276,83 @@ pub fn _0x8423541e8b3a1589(p0: u32, p1: u32, p2: u32) -> () {
     value
 }
 
-pub fn set_task_move_network_signal_float(ped: i32, signalName: String, value: f32) -> () {
-    let signalName_cstring = std::ffi::CString::new(signalName).unwrap();
+pub fn set_task_move_network_signal_float(
+    ped: i32,
+    signalName: &std::ffi::CString,
+    value: f32,
+) -> () {
     let value = native!(
         (),
         0xD5BB4025AE449A4E,
-        native_parameters!(ped, signalName_cstring.as_ptr(), value)
+        native_parameters!(ped, signalName.as_ptr(), value)
     );
 
     value
 }
 
-pub fn _set_task_move_network_signal_float_2(ped: i32, signalName: String, value: f32) -> () {
-    let signalName_cstring = std::ffi::CString::new(signalName).unwrap();
+pub fn _set_task_move_network_signal_float_2(
+    ped: i32,
+    signalName: &std::ffi::CString,
+    value: f32,
+) -> () {
     let value = native!(
         (),
         0x373EF409B82697A3,
-        native_parameters!(ped, signalName_cstring.as_ptr(), value)
+        native_parameters!(ped, signalName.as_ptr(), value)
     );
 
     value
 }
 
-pub fn _0x8634cef2522d987b(ped: i32, p1: String, value: f32) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x8634cef2522d987b(ped: i32, p1: &std::ffi::CString, value: f32) -> () {
     let value = native!(
         (),
         0x8634CEF2522D987B,
-        native_parameters!(ped, p1_cstring.as_ptr(), value)
+        native_parameters!(ped, p1.as_ptr(), value)
     );
 
     value
 }
 
-pub fn set_task_move_network_signal_bool(ped: i32, signalName: String, value: bool) -> () {
-    let signalName_cstring = std::ffi::CString::new(signalName).unwrap();
+pub fn set_task_move_network_signal_bool(
+    ped: i32,
+    signalName: &std::ffi::CString,
+    value: bool,
+) -> () {
     let value = native!(
         (),
         0xB0A6CFD2C69C1088,
-        native_parameters!(ped, signalName_cstring.as_ptr(), value)
+        native_parameters!(ped, signalName.as_ptr(), value)
     );
 
     value
 }
 
-pub fn _get_task_move_network_signal_float(ped: i32, signalName: String) -> f32 {
-    let signalName_cstring = std::ffi::CString::new(signalName).unwrap();
+pub fn _get_task_move_network_signal_float(ped: i32, signalName: &std::ffi::CString) -> f32 {
     let value = native!(
         f32,
         0x44AB0B3AFECCE242,
-        native_parameters!(ped, signalName_cstring.as_ptr())
+        native_parameters!(ped, signalName.as_ptr())
     );
 
     value
 }
 
-pub fn get_task_move_network_signal_bool(ped: i32, signalName: String) -> bool {
-    let signalName_cstring = std::ffi::CString::new(signalName).unwrap();
+pub fn get_task_move_network_signal_bool(ped: i32, signalName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xA7FFBA498E4AAF67,
-        native_parameters!(ped, signalName_cstring.as_ptr())
+        native_parameters!(ped, signalName.as_ptr())
     );
 
     value
 }
 
-pub fn get_task_move_network_event(ped: i32, eventName: String) -> bool {
-    let eventName_cstring = std::ffi::CString::new(eventName).unwrap();
+pub fn get_task_move_network_event(ped: i32, eventName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xB4F47213DF45A64C,
-        native_parameters!(ped, eventName_cstring.as_ptr())
+        native_parameters!(ped, eventName.as_ptr())
     );
 
     value
@@ -3508,8 +3421,8 @@ pub fn is_ped_strafing(ped: i32) -> bool {
 pub fn task_synchronized_scene(
     ped: i32,
     scene: i32,
-    animDictionary: String,
-    animationName: String,
+    animDictionary: &std::ffi::CString,
+    animationName: &std::ffi::CString,
     speed: f32,
     speedMultiplier: f32,
     duration: i32,
@@ -3517,17 +3430,14 @@ pub fn task_synchronized_scene(
     playbackRate: f32,
     p9: u32,
 ) -> () {
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
-
-    let animationName_cstring = std::ffi::CString::new(animationName).unwrap();
     let value = native!(
         (),
         0xEEA929141F699854,
         native_parameters!(
             ped,
             scene,
-            animDictionary_cstring.as_ptr(),
-            animationName_cstring.as_ptr(),
+            animDictionary.as_ptr(),
+            animationName.as_ptr(),
             speed,
             speedMultiplier,
             duration,
@@ -3548,31 +3458,24 @@ pub fn task_agitated_action(ped: i32, ped2: i32) -> () {
 
 pub fn task_sweep_aim_entity(
     ped: i32,
-    anim: String,
-    p2: String,
-    p3: String,
-    p4: String,
+    anim: &std::ffi::CString,
+    p2: &std::ffi::CString,
+    p3: &std::ffi::CString,
+    p4: &std::ffi::CString,
     p5: i32,
     vehicle: i32,
     p7: f32,
     p8: f32,
 ) -> () {
-    let anim_cstring = std::ffi::CString::new(anim).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
-
-    let p3_cstring = std::ffi::CString::new(p3).unwrap();
-
-    let p4_cstring = std::ffi::CString::new(p4).unwrap();
     let value = native!(
         (),
         0x2047C02158D6405A,
         native_parameters!(
             ped,
-            anim_cstring.as_ptr(),
-            p2_cstring.as_ptr(),
-            p3_cstring.as_ptr(),
-            p4_cstring.as_ptr(),
+            anim.as_ptr(),
+            p2.as_ptr(),
+            p3.as_ptr(),
+            p4.as_ptr(),
             p5,
             vehicle,
             p7,

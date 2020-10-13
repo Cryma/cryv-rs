@@ -27,19 +27,18 @@ pub fn _render_first_person_cam(render: bool, p1: f32, p2: i32, p3: u32) -> () {
     value
 }
 
-pub fn create_cam(camName: String, p1: bool) -> i32 {
-    let camName_cstring = std::ffi::CString::new(camName).unwrap();
+pub fn create_cam(camName: &std::ffi::CString, p1: bool) -> i32 {
     let value = native!(
         i32,
         0xC3981DCE61D9E13F,
-        native_parameters!(camName_cstring.as_ptr(), p1)
+        native_parameters!(camName.as_ptr(), p1)
     );
 
     value
 }
 
 pub fn create_cam_with_params(
-    camName: String,
+    camName: &std::ffi::CString,
     posX: f32,
     posY: f32,
     posZ: f32,
@@ -50,12 +49,11 @@ pub fn create_cam_with_params(
     p8: bool,
     p9: i32,
 ) -> i32 {
-    let camName_cstring = std::ffi::CString::new(camName).unwrap();
     let value = native!(
         i32,
         0xB51194800B257161,
         native_parameters!(
-            camName_cstring.as_ptr(),
+            camName.as_ptr(),
             posX,
             posY,
             posZ,
@@ -500,12 +498,11 @@ pub fn _0x271017b9ba825366(p0: u32, p1: bool) -> () {
     value
 }
 
-pub fn set_cam_debug_name(camera: i32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn set_cam_debug_name(camera: i32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x1B93E0107865DD40,
-        native_parameters!(camera, name_cstring.as_ptr())
+        native_parameters!(camera, name.as_ptr())
     );
 
     value
@@ -660,33 +657,27 @@ pub fn is_cam_interpolating(cam: i32) -> bool {
     value
 }
 
-pub fn shake_cam(cam: i32, type_esc: String, amplitude: f32) -> () {
-    let type_esc_cstring = std::ffi::CString::new(type_esc).unwrap();
+pub fn shake_cam(cam: i32, type_esc: &std::ffi::CString, amplitude: f32) -> () {
     let value = native!(
         (),
         0x6A25241C340D3822,
-        native_parameters!(cam, type_esc_cstring.as_ptr(), amplitude)
+        native_parameters!(cam, type_esc.as_ptr(), amplitude)
     );
 
     value
 }
 
-pub fn animated_shake_cam(cam: i32, p1: String, p2: String, p3: String, amplitude: f32) -> () {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
-
-    let p3_cstring = std::ffi::CString::new(p3).unwrap();
+pub fn animated_shake_cam(
+    cam: i32,
+    p1: &std::ffi::CString,
+    p2: &std::ffi::CString,
+    p3: &std::ffi::CString,
+    amplitude: f32,
+) -> () {
     let value = native!(
         (),
         0xA2746EEAE3E577CD,
-        native_parameters!(
-            cam,
-            p1_cstring.as_ptr(),
-            p2_cstring.as_ptr(),
-            p3_cstring.as_ptr(),
-            amplitude
-        )
+        native_parameters!(cam, p1.as_ptr(), p2.as_ptr(), p3.as_ptr(), amplitude)
     );
 
     value
@@ -710,32 +701,22 @@ pub fn stop_cam_shaking(cam: i32, p1: bool) -> () {
     value
 }
 
-pub fn shake_script_global(p0: String, p1: f32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xF4C8CF9E353AFECA,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn shake_script_global(p0: &std::ffi::CString, p1: f32) -> () {
+    let value = native!((), 0xF4C8CF9E353AFECA, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
 
-pub fn animated_shake_script_global(p0: String, p1: String, p2: String, p3: f32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
+pub fn animated_shake_script_global(
+    p0: &std::ffi::CString,
+    p1: &std::ffi::CString,
+    p2: &std::ffi::CString,
+    p3: f32,
+) -> () {
     let value = native!(
         (),
         0xC2EAE3FB8CDBED31,
-        native_parameters!(
-            p0_cstring.as_ptr(),
-            p1_cstring.as_ptr(),
-            p2_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(p0.as_ptr(), p1.as_ptr(), p2.as_ptr(), p3)
     );
 
     value
@@ -761,8 +742,8 @@ pub fn _0x5d96cfb59da076a0(vehicle: i32, p1: i32, p2: f32) -> () {
 
 pub fn play_cam_anim(
     cam: i32,
-    animName: String,
-    animDictionary: String,
+    animName: &std::ffi::CString,
+    animDictionary: &std::ffi::CString,
     x: f32,
     y: f32,
     z: f32,
@@ -772,16 +753,13 @@ pub fn play_cam_anim(
     p9: bool,
     p10: i32,
 ) -> bool {
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
-
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
     let value = native!(
         bool,
         0x9A2D0FB2E7852392,
         native_parameters!(
             cam,
-            animName_cstring.as_ptr(),
-            animDictionary_cstring.as_ptr(),
+            animName.as_ptr(),
+            animDictionary.as_ptr(),
             x,
             y,
             z,
@@ -796,18 +774,15 @@ pub fn play_cam_anim(
     value
 }
 
-pub fn is_cam_playing_anim(cam: i32, animName: String, animDictionary: String) -> bool {
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
-
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
+pub fn is_cam_playing_anim(
+    cam: i32,
+    animName: &std::ffi::CString,
+    animDictionary: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0xC90621D8A0CEECF2,
-        native_parameters!(
-            cam,
-            animName_cstring.as_ptr(),
-            animDictionary_cstring.as_ptr()
-        )
+        native_parameters!(cam, animName.as_ptr(), animDictionary.as_ptr())
     );
 
     value
@@ -828,21 +803,13 @@ pub fn get_cam_anim_current_phase(cam: i32) -> f32 {
 pub fn play_synchronized_cam_anim(
     p0: u32,
     p1: u32,
-    animName: String,
-    animDictionary: String,
+    animName: &std::ffi::CString,
+    animDictionary: &std::ffi::CString,
 ) -> bool {
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
-
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
     let value = native!(
         bool,
         0xE32EFE9AB4A9AA0C,
-        native_parameters!(
-            p0,
-            p1,
-            animName_cstring.as_ptr(),
-            animDictionary_cstring.as_ptr()
-        )
+        native_parameters!(p0, p1, animName.as_ptr(), animDictionary.as_ptr())
     );
 
     value
@@ -1020,12 +987,11 @@ pub fn _0x469f2ecdec046337(p0: bool) -> () {
     value
 }
 
-pub fn shake_gameplay_cam(shakeName: String, intensity: f32) -> () {
-    let shakeName_cstring = std::ffi::CString::new(shakeName).unwrap();
+pub fn shake_gameplay_cam(shakeName: &std::ffi::CString, intensity: f32) -> () {
     let value = native!(
         (),
         0xFD55E49555E017CF,
-        native_parameters!(shakeName_cstring.as_ptr(), intensity)
+        native_parameters!(shakeName.as_ptr(), intensity)
     );
 
     value
@@ -1137,12 +1103,11 @@ pub fn is_follow_ped_cam_active() -> bool {
     value
 }
 
-pub fn set_follow_ped_cam_this_update(camName: String, p1: i32) -> bool {
-    let camName_cstring = std::ffi::CString::new(camName).unwrap();
+pub fn set_follow_ped_cam_this_update(camName: &std::ffi::CString, p1: i32) -> bool {
     let value = native!(
         bool,
         0x44A113DD6FFC48D1,
-        native_parameters!(camName_cstring.as_ptr(), p1)
+        native_parameters!(camName.as_ptr(), p1)
     );
 
     value
@@ -1292,13 +1257,8 @@ pub fn _use_stunt_camera_this_frame() -> () {
     value
 }
 
-pub fn _0x425a920fdb9a0dda(camName: String) -> () {
-    let camName_cstring = std::ffi::CString::new(camName).unwrap();
-    let value = native!(
-        (),
-        0x425A920FDB9A0DDA,
-        native_parameters!(camName_cstring.as_ptr())
-    );
+pub fn _0x425a920fdb9a0dda(camName: &std::ffi::CString) -> () {
+    let value = native!((), 0x425A920FDB9A0DDA, native_parameters!(camName.as_ptr()));
 
     value
 }
@@ -1634,13 +1594,8 @@ pub fn is_cinematic_cam_rendering() -> bool {
     value
 }
 
-pub fn shake_cinematic_cam(p0: String, p1: f32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xDCE214D9ED58F3CF,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn shake_cinematic_cam(p0: &std::ffi::CString, p1: f32) -> () {
+    let value = native!((), 0xDCE214D9ED58F3CF, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
@@ -1825,12 +1780,11 @@ pub fn _0x5c41e6babc9e2112(p0: u32) -> () {
     value
 }
 
-pub fn _set_gameplay_cam_vehicle_camera(vehicleName: String) -> () {
-    let vehicleName_cstring = std::ffi::CString::new(vehicleName).unwrap();
+pub fn _set_gameplay_cam_vehicle_camera(vehicleName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x21E253A7F8DA5DFB,
-        native_parameters!(vehicleName_cstring.as_ptr())
+        native_parameters!(vehicleName.as_ptr())
     );
 
     value

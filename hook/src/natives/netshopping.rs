@@ -6,13 +6,8 @@ pub fn _net_gameserver_use_server_transactions() -> bool {
     value
 }
 
-pub fn _net_gameserver_catalog_item_exists(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0xBD4D7EAF8A30F637,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn _net_gameserver_catalog_item_exists(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0xBD4D7EAF8A30F637, native_parameters!(name.as_ptr()));
 
     value
 }

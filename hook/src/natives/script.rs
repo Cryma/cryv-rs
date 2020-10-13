@@ -1,44 +1,40 @@
 use crate::types::NativeVector3;
 
-pub fn request_script(scriptName: String) -> () {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn request_script(scriptName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x6EB5F71AA68F2E8E,
-        native_parameters!(scriptName_cstring.as_ptr())
+        native_parameters!(scriptName.as_ptr())
     );
 
     value
 }
 
-pub fn set_script_as_no_longer_needed(scriptName: String) -> () {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn set_script_as_no_longer_needed(scriptName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xC90D2DCACD56184C,
-        native_parameters!(scriptName_cstring.as_ptr())
+        native_parameters!(scriptName.as_ptr())
     );
 
     value
 }
 
-pub fn has_script_loaded(scriptName: String) -> bool {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn has_script_loaded(scriptName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xE6CC9F3BA0FB9EF1,
-        native_parameters!(scriptName_cstring.as_ptr())
+        native_parameters!(scriptName.as_ptr())
     );
 
     value
 }
 
-pub fn does_script_exist(scriptName: String) -> bool {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn does_script_exist(scriptName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xFC04745FBE67C19A,
-        native_parameters!(scriptName_cstring.as_ptr())
+        native_parameters!(scriptName.as_ptr())
     );
 
     value
@@ -229,45 +225,41 @@ pub fn bg_end_context_hash(contextHash: u32) -> () {
     value
 }
 
-pub fn bg_start_context(contextName: String) -> () {
-    let contextName_cstring = std::ffi::CString::new(contextName).unwrap();
+pub fn bg_start_context(contextName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x9D5A25BADB742ACD,
-        native_parameters!(contextName_cstring.as_ptr())
+        native_parameters!(contextName.as_ptr())
     );
 
     value
 }
 
-pub fn bg_end_context(contextName: String) -> () {
-    let contextName_cstring = std::ffi::CString::new(contextName).unwrap();
+pub fn bg_end_context(contextName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xDC2BACD920D0A0DD,
-        native_parameters!(contextName_cstring.as_ptr())
+        native_parameters!(contextName.as_ptr())
     );
 
     value
 }
 
-pub fn _0x0f6f1ebbc4e1d5e6(scriptIndex: i32, p1: String) -> bool {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x0f6f1ebbc4e1d5e6(scriptIndex: i32, p1: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x0F6F1EBBC4E1D5E6,
-        native_parameters!(scriptIndex, p1_cstring.as_ptr())
+        native_parameters!(scriptIndex, p1.as_ptr())
     );
 
     value
 }
 
-pub fn _0x22e21fbcfc88c149(scriptIndex: i32, p1: String) -> i32 {
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
+pub fn _0x22e21fbcfc88c149(scriptIndex: i32, p1: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x22E21FBCFC88C149,
-        native_parameters!(scriptIndex, p1_cstring.as_ptr())
+        native_parameters!(scriptIndex, p1.as_ptr())
     );
 
     value

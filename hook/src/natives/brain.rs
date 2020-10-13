@@ -1,36 +1,27 @@
 use crate::types::NativeVector3;
 
-pub fn add_script_to_random_ped(name: String, model: u32, p2: f32, p3: f32) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn add_script_to_random_ped(name: &std::ffi::CString, model: u32, p2: f32, p3: f32) -> () {
     let value = native!(
         (),
         0x4EE5367468A65CCC,
-        native_parameters!(name_cstring.as_ptr(), model, p2, p3)
+        native_parameters!(name.as_ptr(), model, p2, p3)
     );
 
     value
 }
 
 pub fn register_object_script_brain(
-    scriptName: String,
+    scriptName: &std::ffi::CString,
     modelHash: u32,
     p2: i32,
     activationRange: f32,
     p4: i32,
     p5: i32,
 ) -> () {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
     let value = native!(
         (),
         0x0BE84C318BA6EC22,
-        native_parameters!(
-            scriptName_cstring.as_ptr(),
-            modelHash,
-            p2,
-            activationRange,
-            p4,
-            p5
-        )
+        native_parameters!(scriptName.as_ptr(), modelHash, p2, activationRange, p4, p5)
     );
 
     value
@@ -42,12 +33,15 @@ pub fn is_object_within_brain_activation_range(object: i32) -> bool {
     value
 }
 
-pub fn register_world_point_script_brain(scriptName: String, activationRange: f32, p2: i32) -> () {
-    let scriptName_cstring = std::ffi::CString::new(scriptName).unwrap();
+pub fn register_world_point_script_brain(
+    scriptName: &std::ffi::CString,
+    activationRange: f32,
+    p2: i32,
+) -> () {
     let value = native!(
         (),
         0x3CDC7136613284BD,
-        native_parameters!(scriptName_cstring.as_ptr(), activationRange, p2)
+        native_parameters!(scriptName.as_ptr(), activationRange, p2)
     );
 
     value
@@ -83,24 +77,14 @@ pub fn _0x4d953df78ebf8158() -> () {
     value
 }
 
-pub fn _0x6d6840cee8845831(action: String) -> () {
-    let action_cstring = std::ffi::CString::new(action).unwrap();
-    let value = native!(
-        (),
-        0x6D6840CEE8845831,
-        native_parameters!(action_cstring.as_ptr())
-    );
+pub fn _0x6d6840cee8845831(action: &std::ffi::CString) -> () {
+    let value = native!((), 0x6D6840CEE8845831, native_parameters!(action.as_ptr()));
 
     value
 }
 
-pub fn _0x6e91b04e08773030(action: String) -> () {
-    let action_cstring = std::ffi::CString::new(action).unwrap();
-    let value = native!(
-        (),
-        0x6E91B04E08773030,
-        native_parameters!(action_cstring.as_ptr())
-    );
+pub fn _0x6e91b04e08773030(action: &std::ffi::CString) -> () {
+    let value = native!((), 0x6E91B04E08773030, native_parameters!(action.as_ptr()));
 
     value
 }

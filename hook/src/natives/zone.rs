@@ -6,12 +6,11 @@ pub fn get_zone_at_coords(x: f32, y: f32, z: f32) -> i32 {
     value
 }
 
-pub fn get_zone_from_name_id(zoneName: String) -> i32 {
-    let zoneName_cstring = std::ffi::CString::new(zoneName).unwrap();
+pub fn get_zone_from_name_id(zoneName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x98CD1D2934B76CC1,
-        native_parameters!(zoneName_cstring.as_ptr())
+        native_parameters!(zoneName.as_ptr())
     );
 
     value

@@ -24,19 +24,16 @@ pub fn does_entity_have_physics(entity: i32) -> bool {
     value
 }
 
-pub fn has_entity_anim_finished(entity: i32, animDict: String, animName: String, p3: i32) -> bool {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
+pub fn has_entity_anim_finished(
+    entity: i32,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
+    p3: i32,
+) -> bool {
     let value = native!(
         bool,
         0x20B711662962B472,
-        native_parameters!(
-            entity,
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(entity, animDict.as_ptr(), animName.as_ptr(), p3)
     );
 
     value
@@ -124,40 +121,39 @@ pub fn force_entity_ai_and_animation_update(entity: i32) -> () {
     value
 }
 
-pub fn get_entity_anim_current_time(entity: i32, animDict: String, animName: String) -> f32 {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
+pub fn get_entity_anim_current_time(
+    entity: i32,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
+) -> f32 {
     let value = native!(
         f32,
         0x346D81500D088F42,
-        native_parameters!(entity, animDict_cstring.as_ptr(), animName_cstring.as_ptr())
+        native_parameters!(entity, animDict.as_ptr(), animName.as_ptr())
     );
 
     value
 }
 
-pub fn get_entity_anim_total_time(entity: i32, animDict: String, animName: String) -> f32 {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
+pub fn get_entity_anim_total_time(
+    entity: i32,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
+) -> f32 {
     let value = native!(
         f32,
         0x50BD2730B191E360,
-        native_parameters!(entity, animDict_cstring.as_ptr(), animName_cstring.as_ptr())
+        native_parameters!(entity, animDict.as_ptr(), animName.as_ptr())
     );
 
     value
 }
 
-pub fn get_anim_duration(animDict: String, animName: String) -> f32 {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
+pub fn get_anim_duration(animDict: &std::ffi::CString, animName: &std::ffi::CString) -> f32 {
     let value = native!(
         f32,
         0xFEDDF04D62B8D790,
-        native_parameters!(animDict_cstring.as_ptr(), animName_cstring.as_ptr())
+        native_parameters!(animDict.as_ptr(), animName.as_ptr())
     );
 
     value
@@ -606,12 +602,11 @@ pub fn is_entity_in_area(
     value
 }
 
-pub fn is_entity_in_zone(entity: i32, zone: String) -> bool {
-    let zone_cstring = std::ffi::CString::new(zone).unwrap();
+pub fn is_entity_in_zone(entity: i32, zone: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xB6463CF6AF527071,
-        native_parameters!(entity, zone_cstring.as_ptr())
+        native_parameters!(entity, zone.as_ptr())
     );
 
     value
@@ -643,22 +638,14 @@ pub fn is_entity_on_screen(entity: i32) -> bool {
 
 pub fn is_entity_playing_anim(
     entity: i32,
-    animDict: String,
-    animName: String,
+    animDict: &std::ffi::CString,
+    animName: &std::ffi::CString,
     taskFlag: i32,
 ) -> bool {
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         bool,
         0x1F0B79228E461EC9,
-        native_parameters!(
-            entity,
-            animDict_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
-            taskFlag
-        )
+        native_parameters!(entity, animDict.as_ptr(), animName.as_ptr(), taskFlag)
     );
 
     value
@@ -921,12 +908,11 @@ pub fn process_entity_attachments(entity: i32) -> () {
     value
 }
 
-pub fn get_entity_bone_index_by_name(entity: i32, boneName: String) -> i32 {
-    let boneName_cstring = std::ffi::CString::new(boneName).unwrap();
+pub fn get_entity_bone_index_by_name(entity: i32, boneName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0xFB71170B7E76ACBA,
-        native_parameters!(entity, boneName_cstring.as_ptr())
+        native_parameters!(entity, boneName.as_ptr())
     );
 
     value
@@ -968,8 +954,8 @@ pub fn _set_entity_something(entity: i32, toggle: bool) -> () {
 
 pub fn play_entity_anim(
     entity: i32,
-    animName: String,
-    animDict: String,
+    animName: &std::ffi::CString,
+    animDict: &std::ffi::CString,
     p3: f32,
     loop_esc: bool,
     stayInAnim: bool,
@@ -977,16 +963,13 @@ pub fn play_entity_anim(
     delta: f32,
     bitset: u32,
 ) -> bool {
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
-
-    let animDict_cstring = std::ffi::CString::new(animDict).unwrap();
     let value = native!(
         bool,
         0x7FB218262B810701,
         native_parameters!(
             entity,
-            animName_cstring.as_ptr(),
-            animDict_cstring.as_ptr(),
+            animName.as_ptr(),
+            animDict.as_ptr(),
             p3,
             loop_esc,
             stayInAnim,
@@ -1002,24 +985,21 @@ pub fn play_entity_anim(
 pub fn play_synchronized_entity_anim(
     entity: i32,
     syncedScene: i32,
-    animation: String,
-    propName: String,
+    animation: &std::ffi::CString,
+    propName: &std::ffi::CString,
     p4: f32,
     p5: f32,
     p6: u32,
     p7: f32,
 ) -> bool {
-    let animation_cstring = std::ffi::CString::new(animation).unwrap();
-
-    let propName_cstring = std::ffi::CString::new(propName).unwrap();
     let value = native!(
         bool,
         0xC77720A12FE14A86,
         native_parameters!(
             entity,
             syncedScene,
-            animation_cstring.as_ptr(),
-            propName_cstring.as_ptr(),
+            animation.as_ptr(),
+            propName.as_ptr(),
             p4,
             p5,
             p6,
@@ -1070,19 +1050,16 @@ pub fn stop_synchronized_map_entity_anim(
     value
 }
 
-pub fn stop_entity_anim(entity: i32, animation: String, animGroup: String, p3: f32) -> u32 {
-    let animation_cstring = std::ffi::CString::new(animation).unwrap();
-
-    let animGroup_cstring = std::ffi::CString::new(animGroup).unwrap();
+pub fn stop_entity_anim(
+    entity: i32,
+    animation: &std::ffi::CString,
+    animGroup: &std::ffi::CString,
+    p3: f32,
+) -> u32 {
     let value = native!(
         u32,
         0x28004F88151E03E0,
-        native_parameters!(
-            entity,
-            animation_cstring.as_ptr(),
-            animGroup_cstring.as_ptr(),
-            p3
-        )
+        native_parameters!(entity, animation.as_ptr(), animGroup.as_ptr(), p3)
     );
 
     value
@@ -1105,24 +1082,19 @@ pub fn has_anim_event_fired(entity: i32, actionHash: u32) -> bool {
 }
 
 pub fn find_anim_event_phase(
-    animDictionary: String,
-    animName: String,
-    p2: String,
+    animDictionary: &std::ffi::CString,
+    animName: &std::ffi::CString,
+    p2: &std::ffi::CString,
     p3: *mut u32,
     p4: *mut u32,
 ) -> bool {
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
     let value = native!(
         bool,
         0x07F1BE2BCCAA27A7,
         native_parameters!(
-            animDictionary_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
-            p2_cstring.as_ptr(),
+            animDictionary.as_ptr(),
+            animName.as_ptr(),
+            p2.as_ptr(),
             p3,
             p4
         )
@@ -1133,22 +1105,14 @@ pub fn find_anim_event_phase(
 
 pub fn set_entity_anim_current_time(
     entity: i32,
-    animDictionary: String,
-    animName: String,
+    animDictionary: &std::ffi::CString,
+    animName: &std::ffi::CString,
     time: f32,
 ) -> () {
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         (),
         0x4487C259F0F70977,
-        native_parameters!(
-            entity,
-            animDictionary_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
-            time
-        )
+        native_parameters!(entity, animDictionary.as_ptr(), animName.as_ptr(), time)
     );
 
     value
@@ -1156,20 +1120,17 @@ pub fn set_entity_anim_current_time(
 
 pub fn set_entity_anim_speed(
     entity: i32,
-    animDictionary: String,
-    animName: String,
+    animDictionary: &std::ffi::CString,
+    animName: &std::ffi::CString,
     speedMultiplier: f32,
 ) -> () {
-    let animDictionary_cstring = std::ffi::CString::new(animDictionary).unwrap();
-
-    let animName_cstring = std::ffi::CString::new(animName).unwrap();
     let value = native!(
         (),
         0x28D1A16553C51776,
         native_parameters!(
             entity,
-            animDictionary_cstring.as_ptr(),
-            animName_cstring.as_ptr(),
+            animDictionary.as_ptr(),
+            animName.as_ptr(),
             speedMultiplier
         )
     );

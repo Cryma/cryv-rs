@@ -709,12 +709,17 @@ pub fn _set_create_weapon_object_light_source(p0: u32, p1: bool) -> () {
     value
 }
 
-pub fn get_rayfire_map_object(x: f32, y: f32, z: f32, radius: f32, name: String) -> i32 {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn get_rayfire_map_object(
+    x: f32,
+    y: f32,
+    z: f32,
+    radius: f32,
+    name: &std::ffi::CString,
+) -> i32 {
     let value = native!(
         i32,
         0xB48FCED898292E52,
-        native_parameters!(x, y, z, radius, name_cstring.as_ptr())
+        native_parameters!(x, y, z, radius, name.as_ptr())
     );
 
     value

@@ -24,12 +24,11 @@ pub fn _0x293220da1b46cebc(p0: f32, p1: f32, p2: i32) -> () {
     value
 }
 
-pub fn _0x208784099002bc30(missionNameLabel: String, p1: u32) -> () {
-    let missionNameLabel_cstring = std::ffi::CString::new(missionNameLabel).unwrap();
+pub fn _0x208784099002bc30(missionNameLabel: &std::ffi::CString, p1: u32) -> () {
     let value = native!(
         (),
         0x208784099002BC30,
-        native_parameters!(missionNameLabel_cstring.as_ptr(), p1)
+        native_parameters!(missionNameLabel.as_ptr(), p1)
     );
 
     value

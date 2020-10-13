@@ -45,29 +45,22 @@ pub fn datafile_delete_requested_file(p0: u32) -> bool {
 pub fn ugc_create_content(
     data: *mut u32,
     dataCount: i32,
-    contentName: String,
-    description: String,
-    tagsCsv: String,
-    contentTypeName: String,
+    contentName: &std::ffi::CString,
+    description: &std::ffi::CString,
+    tagsCsv: &std::ffi::CString,
+    contentTypeName: &std::ffi::CString,
     publish: bool,
 ) -> bool {
-    let contentName_cstring = std::ffi::CString::new(contentName).unwrap();
-
-    let description_cstring = std::ffi::CString::new(description).unwrap();
-
-    let tagsCsv_cstring = std::ffi::CString::new(tagsCsv).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
     let value = native!(
         bool,
         0xC84527E235FCA219,
         native_parameters!(
             data,
             dataCount,
-            contentName_cstring.as_ptr(),
-            description_cstring.as_ptr(),
-            tagsCsv_cstring.as_ptr(),
-            contentTypeName_cstring.as_ptr(),
+            contentName.as_ptr(),
+            description.as_ptr(),
+            tagsCsv.as_ptr(),
+            contentTypeName.as_ptr(),
             publish
         )
     );
@@ -76,27 +69,20 @@ pub fn ugc_create_content(
 }
 
 pub fn ugc_create_mission(
-    contentName: String,
-    description: String,
-    tagsCsv: String,
-    contentTypeName: String,
+    contentName: &std::ffi::CString,
+    description: &std::ffi::CString,
+    tagsCsv: &std::ffi::CString,
+    contentTypeName: &std::ffi::CString,
     publish: bool,
 ) -> bool {
-    let contentName_cstring = std::ffi::CString::new(contentName).unwrap();
-
-    let description_cstring = std::ffi::CString::new(description).unwrap();
-
-    let tagsCsv_cstring = std::ffi::CString::new(tagsCsv).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
     let value = native!(
         bool,
         0xA5EFC3E847D60507,
         native_parameters!(
-            contentName_cstring.as_ptr(),
-            description_cstring.as_ptr(),
-            tagsCsv_cstring.as_ptr(),
-            contentTypeName_cstring.as_ptr(),
+            contentName.as_ptr(),
+            description.as_ptr(),
+            tagsCsv.as_ptr(),
+            contentTypeName.as_ptr(),
             publish
         )
     );
@@ -105,34 +91,25 @@ pub fn ugc_create_mission(
 }
 
 pub fn ugc_update_content(
-    contentId: String,
+    contentId: &std::ffi::CString,
     data: *mut u32,
     dataCount: i32,
-    contentName: String,
-    description: String,
-    tagsCsv: String,
-    contentTypeName: String,
+    contentName: &std::ffi::CString,
+    description: &std::ffi::CString,
+    tagsCsv: &std::ffi::CString,
+    contentTypeName: &std::ffi::CString,
 ) -> bool {
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
-
-    let contentName_cstring = std::ffi::CString::new(contentName).unwrap();
-
-    let description_cstring = std::ffi::CString::new(description).unwrap();
-
-    let tagsCsv_cstring = std::ffi::CString::new(tagsCsv).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
     let value = native!(
         bool,
         0x648E7A5434AF7969,
         native_parameters!(
-            contentId_cstring.as_ptr(),
+            contentId.as_ptr(),
             data,
             dataCount,
-            contentName_cstring.as_ptr(),
-            description_cstring.as_ptr(),
-            tagsCsv_cstring.as_ptr(),
-            contentTypeName_cstring.as_ptr()
+            contentName.as_ptr(),
+            description.as_ptr(),
+            tagsCsv.as_ptr(),
+            contentTypeName.as_ptr()
         )
     );
 
@@ -140,48 +117,36 @@ pub fn ugc_update_content(
 }
 
 pub fn ugc_update_mission(
-    contentId: String,
-    contentName: String,
-    description: String,
-    tagsCsv: String,
-    contentTypeName: String,
+    contentId: &std::ffi::CString,
+    contentName: &std::ffi::CString,
+    description: &std::ffi::CString,
+    tagsCsv: &std::ffi::CString,
+    contentTypeName: &std::ffi::CString,
 ) -> bool {
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
-
-    let contentName_cstring = std::ffi::CString::new(contentName).unwrap();
-
-    let description_cstring = std::ffi::CString::new(description).unwrap();
-
-    let tagsCsv_cstring = std::ffi::CString::new(tagsCsv).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
     let value = native!(
         bool,
         0x4645DE9980999E93,
         native_parameters!(
-            contentId_cstring.as_ptr(),
-            contentName_cstring.as_ptr(),
-            description_cstring.as_ptr(),
-            tagsCsv_cstring.as_ptr(),
-            contentTypeName_cstring.as_ptr()
+            contentId.as_ptr(),
+            contentName.as_ptr(),
+            description.as_ptr(),
+            tagsCsv.as_ptr(),
+            contentTypeName.as_ptr()
         )
     );
 
     value
 }
 
-pub fn ugc_set_player_data(contentId: String, rating: f32, contentTypeName: String) -> bool {
-    let contentId_cstring = std::ffi::CString::new(contentId).unwrap();
-
-    let contentTypeName_cstring = std::ffi::CString::new(contentTypeName).unwrap();
+pub fn ugc_set_player_data(
+    contentId: &std::ffi::CString,
+    rating: f32,
+    contentTypeName: &std::ffi::CString,
+) -> bool {
     let value = native!(
         bool,
         0x692D808C34A82143,
-        native_parameters!(
-            contentId_cstring.as_ptr(),
-            rating,
-            contentTypeName_cstring.as_ptr()
-        )
+        native_parameters!(contentId.as_ptr(), rating, contentTypeName.as_ptr())
     );
 
     value
@@ -211,12 +176,11 @@ pub fn datafile_select_creator_stats(p0: i32) -> bool {
     value
 }
 
-pub fn datafile_load_offline_ugc(filename: String) -> bool {
-    let filename_cstring = std::ffi::CString::new(filename).unwrap();
+pub fn datafile_load_offline_ugc(filename: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xC5238C011AF405E4,
-        native_parameters!(filename_cstring.as_ptr())
+        native_parameters!(filename.as_ptr())
     );
 
     value
@@ -253,12 +217,11 @@ pub fn datafile_get_file_dict() -> String {
     value
 }
 
-pub fn datafile_start_save_to_cloud(filename: String) -> bool {
-    let filename_cstring = std::ffi::CString::new(filename).unwrap();
+pub fn datafile_start_save_to_cloud(filename: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x83BCCE3224735F05,
-        native_parameters!(filename_cstring.as_ptr())
+        native_parameters!(filename.as_ptr())
     );
 
     value
@@ -276,47 +239,45 @@ pub fn datafile_is_save_pending() -> bool {
     value
 }
 
-pub fn datadict_set_bool(objectData: *mut u32, key: String, value: bool) -> () {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_set_bool(objectData: *mut u32, key: &std::ffi::CString, value: bool) -> () {
     let value = native!(
         (),
         0x35124302A556A325,
-        native_parameters!(objectData, key_cstring.as_ptr(), value)
+        native_parameters!(objectData, key.as_ptr(), value)
     );
 
     value
 }
 
-pub fn datadict_set_int(objectData: *mut u32, key: String, value: i32) -> () {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_set_int(objectData: *mut u32, key: &std::ffi::CString, value: i32) -> () {
     let value = native!(
         (),
         0xE7E035450A7948D5,
-        native_parameters!(objectData, key_cstring.as_ptr(), value)
+        native_parameters!(objectData, key.as_ptr(), value)
     );
 
     value
 }
 
-pub fn datadict_set_float(objectData: *mut u32, key: String, value: f32) -> () {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_set_float(objectData: *mut u32, key: &std::ffi::CString, value: f32) -> () {
     let value = native!(
         (),
         0xC27E1CC2D795105E,
-        native_parameters!(objectData, key_cstring.as_ptr(), value)
+        native_parameters!(objectData, key.as_ptr(), value)
     );
 
     value
 }
 
-pub fn datadict_set_string(objectData: *mut u32, key: String, value: String) -> () {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
-
-    let value_cstring = std::ffi::CString::new(value).unwrap();
+pub fn datadict_set_string(
+    objectData: *mut u32,
+    key: &std::ffi::CString,
+    value: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x8FF3847DADD8E30C,
-        native_parameters!(objectData, key_cstring.as_ptr(), value_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr(), value.as_ptr())
     );
 
     value
@@ -324,127 +285,116 @@ pub fn datadict_set_string(objectData: *mut u32, key: String, value: String) -> 
 
 pub fn datadict_set_vector(
     objectData: *mut u32,
-    key: String,
+    key: &std::ffi::CString,
     valueX: f32,
     valueY: f32,
     valueZ: f32,
 ) -> () {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
     let value = native!(
         (),
         0x4CD49B76338C7DEE,
-        native_parameters!(objectData, key_cstring.as_ptr(), valueX, valueY, valueZ)
+        native_parameters!(objectData, key.as_ptr(), valueX, valueY, valueZ)
     );
 
     value
 }
 
-pub fn datadict_create_dict(objectData: *mut u32, key: String) -> *mut u32 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_create_dict(objectData: *mut u32, key: &std::ffi::CString) -> *mut u32 {
     let value = native!(
         *mut u32,
         0xA358F56F10732EE1,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_create_array(objectData: *mut u32, key: String) -> *mut u32 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_create_array(objectData: *mut u32, key: &std::ffi::CString) -> *mut u32 {
     let value = native!(
         *mut u32,
         0x5B11728527CA6E5F,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_get_bool(objectData: *mut u32, key: String) -> bool {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_bool(objectData: *mut u32, key: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x1186940ED72FFEEC,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_get_int(objectData: *mut u32, key: String) -> i32 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_int(objectData: *mut u32, key: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x78F06F6B1FB5A80C,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_get_float(objectData: *mut u32, key: String) -> f32 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_float(objectData: *mut u32, key: &std::ffi::CString) -> f32 {
     let value = native!(
         f32,
         0x06610343E73B9727,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_get_string(objectData: *mut u32, key: String) -> String {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_string(objectData: *mut u32, key: &std::ffi::CString) -> String {
     let value = native!(
         *const i8,
         0x3D2FD9E763B24472,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();
     value
 }
 
-pub fn datadict_get_vector(objectData: *mut u32, key: String) -> NativeVector3 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_vector(objectData: *mut u32, key: &std::ffi::CString) -> NativeVector3 {
     let value = native!(
         NativeVector3,
         0x46CD3CB66E0825CC,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_get_dict(objectData: *mut u32, key: String) -> *mut u32 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_dict(objectData: *mut u32, key: &std::ffi::CString) -> *mut u32 {
     let value = native!(
         *mut u32,
         0xB6B9DDC412FCEEE2,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_get_array(objectData: *mut u32, key: String) -> *mut u32 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_array(objectData: *mut u32, key: &std::ffi::CString) -> *mut u32 {
     let value = native!(
         *mut u32,
         0x7A983AA9DA2659ED,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
 }
 
-pub fn datadict_get_type(objectData: *mut u32, key: String) -> i32 {
-    let key_cstring = std::ffi::CString::new(key).unwrap();
+pub fn datadict_get_type(objectData: *mut u32, key: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x031C55ED33227371,
-        native_parameters!(objectData, key_cstring.as_ptr())
+        native_parameters!(objectData, key.as_ptr())
     );
 
     value
@@ -468,12 +418,11 @@ pub fn dataarray_add_float(arrayData: *mut u32, value: f32) -> () {
     value
 }
 
-pub fn dataarray_add_string(arrayData: *mut u32, value: String) -> () {
-    let value_cstring = std::ffi::CString::new(value).unwrap();
+pub fn dataarray_add_string(arrayData: *mut u32, value: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x2F0661C155AEEEAA,
-        native_parameters!(arrayData, value_cstring.as_ptr())
+        native_parameters!(arrayData, value.as_ptr())
     );
 
     value

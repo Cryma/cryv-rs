@@ -442,12 +442,11 @@ pub fn is_taxi_light_on(vehicle: i32) -> bool {
     value
 }
 
-pub fn is_vehicle_in_garage_area(garageName: String, vehicle: i32) -> bool {
-    let garageName_cstring = std::ffi::CString::new(garageName).unwrap();
+pub fn is_vehicle_in_garage_area(garageName: &std::ffi::CString, vehicle: i32) -> bool {
     let value = native!(
         bool,
         0xCEE4490CD57BB3C2,
-        native_parameters!(garageName_cstring.as_ptr(), vehicle)
+        native_parameters!(garageName.as_ptr(), vehicle)
     );
 
     value
@@ -1128,12 +1127,11 @@ pub fn set_vehicle_tyre_fixed(vehicle: i32, tyreIndex: i32) -> () {
     value
 }
 
-pub fn set_vehicle_number_plate_text(vehicle: i32, plateText: String) -> () {
-    let plateText_cstring = std::ffi::CString::new(plateText).unwrap();
+pub fn set_vehicle_number_plate_text(vehicle: i32, plateText: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x95A88F0B409CDA47,
-        native_parameters!(vehicle, plateText_cstring.as_ptr())
+        native_parameters!(vehicle, plateText.as_ptr())
     );
 
     value
@@ -1240,45 +1238,41 @@ pub fn does_vehicle_have_stuck_vehicle_check(vehicle: i32) -> bool {
     value
 }
 
-pub fn get_vehicle_recording_id(recording: i32, script: String) -> i32 {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
+pub fn get_vehicle_recording_id(recording: i32, script: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x21543C612379DB3C,
-        native_parameters!(recording, script_cstring.as_ptr())
+        native_parameters!(recording, script.as_ptr())
     );
 
     value
 }
 
-pub fn request_vehicle_recording(recording: i32, script: String) -> () {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
+pub fn request_vehicle_recording(recording: i32, script: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xAF514CABE74CBF15,
-        native_parameters!(recording, script_cstring.as_ptr())
+        native_parameters!(recording, script.as_ptr())
     );
 
     value
 }
 
-pub fn has_vehicle_recording_been_loaded(recording: i32, script: String) -> bool {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
+pub fn has_vehicle_recording_been_loaded(recording: i32, script: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x300D614A4C785FC4,
-        native_parameters!(recording, script_cstring.as_ptr())
+        native_parameters!(recording, script.as_ptr())
     );
 
     value
 }
 
-pub fn remove_vehicle_recording(recording: i32, script: String) -> () {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
+pub fn remove_vehicle_recording(recording: i32, script: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xF1160ACCF98A3FC8,
-        native_parameters!(recording, script_cstring.as_ptr())
+        native_parameters!(recording, script.as_ptr())
     );
 
     value
@@ -1297,13 +1291,12 @@ pub fn get_position_of_vehicle_recording_id_at_time(id: i32, time: f32) -> Nativ
 pub fn get_position_of_vehicle_recording_at_time(
     recording: i32,
     time: f32,
-    script: String,
+    script: &std::ffi::CString,
 ) -> NativeVector3 {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
     let value = native!(
         NativeVector3,
         0xD242728AA6F0FBA2,
-        native_parameters!(recording, time, script_cstring.as_ptr())
+        native_parameters!(recording, time, script.as_ptr())
     );
 
     value
@@ -1322,13 +1315,12 @@ pub fn get_rotation_of_vehicle_recording_id_at_time(id: i32, time: f32) -> Nativ
 pub fn get_rotation_of_vehicle_recording_at_time(
     recording: i32,
     time: f32,
-    script: String,
+    script: &std::ffi::CString,
 ) -> NativeVector3 {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
     let value = native!(
         NativeVector3,
         0x2058206FBE79A8AD,
-        native_parameters!(recording, time, script_cstring.as_ptr())
+        native_parameters!(recording, time, script.as_ptr())
     );
 
     value
@@ -1340,12 +1332,11 @@ pub fn get_total_duration_of_vehicle_recording_id(id: i32) -> f32 {
     value
 }
 
-pub fn get_total_duration_of_vehicle_recording(recording: i32, script: String) -> f32 {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
+pub fn get_total_duration_of_vehicle_recording(recording: i32, script: &std::ffi::CString) -> f32 {
     let value = native!(
         f32,
         0x0E48D1C262390950,
-        native_parameters!(recording, script_cstring.as_ptr())
+        native_parameters!(recording, script.as_ptr())
     );
 
     value
@@ -1366,14 +1357,13 @@ pub fn get_time_position_in_recording(vehicle: i32) -> f32 {
 pub fn start_playback_recorded_vehicle(
     vehicle: i32,
     recording: i32,
-    script: String,
+    script: &std::ffi::CString,
     p3: bool,
 ) -> () {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
     let value = native!(
         (),
         0x3F878F92B3A7A071,
-        native_parameters!(vehicle, recording, script_cstring.as_ptr(), p3)
+        native_parameters!(vehicle, recording, script.as_ptr(), p3)
     );
 
     value
@@ -1382,19 +1372,18 @@ pub fn start_playback_recorded_vehicle(
 pub fn start_playback_recorded_vehicle_with_flags(
     vehicle: i32,
     recording: i32,
-    script: String,
+    script: &std::ffi::CString,
     flags: i32,
     time: i32,
     drivingStyle: i32,
 ) -> () {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
     let value = native!(
         (),
         0x7D80FD645D4DA346,
         native_parameters!(
             vehicle,
             recording,
-            script_cstring.as_ptr(),
+            script.as_ptr(),
             flags,
             time,
             drivingStyle
@@ -1461,21 +1450,14 @@ pub fn set_playback_speed(vehicle: i32, speed: f32) -> () {
 pub fn start_playback_recorded_vehicle_using_ai(
     vehicle: i32,
     recording: i32,
-    script: String,
+    script: &std::ffi::CString,
     speed: f32,
     drivingStyle: i32,
 ) -> () {
-    let script_cstring = std::ffi::CString::new(script).unwrap();
     let value = native!(
         (),
         0x29DE5FA52D00428C,
-        native_parameters!(
-            vehicle,
-            recording,
-            script_cstring.as_ptr(),
-            speed,
-            drivingStyle
-        )
+        native_parameters!(vehicle, recording, script.as_ptr(), speed, drivingStyle)
     );
 
     value
@@ -2616,12 +2598,11 @@ pub fn set_heli_tail_explode_throw_dashboard(vehicle: i32, p1: bool) -> () {
     value
 }
 
-pub fn set_vehicle_name_debug(vehicle: i32, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn set_vehicle_name_debug(vehicle: i32, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xBFDF984E2C22B94F,
-        native_parameters!(vehicle, name_cstring.as_ptr())
+        native_parameters!(vehicle, name.as_ptr())
     );
 
     value
@@ -4286,12 +4267,11 @@ pub fn clear_vehicle_route_history(vehicle: i32) -> () {
     value
 }
 
-pub fn does_vehicle_exist_with_decorator(decorator: String) -> bool {
-    let decorator_cstring = std::ffi::CString::new(decorator).unwrap();
+pub fn does_vehicle_exist_with_decorator(decorator: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x956B409B984D9BF7,
-        native_parameters!(decorator_cstring.as_ptr())
+        native_parameters!(decorator.as_ptr())
     );
 
     value

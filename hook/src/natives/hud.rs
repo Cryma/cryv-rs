@@ -1,12 +1,7 @@
 use crate::types::NativeVector3;
 
-pub fn begin_text_command_busyspinner_on(string: String) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        (),
-        0xABA17D7CE615ADBF,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn begin_text_command_busyspinner_on(string: &std::ffi::CString) -> () {
+    let value = native!((), 0xABA17D7CE615ADBF, native_parameters!(string.as_ptr()));
 
     value
 }
@@ -241,44 +236,32 @@ pub fn _thefeed_add_txd_ref(p0: *mut u32, p1: *mut u32, p2: *mut u32, p3: *mut u
     value
 }
 
-pub fn begin_text_command_thefeed_post(text: String) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
-    let value = native!(
-        (),
-        0x202709F4C58A0424,
-        native_parameters!(text_cstring.as_ptr())
-    );
+pub fn begin_text_command_thefeed_post(text: &std::ffi::CString) -> () {
+    let value = native!((), 0x202709F4C58A0424, native_parameters!(text.as_ptr()));
 
     value
 }
 
 pub fn end_text_command_thefeed_post_stats(
-    txdName: String,
-    textureName: String,
+    txdName: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     flash: bool,
     iconType: i32,
     p4: bool,
-    sender: String,
-    subject: String,
+    sender: &std::ffi::CString,
+    subject: &std::ffi::CString,
 ) -> i32 {
-    let txdName_cstring = std::ffi::CString::new(txdName).unwrap();
-
-    let textureName_cstring = std::ffi::CString::new(textureName).unwrap();
-
-    let sender_cstring = std::ffi::CString::new(sender).unwrap();
-
-    let subject_cstring = std::ffi::CString::new(subject).unwrap();
     let value = native!(
         i32,
         0x2B7E9A4EAAA93C89,
         native_parameters!(
-            txdName_cstring.as_ptr(),
-            textureName_cstring.as_ptr(),
+            txdName.as_ptr(),
+            textureName.as_ptr(),
             flash,
             iconType,
             p4,
-            sender_cstring.as_ptr(),
-            subject_cstring.as_ptr()
+            sender.as_ptr(),
+            subject.as_ptr()
         )
     );
 
@@ -286,30 +269,23 @@ pub fn end_text_command_thefeed_post_stats(
 }
 
 pub fn end_text_command_thefeed_post_messagetext(
-    picName1: String,
-    picName2: String,
+    picName1: &std::ffi::CString,
+    picName2: &std::ffi::CString,
     flash: bool,
     iconType: i32,
-    sender: String,
-    subject: String,
+    sender: &std::ffi::CString,
+    subject: &std::ffi::CString,
 ) -> i32 {
-    let picName1_cstring = std::ffi::CString::new(picName1).unwrap();
-
-    let picName2_cstring = std::ffi::CString::new(picName2).unwrap();
-
-    let sender_cstring = std::ffi::CString::new(sender).unwrap();
-
-    let subject_cstring = std::ffi::CString::new(subject).unwrap();
     let value = native!(
         i32,
         0x1CCD9A37359072CF,
         native_parameters!(
-            picName1_cstring.as_ptr(),
-            picName2_cstring.as_ptr(),
+            picName1.as_ptr(),
+            picName2.as_ptr(),
             flash,
             iconType,
-            sender_cstring.as_ptr(),
-            subject_cstring.as_ptr()
+            sender.as_ptr(),
+            subject.as_ptr()
         )
     );
 
@@ -317,30 +293,23 @@ pub fn end_text_command_thefeed_post_messagetext(
 }
 
 pub fn _end_text_command_thefeed_post_messagetext_gxt_entry(
-    picName1: String,
-    picName2: String,
+    picName1: &std::ffi::CString,
+    picName2: &std::ffi::CString,
     flash: bool,
     iconType: i32,
-    sender: String,
-    subject: String,
+    sender: &std::ffi::CString,
+    subject: &std::ffi::CString,
 ) -> i32 {
-    let picName1_cstring = std::ffi::CString::new(picName1).unwrap();
-
-    let picName2_cstring = std::ffi::CString::new(picName2).unwrap();
-
-    let sender_cstring = std::ffi::CString::new(sender).unwrap();
-
-    let subject_cstring = std::ffi::CString::new(subject).unwrap();
     let value = native!(
         i32,
         0xC6F580E4C94926AC,
         native_parameters!(
-            picName1_cstring.as_ptr(),
-            picName2_cstring.as_ptr(),
+            picName1.as_ptr(),
+            picName2.as_ptr(),
             flash,
             iconType,
-            sender_cstring.as_ptr(),
-            subject_cstring.as_ptr()
+            sender.as_ptr(),
+            subject.as_ptr()
         )
     );
 
@@ -348,31 +317,24 @@ pub fn _end_text_command_thefeed_post_messagetext_gxt_entry(
 }
 
 pub fn end_text_command_thefeed_post_messagetext_tu(
-    picName1: String,
-    picName2: String,
+    picName1: &std::ffi::CString,
+    picName2: &std::ffi::CString,
     flash: bool,
     iconType: i32,
-    sender: String,
-    subject: String,
+    sender: &std::ffi::CString,
+    subject: &std::ffi::CString,
     duration: f32,
 ) -> i32 {
-    let picName1_cstring = std::ffi::CString::new(picName1).unwrap();
-
-    let picName2_cstring = std::ffi::CString::new(picName2).unwrap();
-
-    let sender_cstring = std::ffi::CString::new(sender).unwrap();
-
-    let subject_cstring = std::ffi::CString::new(subject).unwrap();
     let value = native!(
         i32,
         0x1E6611149DB3DB6B,
         native_parameters!(
-            picName1_cstring.as_ptr(),
-            picName2_cstring.as_ptr(),
+            picName1.as_ptr(),
+            picName2.as_ptr(),
             flash,
             iconType,
-            sender_cstring.as_ptr(),
-            subject_cstring.as_ptr(),
+            sender.as_ptr(),
+            subject.as_ptr(),
             duration
         )
     );
@@ -381,36 +343,27 @@ pub fn end_text_command_thefeed_post_messagetext_tu(
 }
 
 pub fn end_text_command_thefeed_post_messagetext_with_crew_tag(
-    picName1: String,
-    picName2: String,
+    picName1: &std::ffi::CString,
+    picName2: &std::ffi::CString,
     flash: bool,
     iconType: i32,
-    sender: String,
-    subject: String,
+    sender: &std::ffi::CString,
+    subject: &std::ffi::CString,
     duration: f32,
-    clanTag: String,
+    clanTag: &std::ffi::CString,
 ) -> i32 {
-    let picName1_cstring = std::ffi::CString::new(picName1).unwrap();
-
-    let picName2_cstring = std::ffi::CString::new(picName2).unwrap();
-
-    let sender_cstring = std::ffi::CString::new(sender).unwrap();
-
-    let subject_cstring = std::ffi::CString::new(subject).unwrap();
-
-    let clanTag_cstring = std::ffi::CString::new(clanTag).unwrap();
     let value = native!(
         i32,
         0x5CBF7BADE20DB93E,
         native_parameters!(
-            picName1_cstring.as_ptr(),
-            picName2_cstring.as_ptr(),
+            picName1.as_ptr(),
+            picName2.as_ptr(),
             flash,
             iconType,
-            sender_cstring.as_ptr(),
-            subject_cstring.as_ptr(),
+            sender.as_ptr(),
+            subject.as_ptr(),
             duration,
-            clanTag_cstring.as_ptr()
+            clanTag.as_ptr()
         )
     );
 
@@ -418,38 +371,29 @@ pub fn end_text_command_thefeed_post_messagetext_with_crew_tag(
 }
 
 pub fn end_text_command_thefeed_post_messagetext_with_crew_tag_and_additional_icon(
-    picName1: String,
-    picName2: String,
+    picName1: &std::ffi::CString,
+    picName2: &std::ffi::CString,
     flash: bool,
     iconType1: i32,
-    sender: String,
-    subject: String,
+    sender: &std::ffi::CString,
+    subject: &std::ffi::CString,
     duration: f32,
-    clanTag: String,
+    clanTag: &std::ffi::CString,
     iconType2: i32,
     p9: i32,
 ) -> i32 {
-    let picName1_cstring = std::ffi::CString::new(picName1).unwrap();
-
-    let picName2_cstring = std::ffi::CString::new(picName2).unwrap();
-
-    let sender_cstring = std::ffi::CString::new(sender).unwrap();
-
-    let subject_cstring = std::ffi::CString::new(subject).unwrap();
-
-    let clanTag_cstring = std::ffi::CString::new(clanTag).unwrap();
     let value = native!(
         i32,
         0x531B84E7DA981FB6,
         native_parameters!(
-            picName1_cstring.as_ptr(),
-            picName2_cstring.as_ptr(),
+            picName1.as_ptr(),
+            picName2.as_ptr(),
             flash,
             iconType1,
-            sender_cstring.as_ptr(),
-            subject_cstring.as_ptr(),
+            sender.as_ptr(),
+            subject.as_ptr(),
             duration,
-            clanTag_cstring.as_ptr(),
+            clanTag.as_ptr(),
             iconType2,
             p9
         )
@@ -477,27 +421,16 @@ pub fn end_text_command_thefeed_post_ticker_with_tokens(blink: bool, p1: bool) -
 }
 
 pub fn end_text_command_thefeed_post_award(
-    p0: String,
-    p1: String,
+    p0: &std::ffi::CString,
+    p1: &std::ffi::CString,
     p2: i32,
     p3: i32,
-    p4: String,
+    p4: &std::ffi::CString,
 ) -> i32 {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p4_cstring = std::ffi::CString::new(p4).unwrap();
     let value = native!(
         i32,
         0xAA295B6F28BD587D,
-        native_parameters!(
-            p0_cstring.as_ptr(),
-            p1_cstring.as_ptr(),
-            p2,
-            p3,
-            p4_cstring.as_ptr()
-        )
+        native_parameters!(p0.as_ptr(), p1.as_ptr(), p2, p3, p4.as_ptr())
     );
 
     value
@@ -532,12 +465,11 @@ pub fn end_text_command_thefeed_post_crewtag_with_game_name(
     isLeader: bool,
     unk0: bool,
     clanDesc: i32,
-    playerName: String,
+    playerName: &std::ffi::CString,
     R: i32,
     G: i32,
     B: i32,
 ) -> i32 {
-    let playerName_cstring = std::ffi::CString::new(playerName).unwrap();
     let value = native!(
         i32,
         0x137BC35589E34E1E,
@@ -549,7 +481,7 @@ pub fn end_text_command_thefeed_post_crewtag_with_game_name(
             isLeader,
             unk0,
             clanDesc,
-            playerName_cstring.as_ptr(),
+            playerName.as_ptr(),
             R,
             G,
             B
@@ -595,27 +527,16 @@ pub fn end_text_command_thefeed_post_mpticker(blink: bool, p1: bool) -> i32 {
 }
 
 pub fn end_text_command_thefeed_post_crew_rankup(
-    p0: String,
-    p1: String,
-    p2: String,
+    p0: &std::ffi::CString,
+    p1: &std::ffi::CString,
+    p2: &std::ffi::CString,
     p3: bool,
     p4: bool,
 ) -> i32 {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p2_cstring = std::ffi::CString::new(p2).unwrap();
     let value = native!(
         i32,
         0x8EFCCF6EC66D85E4,
-        native_parameters!(
-            p0_cstring.as_ptr(),
-            p1_cstring.as_ptr(),
-            p2_cstring.as_ptr(),
-            p3,
-            p4
-        )
+        native_parameters!(p0.as_ptr(), p1.as_ptr(), p2.as_ptr(), p3, p4)
     );
 
     value
@@ -640,12 +561,15 @@ pub fn end_text_command_thefeed_post_versus_tu(
     value
 }
 
-pub fn _end_text_command_thefeed_post_replay_icon(type_esc: i32, image: i32, text: String) -> i32 {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
+pub fn _end_text_command_thefeed_post_replay_icon(
+    type_esc: i32,
+    image: i32,
+    text: &std::ffi::CString,
+) -> i32 {
     let value = native!(
         i32,
         0xD202B92CBF1D816F,
-        native_parameters!(type_esc, image, text_cstring.as_ptr())
+        native_parameters!(type_esc, image, text.as_ptr())
     );
 
     value
@@ -653,27 +577,23 @@ pub fn _end_text_command_thefeed_post_replay_icon(type_esc: i32, image: i32, tex
 
 pub fn _end_text_command_thefeed_post_replay_input(
     type_esc: i32,
-    button: String,
-    text: String,
+    button: &std::ffi::CString,
+    text: &std::ffi::CString,
 ) -> i32 {
-    let button_cstring = std::ffi::CString::new(button).unwrap();
-
-    let text_cstring = std::ffi::CString::new(text).unwrap();
     let value = native!(
         i32,
         0xDD6CB2CCE7C2735C,
-        native_parameters!(type_esc, button_cstring.as_ptr(), text_cstring.as_ptr())
+        native_parameters!(type_esc, button.as_ptr(), text.as_ptr())
     );
 
     value
 }
 
-pub fn begin_text_command_print(GxtEntry: String) -> () {
-    let GxtEntry_cstring = std::ffi::CString::new(GxtEntry).unwrap();
+pub fn begin_text_command_print(GxtEntry: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xB87A37EEB7FAA67D,
-        native_parameters!(GxtEntry_cstring.as_ptr())
+        native_parameters!(GxtEntry.as_ptr())
     );
 
     value
@@ -689,13 +609,8 @@ pub fn end_text_command_print(duration: i32, drawImmediately: bool) -> () {
     value
 }
 
-pub fn begin_text_command_is_message_displayed(text: String) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
-    let value = native!(
-        (),
-        0x853648FD1063A213,
-        native_parameters!(text_cstring.as_ptr())
-    );
+pub fn begin_text_command_is_message_displayed(text: &std::ffi::CString) -> () {
+    let value = native!((), 0x853648FD1063A213, native_parameters!(text.as_ptr()));
 
     value
 }
@@ -706,13 +621,8 @@ pub fn end_text_command_is_message_displayed() -> bool {
     value
 }
 
-pub fn begin_text_command_display_text(text: String) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
-    let value = native!(
-        (),
-        0x25FBB336DF1804CB,
-        native_parameters!(text_cstring.as_ptr())
-    );
+pub fn begin_text_command_display_text(text: &std::ffi::CString) -> () {
+    let value = native!((), 0x25FBB336DF1804CB, native_parameters!(text.as_ptr()));
 
     value
 }
@@ -723,13 +633,8 @@ pub fn end_text_command_display_text(x: f32, y: f32, p2: i32) -> () {
     value
 }
 
-pub fn _begin_text_command_get_width(text: String) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
-    let value = native!(
-        (),
-        0x54CE8AC98E120CAB,
-        native_parameters!(text_cstring.as_ptr())
-    );
+pub fn _begin_text_command_get_width(text: &std::ffi::CString) -> () {
+    let value = native!((), 0x54CE8AC98E120CAB, native_parameters!(text.as_ptr()));
 
     value
 }
@@ -740,13 +645,8 @@ pub fn _end_text_command_get_width(p0: bool) -> f32 {
     value
 }
 
-pub fn _begin_text_command_line_count(entry: String) -> () {
-    let entry_cstring = std::ffi::CString::new(entry).unwrap();
-    let value = native!(
-        (),
-        0x521FB041D93DD0E4,
-        native_parameters!(entry_cstring.as_ptr())
-    );
+pub fn _begin_text_command_line_count(entry: &std::ffi::CString) -> () {
+    let value = native!((), 0x521FB041D93DD0E4, native_parameters!(entry.as_ptr()));
 
     value
 }
@@ -757,12 +657,11 @@ pub fn _end_text_command_line_count(x: f32, y: f32) -> i32 {
     value
 }
 
-pub fn begin_text_command_display_help(inputType: String) -> () {
-    let inputType_cstring = std::ffi::CString::new(inputType).unwrap();
+pub fn begin_text_command_display_help(inputType: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x8509B634FBE7DA11,
-        native_parameters!(inputType_cstring.as_ptr())
+        native_parameters!(inputType.as_ptr())
     );
 
     value
@@ -778,12 +677,13 @@ pub fn end_text_command_display_help(p0: i32, loop_esc: bool, beep: bool, shape:
     value
 }
 
-pub fn begin_text_command_is_this_help_message_being_displayed(labelName: String) -> () {
-    let labelName_cstring = std::ffi::CString::new(labelName).unwrap();
+pub fn begin_text_command_is_this_help_message_being_displayed(
+    labelName: &std::ffi::CString,
+) -> () {
     let value = native!(
         (),
         0x0A24DA3A41B718F5,
-        native_parameters!(labelName_cstring.as_ptr())
+        native_parameters!(labelName.as_ptr())
     );
 
     value
@@ -795,12 +695,11 @@ pub fn end_text_command_is_this_help_message_being_displayed(p0: i32) -> bool {
     value
 }
 
-pub fn begin_text_command_set_blip_name(gxtentry: String) -> () {
-    let gxtentry_cstring = std::ffi::CString::new(gxtentry).unwrap();
+pub fn begin_text_command_set_blip_name(gxtentry: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xF9113A30DE5C6670,
-        native_parameters!(gxtentry_cstring.as_ptr())
+        native_parameters!(gxtentry.as_ptr())
     );
 
     value
@@ -812,13 +711,8 @@ pub fn end_text_command_set_blip_name(blip: i32) -> () {
     value
 }
 
-pub fn _begin_text_command_objective(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x23D69E0465570028,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _begin_text_command_objective(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x23D69E0465570028, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -829,13 +723,8 @@ pub fn _end_text_command_objective(p0: bool) -> () {
     value
 }
 
-pub fn begin_text_command_clear_print(text: String) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
-    let value = native!(
-        (),
-        0xE124FA80A759019C,
-        native_parameters!(text_cstring.as_ptr())
-    );
+pub fn begin_text_command_clear_print(text: &std::ffi::CString) -> () {
+    let value = native!((), 0xE124FA80A759019C, native_parameters!(text.as_ptr()));
 
     value
 }
@@ -846,12 +735,11 @@ pub fn end_text_command_clear_print() -> () {
     value
 }
 
-pub fn begin_text_command_override_button_text(gxtEntry: String) -> () {
-    let gxtEntry_cstring = std::ffi::CString::new(gxtEntry).unwrap();
+pub fn begin_text_command_override_button_text(gxtEntry: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x8F9EE5687F8EECCD,
-        native_parameters!(gxtEntry_cstring.as_ptr())
+        native_parameters!(gxtEntry.as_ptr())
     );
 
     value
@@ -879,12 +767,11 @@ pub fn add_text_component_float(value: f32, decimalPlaces: i32) -> () {
     value
 }
 
-pub fn add_text_component_substring_text_label(labelName: String) -> () {
-    let labelName_cstring = std::ffi::CString::new(labelName).unwrap();
+pub fn add_text_component_substring_text_label(labelName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xC63CD5D2920ACBE7,
-        native_parameters!(labelName_cstring.as_ptr())
+        native_parameters!(labelName.as_ptr())
     );
 
     value
@@ -902,13 +789,8 @@ pub fn add_text_component_substring_blip_name(blip: i32) -> () {
     value
 }
 
-pub fn add_text_component_substring_player_name(text: String) -> () {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
-    let value = native!(
-        (),
-        0x6C188BE134E074AA,
-        native_parameters!(text_cstring.as_ptr())
-    );
+pub fn add_text_component_substring_player_name(text: &std::ffi::CString) -> () {
+    let value = native!((), 0x6C188BE134E074AA, native_parameters!(text.as_ptr()));
 
     value
 }
@@ -929,35 +811,20 @@ pub fn add_text_component_formatted_integer(value: i32, commaSeparated: bool) ->
     value
 }
 
-pub fn add_text_component_substring_phone_number(p0: String, p1: i32) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x761B77454205A61D,
-        native_parameters!(p0_cstring.as_ptr(), p1)
-    );
+pub fn add_text_component_substring_phone_number(p0: &std::ffi::CString, p1: i32) -> () {
+    let value = native!((), 0x761B77454205A61D, native_parameters!(p0.as_ptr(), p1));
 
     value
 }
 
-pub fn add_text_component_substring_website(website: String) -> () {
-    let website_cstring = std::ffi::CString::new(website).unwrap();
-    let value = native!(
-        (),
-        0x94CF4AC034C9C986,
-        native_parameters!(website_cstring.as_ptr())
-    );
+pub fn add_text_component_substring_website(website: &std::ffi::CString) -> () {
+    let value = native!((), 0x94CF4AC034C9C986, native_parameters!(website.as_ptr()));
 
     value
 }
 
-pub fn add_text_component_substring_keyboard_display(string: String) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        (),
-        0x5F68520888E69014,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn add_text_component_substring_keyboard_display(string: &std::ffi::CString) -> () {
+    let value = native!((), 0x5F68520888E69014, native_parameters!(string.as_ptr()));
 
     value
 }
@@ -968,12 +835,11 @@ pub fn set_colour_of_next_text_component(hudColor: i32) -> () {
     value
 }
 
-pub fn _get_text_substring(text: String, position: i32, length: i32) -> String {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
+pub fn _get_text_substring(text: &std::ffi::CString, position: i32, length: i32) -> String {
     let value = native!(
         *const i8,
         0x169BD9382084C8C0,
-        native_parameters!(text_cstring.as_ptr(), position, length)
+        native_parameters!(text.as_ptr(), position, length)
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();
@@ -981,40 +847,41 @@ pub fn _get_text_substring(text: String, position: i32, length: i32) -> String {
 }
 
 pub fn _get_text_substring_safe(
-    text: String,
+    text: &std::ffi::CString,
     position: i32,
     length: i32,
     maxLength: i32,
 ) -> String {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
     let value = native!(
         *const i8,
         0xB2798643312205C5,
-        native_parameters!(text_cstring.as_ptr(), position, length, maxLength)
+        native_parameters!(text.as_ptr(), position, length, maxLength)
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();
     value
 }
 
-pub fn _get_text_substring_slice(text: String, startPosition: i32, endPosition: i32) -> String {
-    let text_cstring = std::ffi::CString::new(text).unwrap();
+pub fn _get_text_substring_slice(
+    text: &std::ffi::CString,
+    startPosition: i32,
+    endPosition: i32,
+) -> String {
     let value = native!(
         *const i8,
         0xCE94AEBA5D82908A,
-        native_parameters!(text_cstring.as_ptr(), startPosition, endPosition)
+        native_parameters!(text.as_ptr(), startPosition, endPosition)
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();
     value
 }
 
-pub fn _get_label_text(labelName: String) -> String {
-    let labelName_cstring = std::ffi::CString::new(labelName).unwrap();
+pub fn _get_label_text(labelName: &std::ffi::CString) -> String {
     let value = native!(
         *const i8,
         0x7B5280EBA9840C72,
-        native_parameters!(labelName_cstring.as_ptr())
+        native_parameters!(labelName.as_ptr())
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();
@@ -1039,13 +906,8 @@ pub fn clear_all_help_messages() -> () {
     value
 }
 
-pub fn clear_this_print(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0xCF708001E1E536DD,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn clear_this_print(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0xCF708001E1E536DD, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -1056,34 +918,27 @@ pub fn clear_small_prints() -> () {
     value
 }
 
-pub fn does_text_block_exist(gxt: String) -> bool {
-    let gxt_cstring = std::ffi::CString::new(gxt).unwrap();
-    let value = native!(
-        bool,
-        0x1C7302E725259789,
-        native_parameters!(gxt_cstring.as_ptr())
-    );
+pub fn does_text_block_exist(gxt: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x1C7302E725259789, native_parameters!(gxt.as_ptr()));
 
     value
 }
 
-pub fn request_additional_text(gxt: String, slot: i32) -> () {
-    let gxt_cstring = std::ffi::CString::new(gxt).unwrap();
+pub fn request_additional_text(gxt: &std::ffi::CString, slot: i32) -> () {
     let value = native!(
         (),
         0x71A78003C8E71424,
-        native_parameters!(gxt_cstring.as_ptr(), slot)
+        native_parameters!(gxt.as_ptr(), slot)
     );
 
     value
 }
 
-pub fn request_additional_text_for_dlc(gxt: String, slot: i32) -> () {
-    let gxt_cstring = std::ffi::CString::new(gxt).unwrap();
+pub fn request_additional_text_for_dlc(gxt: &std::ffi::CString, slot: i32) -> () {
     let value = native!(
         (),
         0x6009F9F1AE90D8A6,
-        native_parameters!(gxt_cstring.as_ptr(), slot)
+        native_parameters!(gxt.as_ptr(), slot)
     );
 
     value
@@ -1107,12 +962,11 @@ pub fn is_streaming_additional_text(p0: i32) -> bool {
     value
 }
 
-pub fn has_this_additional_text_loaded(gxt: String, slot: i32) -> bool {
-    let gxt_cstring = std::ffi::CString::new(gxt).unwrap();
+pub fn has_this_additional_text_loaded(gxt: &std::ffi::CString, slot: i32) -> bool {
     let value = native!(
         bool,
         0xADBF060E2B30C5BC,
-        native_parameters!(gxt_cstring.as_ptr(), slot)
+        native_parameters!(gxt.as_ptr(), slot)
     );
 
     value
@@ -1124,58 +978,37 @@ pub fn is_message_being_displayed() -> bool {
     value
 }
 
-pub fn does_text_label_exist(gxt: String) -> bool {
-    let gxt_cstring = std::ffi::CString::new(gxt).unwrap();
-    let value = native!(
-        bool,
-        0xAC09CA973C564252,
-        native_parameters!(gxt_cstring.as_ptr())
-    );
+pub fn does_text_label_exist(gxt: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0xAC09CA973C564252, native_parameters!(gxt.as_ptr()));
 
     value
 }
 
-pub fn _0x98c3cf913d895111(string: String, length: i32) -> String {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn _0x98c3cf913d895111(string: &std::ffi::CString, length: i32) -> String {
     let value = native!(
         *const i8,
         0x98C3CF913D895111,
-        native_parameters!(string_cstring.as_ptr(), length)
+        native_parameters!(string.as_ptr(), length)
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();
     value
 }
 
-pub fn get_length_of_string_with_this_text_label(gxt: String) -> i32 {
-    let gxt_cstring = std::ffi::CString::new(gxt).unwrap();
-    let value = native!(
-        i32,
-        0x801BD273D3A23F74,
-        native_parameters!(gxt_cstring.as_ptr())
-    );
+pub fn get_length_of_string_with_this_text_label(gxt: &std::ffi::CString) -> i32 {
+    let value = native!(i32, 0x801BD273D3A23F74, native_parameters!(gxt.as_ptr()));
 
     value
 }
 
-pub fn get_length_of_literal_string(string: String) -> i32 {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        i32,
-        0xF030907CCBB8A9FD,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn get_length_of_literal_string(string: &std::ffi::CString) -> i32 {
+    let value = native!(i32, 0xF030907CCBB8A9FD, native_parameters!(string.as_ptr()));
 
     value
 }
 
-pub fn get_length_of_literal_string_in_bytes(string: String) -> i32 {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
-    let value = native!(
-        i32,
-        0x43E4111189E54F0E,
-        native_parameters!(string_cstring.as_ptr())
-    );
+pub fn get_length_of_literal_string_in_bytes(string: &std::ffi::CString) -> i32 {
+    let value = native!(i32, 0x43E4111189E54F0E, native_parameters!(string.as_ptr()));
 
     value
 }
@@ -1547,35 +1380,24 @@ pub fn get_default_script_rendertarget_render_id() -> i32 {
     value
 }
 
-pub fn register_named_rendertarget(name: String, p1: bool) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn register_named_rendertarget(name: &std::ffi::CString, p1: bool) -> bool {
     let value = native!(
         bool,
         0x57D9C12635E25CE3,
-        native_parameters!(name_cstring.as_ptr(), p1)
+        native_parameters!(name.as_ptr(), p1)
     );
 
     value
 }
 
-pub fn is_named_rendertarget_registered(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0x78DCDC15C9F116B4,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn is_named_rendertarget_registered(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0x78DCDC15C9F116B4, native_parameters!(name.as_ptr()));
 
     value
 }
 
-pub fn release_named_rendertarget(name: String) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        bool,
-        0xE9F6FFE837354DD4,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn release_named_rendertarget(name: &std::ffi::CString) -> bool {
+    let value = native!(bool, 0xE9F6FFE837354DD4, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -1586,13 +1408,8 @@ pub fn link_named_rendertarget(modelHash: u32) -> () {
     value
 }
 
-pub fn get_named_rendertarget_render_id(name: String) -> i32 {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        i32,
-        0x1A6478B61C6BDC3B,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn get_named_rendertarget_render_id(name: &std::ffi::CString) -> i32 {
+    let value = native!(i32, 0x1A6478B61C6BDC3B, native_parameters!(name.as_ptr()));
 
     value
 }
@@ -1809,12 +1626,11 @@ pub fn _0xb7b873520c84c118() -> () {
     value
 }
 
-pub fn set_blip_name_from_text_file(blip: i32, gxtEntry: String) -> () {
-    let gxtEntry_cstring = std::ffi::CString::new(gxtEntry).unwrap();
+pub fn set_blip_name_from_text_file(blip: i32, gxtEntry: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xEAA0FFE120D92784,
-        native_parameters!(blip, gxtEntry_cstring.as_ptr())
+        native_parameters!(blip, gxtEntry.as_ptr())
     );
 
     value
@@ -2411,12 +2227,11 @@ pub fn _0x801879a9b4f4b2fb() -> bool {
     value
 }
 
-pub fn display_help_text_this_frame(message: String, p1: bool) -> () {
-    let message_cstring = std::ffi::CString::new(message).unwrap();
+pub fn display_help_text_this_frame(message: &std::ffi::CString, p1: bool) -> () {
     let value = native!(
         (),
         0x960C9FF8F616E41C,
-        native_parameters!(message_cstring.as_ptr(), p1)
+        native_parameters!(message.as_ptr(), p1)
     );
 
     value
@@ -2578,23 +2393,21 @@ pub fn set_minimap_in_spectator_mode(toggle: bool, ped: i32) -> () {
     value
 }
 
-pub fn set_mission_name(p0: bool, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn set_mission_name(p0: bool, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x5F28ECF5FC84772F,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
 }
 
-pub fn _set_mission_name_2(p0: bool, name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
+pub fn _set_mission_name_2(p0: bool, name: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xE45087D85F468BC2,
-        native_parameters!(p0, name_cstring.as_ptr())
+        native_parameters!(p0, name.as_ptr())
     );
 
     value
@@ -2890,27 +2703,24 @@ pub fn clear_floating_help(p0: i32, p1: bool) -> () {
 
 pub fn create_mp_gamer_tag_with_crew_color(
     player: i32,
-    username: String,
+    username: &std::ffi::CString,
     pointedClanTag: bool,
     isRockstarClan: bool,
-    clanTag: String,
+    clanTag: &std::ffi::CString,
     p5: u32,
     r: i32,
     g: i32,
     b: i32,
 ) -> () {
-    let username_cstring = std::ffi::CString::new(username).unwrap();
-
-    let clanTag_cstring = std::ffi::CString::new(clanTag).unwrap();
     let value = native!(
         (),
         0x6DD05E9D83EFA4C9,
         native_parameters!(
             player,
-            username_cstring.as_ptr(),
+            username.as_ptr(),
             pointedClanTag,
             isRockstarClan,
-            clanTag_cstring.as_ptr(),
+            clanTag.as_ptr(),
             p5,
             r,
             g,
@@ -2929,24 +2739,21 @@ pub fn is_mp_gamer_tag_movie_active() -> bool {
 
 pub fn create_fake_mp_gamer_tag(
     ped: i32,
-    username: String,
+    username: &std::ffi::CString,
     pointedClanTag: bool,
     isRockstarClan: bool,
-    clanTag: String,
+    clanTag: &std::ffi::CString,
     p5: u32,
 ) -> i32 {
-    let username_cstring = std::ffi::CString::new(username).unwrap();
-
-    let clanTag_cstring = std::ffi::CString::new(clanTag).unwrap();
     let value = native!(
         i32,
         0xBFEFE3321A3F5015,
         native_parameters!(
             ped,
-            username_cstring.as_ptr(),
+            username.as_ptr(),
             pointedClanTag,
             isRockstarClan,
-            clanTag_cstring.as_ptr(),
+            clanTag.as_ptr(),
             p5
         )
     );
@@ -3052,12 +2859,11 @@ pub fn _set_mp_gamer_tag_unk(gamerTagId: i32, p1: i32) -> () {
     value
 }
 
-pub fn set_mp_gamer_tag_name(gamerTagId: i32, string: String) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn set_mp_gamer_tag_name(gamerTagId: i32, string: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xDEA2B8283BAA3944,
-        native_parameters!(gamerTagId, string_cstring.as_ptr())
+        native_parameters!(gamerTagId, string.as_ptr())
     );
 
     value
@@ -3069,12 +2875,11 @@ pub fn _is_valid_mp_gamer_tag_movie(gamerTagId: i32) -> bool {
     value
 }
 
-pub fn set_mp_gamer_tag_big_text(gamerTagId: i32, string: String) -> () {
-    let string_cstring = std::ffi::CString::new(string).unwrap();
+pub fn set_mp_gamer_tag_big_text(gamerTagId: i32, string: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x7B7723747CCB55B6,
-        native_parameters!(gamerTagId, string_cstring.as_ptr())
+        native_parameters!(gamerTagId, string.as_ptr())
     );
 
     value
@@ -3111,34 +2916,27 @@ pub fn _is_warning_message_active_2() -> bool {
 }
 
 pub fn set_warning_message(
-    titleMsg: String,
+    titleMsg: &std::ffi::CString,
     flags: i32,
-    promptMsg: String,
+    promptMsg: &std::ffi::CString,
     p3: bool,
     p4: i32,
-    p5: String,
-    p6: String,
+    p5: &std::ffi::CString,
+    p6: &std::ffi::CString,
     showBg: bool,
     p8: u32,
 ) -> () {
-    let titleMsg_cstring = std::ffi::CString::new(titleMsg).unwrap();
-
-    let promptMsg_cstring = std::ffi::CString::new(promptMsg).unwrap();
-
-    let p5_cstring = std::ffi::CString::new(p5).unwrap();
-
-    let p6_cstring = std::ffi::CString::new(p6).unwrap();
     let value = native!(
         (),
         0x7B1776B3B53F8D74,
         native_parameters!(
-            titleMsg_cstring.as_ptr(),
+            titleMsg.as_ptr(),
             flags,
-            promptMsg_cstring.as_ptr(),
+            promptMsg.as_ptr(),
             p3,
             p4,
-            p5_cstring.as_ptr(),
-            p6_cstring.as_ptr(),
+            p5.as_ptr(),
+            p6.as_ptr(),
             showBg,
             p8
         )
@@ -3148,10 +2946,10 @@ pub fn set_warning_message(
 }
 
 pub fn set_warning_message_with_header(
-    titleMsg: String,
-    p1: String,
+    titleMsg: &std::ffi::CString,
+    p1: &std::ffi::CString,
     flags: i32,
-    promptMsg: String,
+    promptMsg: &std::ffi::CString,
     p4: bool,
     p5: u32,
     p6: *mut u32,
@@ -3159,19 +2957,14 @@ pub fn set_warning_message_with_header(
     showBg: bool,
     p9: u32,
 ) -> () {
-    let titleMsg_cstring = std::ffi::CString::new(titleMsg).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let promptMsg_cstring = std::ffi::CString::new(promptMsg).unwrap();
     let value = native!(
         (),
         0xDC38CC1E35B6A5D7,
         native_parameters!(
-            titleMsg_cstring.as_ptr(),
-            p1_cstring.as_ptr(),
+            titleMsg.as_ptr(),
+            p1.as_ptr(),
             flags,
-            promptMsg_cstring.as_ptr(),
+            promptMsg.as_ptr(),
             p4,
             p5,
             p6,
@@ -3185,10 +2978,10 @@ pub fn set_warning_message_with_header(
 }
 
 pub fn set_warning_message_with_header_and_substring_flags(
-    entryHeader: String,
-    entryLine1: String,
+    entryHeader: &std::ffi::CString,
+    entryLine1: &std::ffi::CString,
     instructionalKey: u32,
-    entryLine2: String,
+    entryLine2: &std::ffi::CString,
     p4: bool,
     p5: u32,
     p6: u32,
@@ -3197,19 +2990,14 @@ pub fn set_warning_message_with_header_and_substring_flags(
     p9: bool,
     p10: u32,
 ) -> () {
-    let entryHeader_cstring = std::ffi::CString::new(entryHeader).unwrap();
-
-    let entryLine1_cstring = std::ffi::CString::new(entryLine1).unwrap();
-
-    let entryLine2_cstring = std::ffi::CString::new(entryLine2).unwrap();
     let value = native!(
         (),
         0x701919482C74B5AB,
         native_parameters!(
-            entryHeader_cstring.as_ptr(),
-            entryLine1_cstring.as_ptr(),
+            entryHeader.as_ptr(),
+            entryLine1.as_ptr(),
             instructionalKey,
-            entryLine2_cstring.as_ptr(),
+            entryLine2.as_ptr(),
             p4,
             p5,
             p6,
@@ -3224,10 +3012,10 @@ pub fn set_warning_message_with_header_and_substring_flags(
 }
 
 pub fn _set_warning_message_with_header_unk(
-    entryHeader: String,
-    entryLine1: String,
+    entryHeader: &std::ffi::CString,
+    entryLine1: &std::ffi::CString,
     flags: i32,
-    entryLine2: String,
+    entryLine2: &std::ffi::CString,
     p4: bool,
     p5: u32,
     p6: *mut u32,
@@ -3236,19 +3024,14 @@ pub fn _set_warning_message_with_header_unk(
     p9: u32,
     p10: u32,
 ) -> () {
-    let entryHeader_cstring = std::ffi::CString::new(entryHeader).unwrap();
-
-    let entryLine1_cstring = std::ffi::CString::new(entryLine1).unwrap();
-
-    let entryLine2_cstring = std::ffi::CString::new(entryLine2).unwrap();
     let value = native!(
         (),
         0x38B55259C2E078ED,
         native_parameters!(
-            entryHeader_cstring.as_ptr(),
-            entryLine1_cstring.as_ptr(),
+            entryHeader.as_ptr(),
+            entryLine1.as_ptr(),
             flags,
-            entryLine2_cstring.as_ptr(),
+            entryLine2.as_ptr(),
             p4,
             p5,
             p6,
@@ -3263,42 +3046,33 @@ pub fn _set_warning_message_with_header_unk(
 }
 
 pub fn _set_warning_message_4(
-    p0: String,
-    p1: String,
+    p0: &std::ffi::CString,
+    p1: &std::ffi::CString,
     p2: i32,
     p3: i32,
-    p4: String,
+    p4: &std::ffi::CString,
     p5: bool,
     p6: i32,
     p7: i32,
-    p8: String,
-    p9: String,
+    p8: &std::ffi::CString,
+    p9: &std::ffi::CString,
     p10: bool,
     p11: u32,
 ) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-
-    let p1_cstring = std::ffi::CString::new(p1).unwrap();
-
-    let p4_cstring = std::ffi::CString::new(p4).unwrap();
-
-    let p8_cstring = std::ffi::CString::new(p8).unwrap();
-
-    let p9_cstring = std::ffi::CString::new(p9).unwrap();
     let value = native!(
         (),
         0x15803FEC3B9A872B,
         native_parameters!(
-            p0_cstring.as_ptr(),
-            p1_cstring.as_ptr(),
+            p0.as_ptr(),
+            p1.as_ptr(),
             p2,
             p3,
-            p4_cstring.as_ptr(),
+            p4.as_ptr(),
             p5,
             p6,
             p7,
-            p8_cstring.as_ptr(),
-            p9_cstring.as_ptr(),
+            p8.as_ptr(),
+            p9.as_ptr(),
             p10,
             p11
         )
@@ -3315,17 +3089,16 @@ pub fn _get_warning_message_title_hash() -> u32 {
 
 pub fn _set_warning_message_list_row(
     index: i32,
-    name: String,
+    name: &std::ffi::CString,
     cash: i32,
     rp: i32,
     lvl: i32,
     colour: i32,
 ) -> bool {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
     let value = native!(
         bool,
         0x0C5A80A9E096D529,
-        native_parameters!(index, name_cstring.as_ptr(), cash, rp, lvl, colour)
+        native_parameters!(index, name.as_ptr(), cash, rp, lvl, colour)
     );
 
     value
@@ -3491,13 +3264,8 @@ pub fn is_pause_menu_restarting() -> bool {
     value
 }
 
-pub fn _log_debug_info(p0: String) -> () {
-    let p0_cstring = std::ffi::CString::new(p0).unwrap();
-    let value = native!(
-        (),
-        0x2162C446DFDF38FD,
-        native_parameters!(p0_cstring.as_ptr())
-    );
+pub fn _log_debug_info(p0: &std::ffi::CString) -> () {
+    let value = native!((), 0x2162C446DFDF38FD, native_parameters!(p0.as_ptr()));
 
     value
 }
@@ -3758,13 +3526,8 @@ pub fn close_social_club_menu() -> () {
     value
 }
 
-pub fn set_social_club_tour(name: String) -> () {
-    let name_cstring = std::ffi::CString::new(name).unwrap();
-    let value = native!(
-        (),
-        0x9E778248D6685FE0,
-        native_parameters!(name_cstring.as_ptr())
-    );
+pub fn set_social_club_tour(name: &std::ffi::CString) -> () {
+    let value = native!((), 0x9E778248D6685FE0, native_parameters!(name.as_ptr()));
 
     value
 }

@@ -1,26 +1,24 @@
 use crate::types::NativeVector3;
 
-pub fn request_cutscene(cutsceneName: String, flags: i32) -> () {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
+pub fn request_cutscene(cutsceneName: &std::ffi::CString, flags: i32) -> () {
     let value = native!(
         (),
         0x7A86743F475D9E09,
-        native_parameters!(cutsceneName_cstring.as_ptr(), flags)
+        native_parameters!(cutsceneName.as_ptr(), flags)
     );
 
     value
 }
 
 pub fn request_cutscene_with_playback_list(
-    cutsceneName: String,
+    cutsceneName: &std::ffi::CString,
     playbackFlags: i32,
     flags: i32,
 ) -> () {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
     let value = native!(
         (),
         0xC23DE0E91C30B58C,
-        native_parameters!(cutsceneName_cstring.as_ptr(), playbackFlags, flags)
+        native_parameters!(cutsceneName.as_ptr(), playbackFlags, flags)
     );
 
     value
@@ -38,12 +36,11 @@ pub fn has_cutscene_loaded() -> bool {
     value
 }
 
-pub fn has_this_cutscene_loaded(cutsceneName: String) -> bool {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
+pub fn has_this_cutscene_loaded(cutsceneName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x228D3D94F8A11C3C,
-        native_parameters!(cutsceneName_cstring.as_ptr())
+        native_parameters!(cutsceneName.as_ptr())
     );
 
     value
@@ -67,56 +64,55 @@ pub fn is_cutscene_playback_flag_set(flag: i32) -> bool {
     value
 }
 
-pub fn set_cutscene_entity_streaming_flags(cutsceneEntName: String, p1: i32, p2: i32) -> () {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
+pub fn set_cutscene_entity_streaming_flags(
+    cutsceneEntName: &std::ffi::CString,
+    p1: i32,
+    p2: i32,
+) -> () {
     let value = native!(
         (),
         0x4C61C75BEE8184C2,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), p1, p2)
+        native_parameters!(cutsceneEntName.as_ptr(), p1, p2)
     );
 
     value
 }
 
-pub fn request_cut_file(cutsceneName: String) -> () {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
+pub fn request_cut_file(cutsceneName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x06A3524161C502BA,
-        native_parameters!(cutsceneName_cstring.as_ptr())
+        native_parameters!(cutsceneName.as_ptr())
     );
 
     value
 }
 
-pub fn has_cut_file_loaded(cutsceneName: String) -> bool {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
+pub fn has_cut_file_loaded(cutsceneName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0xA1C996C2A744262E,
-        native_parameters!(cutsceneName_cstring.as_ptr())
+        native_parameters!(cutsceneName.as_ptr())
     );
 
     value
 }
 
-pub fn remove_cut_file(cutsceneName: String) -> () {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
+pub fn remove_cut_file(cutsceneName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xD00D76A7DFC9D852,
-        native_parameters!(cutsceneName_cstring.as_ptr())
+        native_parameters!(cutsceneName.as_ptr())
     );
 
     value
 }
 
-pub fn _get_cut_file_num_sections(cutsceneName: String) -> i32 {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
+pub fn _get_cut_file_num_sections(cutsceneName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x0ABC54DE641DC0FC,
-        native_parameters!(cutsceneName_cstring.as_ptr())
+        native_parameters!(cutsceneName.as_ptr())
     );
 
     value
@@ -210,12 +206,14 @@ pub fn get_cutscene_section_playing() -> i32 {
     value
 }
 
-pub fn get_entity_index_of_cutscene_entity(cutsceneEntName: String, modelHash: u32) -> i32 {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
+pub fn get_entity_index_of_cutscene_entity(
+    cutsceneEntName: &std::ffi::CString,
+    modelHash: u32,
+) -> i32 {
     let value = native!(
         i32,
         0x0A2E9FDB9A8C62F6,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), modelHash)
     );
 
     value
@@ -227,12 +225,11 @@ pub fn _0x583df8e3d4afbd98() -> i32 {
     value
 }
 
-pub fn _0x4cebc1ed31e8925e(cutsceneName: String) -> bool {
-    let cutsceneName_cstring = std::ffi::CString::new(cutsceneName).unwrap();
+pub fn _0x4cebc1ed31e8925e(cutsceneName: &std::ffi::CString) -> bool {
     let value = native!(
         bool,
         0x4CEBC1ED31E8925E,
-        native_parameters!(cutsceneName_cstring.as_ptr())
+        native_parameters!(cutsceneName.as_ptr())
     );
 
     value
@@ -246,33 +243,28 @@ pub fn _0x4fcd976da686580c(p0: u32) -> u32 {
 
 pub fn register_entity_for_cutscene(
     cutscenePed: i32,
-    cutsceneEntName: String,
+    cutsceneEntName: &std::ffi::CString,
     p2: i32,
     modelHash: u32,
     p4: i32,
 ) -> () {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
     let value = native!(
         (),
         0xE40C1C56DF95C2E8,
-        native_parameters!(
-            cutscenePed,
-            cutsceneEntName_cstring.as_ptr(),
-            p2,
-            modelHash,
-            p4
-        )
+        native_parameters!(cutscenePed, cutsceneEntName.as_ptr(), p2, modelHash, p4)
     );
 
     value
 }
 
-pub fn get_entity_index_of_registered_entity(cutsceneEntName: String, modelHash: u32) -> i32 {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
+pub fn get_entity_index_of_registered_entity(
+    cutsceneEntName: &std::ffi::CString,
+    modelHash: u32,
+) -> i32 {
     let value = native!(
         i32,
         0xC0741A26499654CD,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), modelHash)
     );
 
     value
@@ -294,23 +286,27 @@ pub fn set_cutscene_trigger_area(p0: f32, p1: f32, p2: f32, p3: f32, p4: f32, p5
     value
 }
 
-pub fn can_set_enter_state_for_registered_entity(cutsceneEntName: String, modelHash: u32) -> bool {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
+pub fn can_set_enter_state_for_registered_entity(
+    cutsceneEntName: &std::ffi::CString,
+    modelHash: u32,
+) -> bool {
     let value = native!(
         bool,
         0x645D0B458D8E17B5,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), modelHash)
     );
 
     value
 }
 
-pub fn can_set_exit_state_for_registered_entity(cutsceneEntName: String, modelHash: u32) -> bool {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
+pub fn can_set_exit_state_for_registered_entity(
+    cutsceneEntName: &std::ffi::CString,
+    modelHash: u32,
+) -> bool {
     let value = native!(
         bool,
         0x4C6A6451C79E4662,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), modelHash)
     );
 
     value
@@ -383,60 +379,56 @@ pub fn register_synchronised_script_speech() -> () {
 }
 
 pub fn set_cutscene_ped_component_variation(
-    cutsceneEntName: String,
+    cutsceneEntName: &std::ffi::CString,
     p1: i32,
     p2: i32,
     p3: i32,
     modelHash: u32,
 ) -> () {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
     let value = native!(
         (),
         0xBA01E7B6DEEFBBC9,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), p1, p2, p3, modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), p1, p2, p3, modelHash)
     );
 
     value
 }
 
 pub fn set_cutscene_ped_component_variation_from_ped(
-    cutsceneEntName: String,
+    cutsceneEntName: &std::ffi::CString,
     ped: i32,
     modelHash: u32,
 ) -> () {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
     let value = native!(
         (),
         0x2A56C06EBEF2B0D9,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), ped, modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), ped, modelHash)
     );
 
     value
 }
 
-pub fn does_cutscene_entity_exist(cutsceneEntName: String, modelHash: u32) -> bool {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
+pub fn does_cutscene_entity_exist(cutsceneEntName: &std::ffi::CString, modelHash: u32) -> bool {
     let value = native!(
         bool,
         0x499EF20C5DB25C59,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), modelHash)
     );
 
     value
 }
 
 pub fn set_cutscene_ped_prop_variation(
-    cutsceneEntName: String,
+    cutsceneEntName: &std::ffi::CString,
     p1: i32,
     p2: i32,
     p3: i32,
     modelHash: u32,
 ) -> () {
-    let cutsceneEntName_cstring = std::ffi::CString::new(cutsceneEntName).unwrap();
     let value = native!(
         (),
         0x0546524ADE2E9723,
-        native_parameters!(cutsceneEntName_cstring.as_ptr(), p1, p2, p3, modelHash)
+        native_parameters!(cutsceneEntName.as_ptr(), p1, p2, p3, modelHash)
     );
 
     value
