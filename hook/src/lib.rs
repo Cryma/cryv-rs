@@ -121,10 +121,8 @@ fn fetch_pointers() {
         debug!("GetLabelText: {:p}", POINTERS.get_label_text);
 
         let replay_interface = get_pattern("48 8B 05 ? ? ? ? 41 8B 1E".to_owned(), 0).add(0xEE);
-        let replay_interface: *mut c_void = cpp!([replay_interface as "char*"] -> *mut c_void as "char*" {
-            return (replay_interface + *(DWORD*) (replay_interface + 0x3) + 0x7); // TODO: Implement in rust
-        });
-
+        let replay_interface =
+            replay_interface.add(((*(replay_interface.add(0x3) as *mut u32)) + 0x7) as usize);
         let replay_interface = *(replay_interface as *mut *mut replay_interface::CReplayInterface);
 
         POINTERS.replay_interface = replay_interface;
