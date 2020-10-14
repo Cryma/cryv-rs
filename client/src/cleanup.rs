@@ -19,12 +19,32 @@ struct EntityCleanupData {
 pub fn run_initial() {
     let player_ped_id = player::player_ped_id();
     entity::set_entity_coords_no_offset(player_ped_id, 412.4, -976.71, 29.43, false, false, false);
+
+    cam::destroy_all_cams(true);
+    script::set_no_loading_screen(true);
+
+    dlc::on_enter_mp();
+
+    let weather_type = std::ffi::CString::new("EXTRASUNNY").unwrap();
+    misc::set_weather_type_now(&weather_type);
+
+    clock::pause_clock(true);
+
+    for i in 0..=50 {
+        misc::disable_stunt_jump_set(i);
+        misc::delete_stunt_jump(i);
+    }
 }
 
 pub fn add_components(world: &mut World) {
-    world.push((GenericFunctionComponent {
-        function: hijack_frontend_menu,
-    },));
+    world.extend(vec![
+        (GenericFunctionComponent {
+            function: hijack_frontend_menu,
+        },),
+        (GenericFunctionComponent {
+            function: run_cleanup_tick,
+        },),
+    ]);
 
     world.extend(vec![
         (EntityCleanupData {
@@ -55,6 +75,42 @@ fn hijack_frontend_menu() {
             -1,
         );
     }
+}
+
+fn run_cleanup_tick() {
+    vehicle::set_random_trains(false);
+    vehicle::set_random_boats(false);
+    vehicle::set_number_of_parked_vehicles(-1);
+    vehicle::set_parked_vehicle_density_multiplier_this_frame(0.0);
+    vehicle::set_random_vehicle_density_multiplier_this_frame(0.0);
+    vehicle::set_vehicle_density_multiplier_this_frame(0.0);
+    vehicle::set_far_draw_vehicles(false);
+    vehicle::set_all_low_priority_vehicle_generators_active(false);
+    vehicle::set_distant_cars_enabled(false);
+
+    ped::set_create_random_cops(false);
+    ped::can_create_random_ped(false);
+    ped::set_ped_density_multiplier_this_frame(0.0);
+    ped::set_scenario_ped_density_multiplier_this_frame(0.0, 0.0);
+
+    let player_id = player::player_id();
+    player::set_auto_give_scuba_gear_when_exit_vehicle(player_id, false);
+    player::set_auto_give_parachute_when_enter_plane(player_id, false);
+    player::set_player_health_recharge_multiplier(player_id, 0.0);
+    player::set_player_wanted_level(player_id, 0, false);
+    player::set_player_wanted_level_now(player_id, false);
+    player::set_max_wanted_level(0);
+
+    pad::disable_control_action(0, 19, true); // INPUT_CHARACTER_WHEEL
+    pad::disable_control_action(0, 27, true); // INPUT_PHONE
+    pad::disable_control_action(0, 28, true); // INPUT_SPECIAL_ABILITY
+    pad::disable_control_action(0, 29, true); // INPUT_SPECIAL_ABILITY_SECONDARY
+    pad::disable_control_action(0, 36, true); // INPUT_DUCK
+    pad::disable_control_action(0, 140, true); // INPUT_MELEE_ATTACK_LIGHT
+    pad::disable_control_action(0, 171, true); // INPUT_SPECIAL_ABILITY_PC
+    pad::disable_control_action(0, 212, true); // INPUT_FRONTEND_SOCIAL_CLUB
+    pad::disable_control_action(0, 213, true); // INPUT_FRONTEND_SOCIAL_CLUB_SECONDARY
+    pad::disable_control_action(0, 243, true); // INPUT_ENTER_CHEAT_CODE
 }
 
 #[system(for_each)]
