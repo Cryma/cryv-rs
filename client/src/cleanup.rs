@@ -2,6 +2,19 @@ use crate::generic::GenericFunctionComponent;
 use hook::natives::*;
 use legion::systems::Builder;
 use legion::*;
+use log::{debug, error};
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+enum EntityCleanupType {
+    Ped,
+    Vehicle,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+struct EntityCleanupData {
+    cleanup_type: EntityCleanupType,
+    last_run_at: std::time::SystemTime,
+}
 
 pub fn run_initial() {
     let player_ped_id = player::player_ped_id();
@@ -9,20 +22,25 @@ pub fn run_initial() {
 }
 
 pub fn add_components(world: &mut World) {
-    let _entity = world.extend(vec![
-        (GenericFunctionComponent {
-            function: hijack_frontend_menu,
+    world.push((GenericFunctionComponent {
+        function: hijack_frontend_menu,
+    },));
+
+    world.extend(vec![
+        (EntityCleanupData {
+            cleanup_type: EntityCleanupType::Ped,
+            last_run_at: std::time::SystemTime::UNIX_EPOCH,
         },),
-        (GenericFunctionComponent {
-            function: cleanup_peds,
-        },),
-        (GenericFunctionComponent {
-            function: cleanup_vehicles,
+        (EntityCleanupData {
+            cleanup_type: EntityCleanupType::Vehicle,
+            last_run_at: std::time::SystemTime::UNIX_EPOCH,
         },),
     ]);
 }
 
-pub fn add_systems(_builder: &mut Builder) {}
+pub fn add_systems(builder: &mut Builder) {
+    builder.add_thread_local(run_entity_cleanup_system());
+}
 
 fn hijack_frontend_menu() {
     pad::disable_control_action(0, 199, true);
@@ -39,32 +57,52 @@ fn hijack_frontend_menu() {
     }
 }
 
-fn cleanup_peds() {
-    let (_, peds) = hook::get_all_peds();
+#[system(for_each)]
+fn run_entity_cleanup(data: &mut EntityCleanupData) {
+    let now = std::time::SystemTime::now();
 
-    for mut ped in peds {
-        if entity::does_entity_exist(ped) == false {
-            continue;
+    match now.duration_since(data.last_run_at) {
+        Ok(duration) => {
+            if duration.as_millis() < 500 {
+                return;
+            }
+
+            data.last_run_at = now;
         }
+        Err(error) => {
+            error!(
+                "Error while running entity cleanup for type {:?}: {}",
+                data.cleanup_type, error
+            );
 
-        entity::set_ped_as_no_longer_needed(&mut ped);
-        entity::set_entity_as_mission_entity(ped, false, true);
-
-        entity::delete_entity(&mut ped);
+            return;
+        }
     }
-}
 
-fn cleanup_vehicles() {
-    let (_, vehicles) = hook::get_all_vehicles();
+    let (_, entities) = match data.cleanup_type {
+        EntityCleanupType::Ped => hook::get_all_peds(),
+        EntityCleanupType::Vehicle => hook::get_all_vehicles(),
+    };
 
-    for mut vehicle in vehicles {
-        if entity::does_entity_exist(vehicle) == false {
+    let mut deleted_entities = 0;
+
+    for mut entity in entities {
+        if entity::does_entity_exist(entity) == false {
             continue;
         }
 
-        entity::set_vehicle_as_no_longer_needed(&mut vehicle);
-        entity::set_entity_as_mission_entity(vehicle, false, true);
+        entity::set_entity_as_no_longer_needed(&mut entity);
+        entity::set_entity_as_mission_entity(entity, false, true);
 
-        entity::delete_entity(&mut vehicle);
+        entity::delete_entity(&mut entity);
+
+        deleted_entities += 1;
+    }
+
+    if deleted_entities != 0 {
+        debug!(
+            "Deleted {} entities of type {:?}",
+            deleted_entities, data.cleanup_type
+        );
     }
 }
