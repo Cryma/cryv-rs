@@ -16,6 +16,11 @@ struct EntityCleanupData {
     last_run_at: std::time::SystemTime,
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct EntityPool {
+    pub entities: Vec<i32>,
+}
+
 pub fn run_initial() {
     let player_ped_id = player::player_ped_id();
     entity::set_entity_coords_no_offset(player_ped_id, 412.4, -976.71, 29.43, false, false, false);
@@ -64,6 +69,7 @@ pub fn add_components(world: &mut World) {
 }
 
 pub fn add_resources(resources: &mut Resources) {
+    resources.insert(EntityPool { entities: vec![] });
 }
 
 pub fn add_systems(builder: &mut Builder) {
@@ -122,7 +128,7 @@ fn run_cleanup_tick() {
 }
 
 #[system(for_each)]
-fn run_entity_cleanup(data: &mut EntityCleanupData) {
+fn run_entity_cleanup(data: &mut EntityCleanupData, #[resource] entity_pool: &EntityPool) {
     let now = std::time::SystemTime::now();
 
     match now.duration_since(data.last_run_at) {
@@ -152,6 +158,10 @@ fn run_entity_cleanup(data: &mut EntityCleanupData) {
 
     for mut entity in entities {
         if entity::does_entity_exist(entity) == false {
+            continue;
+        }
+
+        if entity_pool.entities.contains(&entity) {
             continue;
         }
 

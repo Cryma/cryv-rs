@@ -47,9 +47,9 @@ fn script_callback() {
     let mut resources = Resources::default();
     let mut schedule_builder = Schedule::builder();
 
-    register_module!(cleanup, world, schedule_builder);
-    register_module!(generic, world, schedule_builder);
-    register_module!(ui, world, schedule_builder);
+    register_module!(cleanup, world, resources, schedule_builder);
+    register_module!(generic, world, resources, schedule_builder);
+    register_module!(ui, world, resources, schedule_builder);
 
     let mut schedule = schedule_builder.build();
 
