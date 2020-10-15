@@ -19,6 +19,7 @@ pub(crate) mod native_handling;
 #[allow(warnings)]
 pub mod natives;
 mod replay_interface;
+mod script_patches;
 pub mod types;
 
 static_detour! {

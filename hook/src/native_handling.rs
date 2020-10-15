@@ -1,6 +1,7 @@
 use std::{ffi::c_void, sync::Mutex};
 
 use crate::crossmap::CROSSMAP;
+use crate::script_patches;
 use cpp::cpp;
 use detour::static_detour;
 use log::error;
@@ -172,6 +173,8 @@ fn on_tick() {
 }
 
 unsafe extern "system" fn script_function(_: LPVOID) {
+    script_patches::patch_multiplayer_vehicles();
+
     match crate::SCRIPT_CALLBACK {
         Some(value) => value(),
         None => {

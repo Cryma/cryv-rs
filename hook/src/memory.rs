@@ -48,6 +48,24 @@ pub fn address_fill(address: *mut c_void, count: usize, element: u8) {
     }
 }
 
+pub fn get_pattern_in_memory_region(
+    pattern: String,
+    region: *mut c_void,
+    size: i32,
+) -> *mut c_void {
+    let pattern_raw = CString::new(pattern).unwrap();
+    let pattern_raw_pointer = pattern_raw.as_ptr();
+
+    let data = unsafe {
+        cpp!([pattern_raw_pointer as "const char*", region as "void*", size as "int"] -> *mut c_void as "void*" {
+            MemoryRegion memory_region(MemoryHandle(region), size);
+            return Signature(pattern_raw_pointer).scan(memory_region).as<void*>();
+        })
+    };
+
+    data
+}
+
 cpp! {{
 
 #include <cstdint>
