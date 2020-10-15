@@ -11,9 +11,10 @@ mod ui;
 mod utility;
 
 macro_rules! register_module {
-    ($module:ident, $world:expr, $schedule_builder:expr) => {{
+    ($module:ident, $world:expr, $resources:expr, $schedule_builder:expr) => {{
         $module::run_initial();
         $module::add_components(&mut $world);
+        $module::add_resources(&mut $resources);
         $module::add_systems(&mut $schedule_builder);
     }};
 }

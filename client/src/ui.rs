@@ -23,6 +23,8 @@ pub fn add_components(world: &mut World) {
     },));
 }
 
+pub fn add_resources(_resources: &mut Resources) {}
+
 pub fn add_systems(builder: &mut Builder) {
     builder.add_thread_local(draw_text_entries_system());
 }

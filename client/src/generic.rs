@@ -10,6 +10,8 @@ pub fn run_initial() {}
 
 pub fn add_components(_world: &mut World) {}
 
+pub fn add_resources(_resources: &mut Resources) {}
+
 pub fn add_systems(builder: &mut Builder) {
     builder.add_thread_local(run_generic_functions_system());
 }
