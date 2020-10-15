@@ -54,6 +54,8 @@ fn script_callback() {
     let mut schedule = schedule_builder.build();
 
     loop {
+        hook::update_keyboard();
+
         schedule.execute(&mut world, &mut resources);
 
         hook::script_wait(0);

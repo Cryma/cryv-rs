@@ -1,12 +1,17 @@
 #![recursion_limit = "1024"]
 use cpp::cpp;
 use detour::static_detour;
+pub use keyboard::{
+    is_key_pressed, is_key_released, register_keyboard_callback, update_keyboard, KeyboardCallback,
+    KeyboardCallbackState,
+};
 use log::{debug, error};
 use memory::{address_fill, get_pattern, get_pattern_rip, get_pattern_sub};
 pub use replay_interface::{get_all_peds, get_all_vehicles};
 use std::ffi::{c_void, CStr};
 
 mod crossmap;
+mod keyboard;
 mod memory;
 #[macro_use]
 pub(crate) mod native_handling;
@@ -67,6 +72,7 @@ pub fn initialize(script_callback: fn()) {
         SCRIPT_CALLBACK = Some(script_callback);
     }
 
+    keyboard::initialize_keyboard_hook();
     fetch_pointers();
     hook_get_label_text();
 
