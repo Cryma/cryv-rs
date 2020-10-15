@@ -351,6 +351,7 @@ dependencies = [
  "cpp",
  "cpp_build",
  "detour",
+ "keycodes",
  "log",
  "once_cell",
  "winapi 0.3.9",
@@ -399,6 +400,12 @@ dependencies = [
  "winapi 0.2.8",
  "winapi-build",
 ]
+
+[[package]]
+name = "keycodes"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37a9f5ede1b60d265d3230a5007a142f2171d76612e1511b3c46673a8f7d5bfb"
 
 [[package]]
 name = "launcher"

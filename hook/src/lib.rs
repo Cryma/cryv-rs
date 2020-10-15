@@ -5,6 +5,7 @@ pub use keyboard::{
     is_key_pressed, is_key_released, register_keyboard_callback, update_keyboard, KeyboardCallback,
     KeyboardCallbackState,
 };
+pub use keycodes;
 use log::{debug, error};
 use memory::{address_fill, get_pattern, get_pattern_rip, get_pattern_sub};
 pub use replay_interface::{get_all_peds, get_all_vehicles};

@@ -10,14 +10,9 @@ use winapi::{
     um::winuser::WM_KEYUP, um::winuser::WM_SYSKEYDOWN, um::winuser::WM_SYSKEYUP,
     um::winuser::WNDPROC,
 };
-
-const KEY_SIZE: DWORD = 255;
-const NOW_PERIOD: DWORD = 100;
-const MAX_DOWN: DWORD = 5000;
-
 #[derive(Copy, Clone, Debug)]
 pub struct KeyboardCallbackState {
-    pub key: u32,
+    pub key: u8,
     pub character: char,
     pub is_pressed: bool,
 }
@@ -43,10 +38,14 @@ impl Default for KeyState {
     }
 }
 
-static KEY_STATES: Lazy<Mutex<HashMap<DWORD, KeyState>>> = Lazy::new(|| {
-    let mut key_states: HashMap<DWORD, KeyState> = HashMap::new();
+const KEYS_SIZE: u8 = 255;
+const NOW_PERIOD: DWORD = 100;
+const MAX_DOWN: DWORD = 5000;
 
-    for i in 0..KEY_SIZE {
+static KEY_STATES: Lazy<Mutex<HashMap<u8, KeyState>>> = Lazy::new(|| {
+    let mut key_states: HashMap<u8, KeyState> = HashMap::new();
+
+    for i in 0..KEYS_SIZE {
         key_states.insert(i, KeyState::default());
     }
 
@@ -56,8 +55,96 @@ static KEY_STATES: Lazy<Mutex<HashMap<DWORD, KeyState>>> = Lazy::new(|| {
 static KEYBOAD_CALLBACKS: Lazy<Mutex<Vec<KeyboardCallback>>> = Lazy::new(|| Mutex::new(vec![]));
 static QUEUED_STATES: Lazy<Mutex<VecDeque<KeyboardCallbackState>>> =
     Lazy::new(|| Mutex::new(VecDeque::new()));
-
 static WNDPROC: OnceCell<Mutex<WNDPROC>> = OnceCell::new();
+
+pub fn initialize_keyboard_hook() {
+    let window_name = std::ffi::CString::new("grcWindow").unwrap();
+    let window = unsafe { FindWindowA(window_name.as_ptr(), std::ptr::null()) };
+
+    WNDPROC.get_or_init(|| {
+        Mutex::new(unsafe {
+            std::mem::transmute(SetWindowLongPtrA(
+                window,
+                GWLP_WNDPROC,
+                proc_window as isize,
+            ))
+        })
+    });
+}
+
+pub fn is_key_pressed(key: u8) -> bool {
+    if key > KEYS_SIZE {
+        return false;
+    }
+
+    let key_states = KEY_STATES.lock().unwrap();
+    let key_state = key_states.get(&key).unwrap();
+
+    return (unsafe { GetTickCount() } < key_state.time + MAX_DOWN) && key_state.is_up_now == false;
+}
+
+pub fn is_key_released(key: u8, exclusive: bool) -> bool {
+    if key > KEYS_SIZE {
+        return false;
+    }
+
+    let mut key_states = KEY_STATES.lock().unwrap();
+    let key_state = key_states.get(&key).unwrap();
+
+    let is_released =
+        unsafe { GetTickCount() } < key_state.time + NOW_PERIOD && key_state.is_up_now;
+
+    if is_released && exclusive {
+        reset_key_state(key, &mut key_states);
+    }
+
+    is_released
+}
+
+pub fn register_keyboard_callback(callback: KeyboardCallback) {
+    let mut keyboard_callbacks = KEYBOAD_CALLBACKS.lock().unwrap();
+
+    keyboard_callbacks.push(callback);
+}
+
+pub fn update_keyboard() {
+    let mut queued_states = QUEUED_STATES.lock().unwrap();
+
+    while queued_states.is_empty() == false {
+        let state = queued_states.pop_front().unwrap();
+
+        let keyboard_callbacks = KEYBOAD_CALLBACKS.lock().unwrap().clone();
+
+        for callback in keyboard_callbacks {
+            callback(state);
+        }
+    }
+}
+
+fn reset_key_state(key: u8, key_states: &mut HashMap<u8, KeyState>) {
+    key_states.insert(key, KeyState::default());
+}
+
+fn char_for_key_state(key: u32, scan_code: u8, alt_pressed: bool) -> u16 {
+    let mut states: [u8; 256] = [0; 256];
+
+    if is_key_pressed(keycodes::KEY_SHIFT) {
+        states[VK_SHIFT as usize] = 0xFF;
+    }
+
+    if alt_pressed {
+        states[VK_CONTROL as usize] = 0xFF;
+        states[VK_MENU as usize] = 0xFF;
+    }
+
+    let mut char_value: u16 = 0;
+
+    if unsafe { ToAscii(key, scan_code as u32, states.as_ptr(), &mut char_value, 0) } <= 0 {
+        return 0;
+    }
+
+    return char_value;
+}
 
 unsafe extern "system" fn proc_window(
     hwnd: HWND,
@@ -100,11 +187,11 @@ fn on_keyboard_message(
     was_down_before: bool,
     is_up_now: bool,
 ) {
-    if key < KEY_SIZE {
+    if (key as u8) < KEYS_SIZE {
         let mut key_states = KEY_STATES.lock().unwrap();
 
         key_states.insert(
-            key,
+            key as u8,
             KeyState {
                 time: unsafe { GetTickCount() },
                 is_with_alt,
@@ -117,99 +204,10 @@ fn on_keyboard_message(
     let mut queued_states = QUEUED_STATES.lock().unwrap();
     for _ in 0..repeats {
         queued_states.push_back(KeyboardCallbackState {
-            key,
+            key: key as u8,
             is_pressed: is_up_now == false,
             character: std::char::from_u32(char_for_key_state(key, scan_code, is_with_alt) as u32)
                 .unwrap(),
         });
-    }
-}
-
-fn char_for_key_state(key: u32, scan_code: u8, alt_pressed: bool) -> u16 {
-    let mut states: [u8; 256] = [0; 256];
-
-    if is_key_pressed(VK_SHIFT as u32) {
-        states[VK_SHIFT as usize] = 0xFF;
-    }
-
-    if alt_pressed {
-        states[VK_CONTROL as usize] = 0xFF;
-        states[VK_MENU as usize] = 0xFF;
-    }
-
-    let mut char_value: u16 = 0;
-
-    if unsafe { ToAscii(key, scan_code as u32, states.as_ptr(), &mut char_value, 0) } <= 0 {
-        return 0;
-    }
-
-    return char_value;
-}
-
-pub fn initialize_keyboard_hook() {
-    let window_name = std::ffi::CString::new("grcWindow").unwrap();
-    let window = unsafe { FindWindowA(window_name.as_ptr(), std::ptr::null()) };
-
-    WNDPROC.get_or_init(|| {
-        Mutex::new(unsafe {
-            std::mem::transmute(SetWindowLongPtrA(
-                window,
-                GWLP_WNDPROC,
-                proc_window as isize,
-            ))
-        })
-    });
-}
-
-pub fn is_key_pressed(key: u32) -> bool {
-    if key > KEY_SIZE {
-        return false;
-    }
-
-    let key_states = KEY_STATES.lock().unwrap();
-    let key_state = key_states.get(&key).unwrap();
-
-    return (unsafe { GetTickCount() } < key_state.time + MAX_DOWN) && key_state.is_up_now == false;
-}
-
-pub fn is_key_released(key: u32, exclusive: bool) -> bool {
-    if key > KEY_SIZE {
-        return false;
-    }
-
-    let mut key_states = KEY_STATES.lock().unwrap();
-    let key_state = key_states.get(&key).unwrap();
-
-    let is_released =
-        unsafe { GetTickCount() } < key_state.time + NOW_PERIOD && key_state.is_up_now;
-
-    if is_released && exclusive {
-        reset_key_state(key, &mut key_states);
-    }
-
-    is_released
-}
-
-fn reset_key_state(key: u32, key_states: &mut HashMap<u32, KeyState>) {
-    key_states.insert(key, KeyState::default());
-}
-
-pub fn register_keyboard_callback(callback: KeyboardCallback) {
-    let mut keyboard_callbacks = KEYBOAD_CALLBACKS.lock().unwrap();
-
-    keyboard_callbacks.push(callback);
-}
-
-pub fn update_keyboard() {
-    let mut queued_states = QUEUED_STATES.lock().unwrap();
-
-    while queued_states.is_empty() == false {
-        let state = queued_states.pop_front().unwrap();
-
-        let keyboard_callbacks = KEYBOAD_CALLBACKS.lock().unwrap().clone();
-
-        for callback in keyboard_callbacks {
-            callback(state);
-        }
     }
 }
