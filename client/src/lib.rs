@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+use std::sync::Mutex;
 use legion::*;
 use log::info;
 use once_cell::sync::Lazy;
@@ -12,6 +13,9 @@ mod utility;
 
 macro_rules! register_module {
     ($module:ident, $world:expr, $resources:expr, $schedule_builder:expr) => {{
+        let mut on_tick_callbacks = ON_TICK_CALLBACKS.lock().unwrap();
+        on_tick_callbacks.push($module::run_on_tick);
+
         $module::run_initial();
         $module::add_components(&mut $world);
         $module::add_resources(&mut $resources);
@@ -28,6 +32,8 @@ static INSTALL_DIRECTORY: Lazy<String> = Lazy::new(|| {
 
     value
 });
+
+static ON_TICK_CALLBACKS: Lazy<Mutex<Vec<fn(&mut Resources)>>> = Lazy::new(|| Mutex::new(vec![]));
 
 make_entrypoint!(entrypoint);
 
@@ -57,6 +63,11 @@ fn script_callback() {
         hook::update_keyboard();
 
         schedule.execute(&mut world, &mut resources);
+
+        let on_tick_callbacks = &ON_TICK_CALLBACKS.lock().unwrap().clone();
+        for callback in on_tick_callbacks {
+            callback(&mut resources);
+        }
 
         hook::script_wait(0);
     }

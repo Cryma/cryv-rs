@@ -13,6 +13,8 @@ struct TextEntry {
 
 pub fn run_initial() {}
 
+pub fn run_on_tick(_resources: &mut Resources) {}
+
 pub fn add_components(world: &mut World) {
     let _entity = world.push((TextEntry {
         text: "CryV".to_owned(),

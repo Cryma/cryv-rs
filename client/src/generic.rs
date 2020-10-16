@@ -8,6 +8,8 @@ pub struct GenericFunctionComponent {
 
 pub fn run_initial() {}
 
+pub fn run_on_tick(_resources: &mut Resources) {}
+
 pub fn add_components(_world: &mut World) {}
 
 pub fn add_resources(_resources: &mut Resources) {}
