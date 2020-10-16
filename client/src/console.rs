@@ -1,5 +1,6 @@
 use std::{collections::HashMap, sync::Mutex, time::SystemTime};
 
+use crate::wrapped_natives::*;
 use hook::natives::*;
 use hook::KeyboardCallbackState;
 use legion::systems::Builder;
@@ -99,25 +100,27 @@ pub fn run_on_tick(_resources: &mut Resources) {
     let mut count = 0;
 
     for line in &console_data.output {
-        crate::ui::draw_text(
+        ui::draw_text(
             line,
             0.001,
             BACKGROUND_LINE_HEIGHT * count as f32 / height as f32,
             0.3,
             (255, 255, 255, 255),
             false,
+            1.0,
         );
 
         count += 1;
     }
 
-    crate::ui::draw_text(
+    ui::draw_text(
         &console_data.input,
         0.001,
         output_height,
         0.3,
         (255, 255, 255, 255),
         false,
+        1.0,
     );
 
     let now = SystemTime::now();
@@ -134,7 +137,7 @@ pub fn run_on_tick(_resources: &mut Resources) {
 
     if console_data.blink_state {
         let input = &console_data.input[..console_data.cursor_index];
-        let text_width = crate::ui::get_text_width(input, 0.3);
+        let text_width = ui::get_text_width(input, 0.3);
 
         graphics::draw_rect(
             text_width - 0.0005,

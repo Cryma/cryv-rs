@@ -11,6 +11,7 @@ mod console;
 mod generic;
 mod ui;
 mod utility;
+mod wrapped_natives;
 
 macro_rules! register_module {
     ($module:ident, $world:expr, $resources:expr, $schedule_builder:expr) => {{
