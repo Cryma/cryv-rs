@@ -1,12 +1,13 @@
 #![forbid(unsafe_code)]
 
-use std::sync::Mutex;
 use legion::*;
 use log::info;
 use once_cell::sync::Lazy;
+use std::sync::Mutex;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
+mod console;
 mod generic;
 mod ui;
 mod utility;
@@ -54,6 +55,7 @@ fn script_callback() {
     let mut schedule_builder = Schedule::builder();
 
     register_module!(cleanup, world, resources, schedule_builder);
+    register_module!(console, world, resources, schedule_builder);
     register_module!(generic, world, resources, schedule_builder);
     register_module!(ui, world, resources, schedule_builder);
 
