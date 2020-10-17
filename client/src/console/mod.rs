@@ -9,7 +9,7 @@ use std::{collections::HashMap, collections::VecDeque, sync::Mutex, time::System
 
 mod commands;
 
-type CommandCallback = fn(&mut CommandBuffer, &mut ConsoleData, Vec<String>);
+type CommandCallback = fn(&mut CommandBuffer, &mut ConsoleData, &mut Vec<String>);
 
 static CONSOLE_DATA: Lazy<Mutex<ConsoleData>> = Lazy::new(|| Mutex::new(ConsoleData::default()));
 static COMMANDS: Lazy<HashMap<&str, CommandCallback>> = Lazy::new(|| {
@@ -83,9 +83,9 @@ fn on_console_tick(command_buffer: &mut CommandBuffer) {
     };
 
     while console_data.command_queue.is_empty() == false {
-        let (arguments, callback) = console_data.command_queue.pop_front().unwrap();
+        let (mut arguments, callback) = console_data.command_queue.pop_front().unwrap();
 
-        callback(command_buffer, &mut console_data, arguments);
+        callback(command_buffer, &mut console_data, &mut arguments);
     }
 
     if hook::is_key_released(hook::keycodes::KEY_F1, true) {
@@ -198,7 +198,8 @@ fn handle_command(console_data: &mut ConsoleData) {
         .collect::<Vec<String>>();
 
     let command_name = command_array.first().unwrap();
-    let command_array = &command_array[1..].to_vec();
+    let mut command_array = (&command_array[1..]).to_vec();
+    command_array.reverse();
 
     console_data
         .input_history
@@ -211,7 +212,7 @@ fn handle_command(console_data: &mut ConsoleData) {
     match COMMANDS.get(command_name.as_str()) {
         Some(command) => console_data
             .command_queue
-            .push_back((command_array.clone(), *command)),
+            .push_back((command_array, *command)),
         None => print_line(
             console_data,
             format!("~o~Unknown command: ~s~{}", command_name).as_str(),

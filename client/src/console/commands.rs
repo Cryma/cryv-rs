@@ -5,11 +5,13 @@ use legion::systems::CommandBuffer;
 pub(super) fn command_veh(
     command_buffer: &mut CommandBuffer,
     console_data: &mut ConsoleData,
-    arguments: Vec<String>,
+    arguments: &mut Vec<String>,
 ) {
-    // TODO: Improve argument system or at least validate them
-    let mut arguments = arguments.clone();
-    arguments.reverse();
+    if arguments.len() < 1 {
+        print_line(console_data, "Please specifiy a vehicle model name.");
+
+        return;
+    }
 
     let model = arguments.pop().unwrap();
 
