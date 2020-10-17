@@ -1,9 +1,8 @@
 use std::{collections::HashMap, sync::Mutex, time::SystemTime};
 
-use crate::wrapped_natives::*;
+use crate::{modules::Module, wrapped_natives::*};
 use hook::natives::*;
 use hook::KeyboardCallbackState;
-use legion::systems::Builder;
 use legion::*;
 use once_cell::sync::Lazy;
 
@@ -43,121 +42,123 @@ impl Default for ConsoleData {
     }
 }
 
-pub fn run_initial() {
-    hook::register_keyboard_callback(on_keyboard_callback);
-}
+// TODO: Merge ConsoleModule and ConsoleData
+// This is currently not possible, as the keyboard callback
+// can't take a function pointer of a struct.
+pub struct ConsoleModule;
 
-pub fn run_on_tick(_resources: &mut Resources) {
-    let mut console_data = match CONSOLE_DATA.try_lock() {
-        Ok(val) => val,
-        Err(error) => {
-            log::error!("no: {}", error);
+impl Module for ConsoleModule {
+    fn run_initial(&self) {
+        hook::register_keyboard_callback(on_keyboard_callback);
+    }
+
+    fn run_on_tick(&self, _resources: &mut Resources) {
+        let mut console_data = match CONSOLE_DATA.try_lock() {
+            Ok(val) => val,
+            Err(error) => {
+                log::error!("no: {}", error);
+                return;
+            }
+        };
+
+        if hook::is_key_released(hook::keycodes::KEY_F1, true) {
+            console_data.is_visible = !console_data.is_visible;
+        }
+
+        if console_data.is_visible == false {
             return;
         }
-    };
 
-    if hook::is_key_released(hook::keycodes::KEY_F1, true) {
-        console_data.is_visible = !console_data.is_visible;
-    }
+        pad::disable_all_control_actions(0);
 
-    if console_data.is_visible == false {
-        return;
-    }
+        let mut width: i32 = 0;
+        let mut height = 0;
+        graphics::get_screen_resolution(&mut width, &mut height);
 
-    pad::disable_all_control_actions(0);
+        let output_height =
+            BACKGROUND_LINE_HEIGHT * console_data.output_lines as f32 / height as f32;
+        let input_height = BACKGROUND_INPUT_HEIGHT / height as f32;
 
-    let mut width: i32 = 0;
-    let mut height = 0;
-    graphics::get_screen_resolution(&mut width, &mut height);
+        graphics::draw_rect(
+            0.5,
+            output_height / 2.0,
+            1.0,
+            output_height,
+            50,
+            50,
+            50,
+            150,
+            false,
+        );
 
-    let output_height = BACKGROUND_LINE_HEIGHT * console_data.output_lines as f32 / height as f32;
-    let input_height = BACKGROUND_INPUT_HEIGHT / height as f32;
+        graphics::draw_rect(
+            0.5,
+            output_height + input_height / 2.0,
+            1.0,
+            input_height,
+            0,
+            0,
+            0,
+            150,
+            false,
+        );
 
-    graphics::draw_rect(
-        0.5,
-        output_height / 2.0,
-        1.0,
-        output_height,
-        50,
-        50,
-        50,
-        150,
-        false,
-    );
+        let mut count = 0;
 
-    graphics::draw_rect(
-        0.5,
-        output_height + input_height / 2.0,
-        1.0,
-        input_height,
-        0,
-        0,
-        0,
-        150,
-        false,
-    );
+        for line in &console_data.output {
+            ui::draw_text(
+                line,
+                0.001,
+                BACKGROUND_LINE_HEIGHT * count as f32 / height as f32,
+                0.3,
+                (255, 255, 255, 255),
+                false,
+                1.0,
+            );
 
-    let mut count = 0;
+            count += 1;
+        }
 
-    for line in &console_data.output {
         ui::draw_text(
-            line,
+            &console_data.input,
             0.001,
-            BACKGROUND_LINE_HEIGHT * count as f32 / height as f32,
+            output_height,
             0.3,
             (255, 255, 255, 255),
             false,
             1.0,
         );
 
-        count += 1;
-    }
+        let now = SystemTime::now();
+        if now
+            .duration_since(console_data.last_blink_update)
+            .unwrap()
+            .as_millis()
+            > 500
+        {
+            console_data.blink_state = !console_data.blink_state;
 
-    ui::draw_text(
-        &console_data.input,
-        0.001,
-        output_height,
-        0.3,
-        (255, 255, 255, 255),
-        false,
-        1.0,
-    );
+            console_data.last_blink_update = now;
+        }
 
-    let now = SystemTime::now();
-    if now
-        .duration_since(console_data.last_blink_update)
-        .unwrap()
-        .as_millis()
-        > 500
-    {
-        console_data.blink_state = !console_data.blink_state;
+        if console_data.blink_state {
+            let input = &console_data.input[..console_data.cursor_index];
+            let text_width = ui::get_text_width(input, 0.3);
 
-        console_data.last_blink_update = now;
-    }
-
-    if console_data.blink_state {
-        let input = &console_data.input[..console_data.cursor_index];
-        let text_width = ui::get_text_width(input, 0.3);
-
-        graphics::draw_rect(
-            text_width - 0.0005,
-            output_height + input_height / 2.0,
-            0.001,
-            input_height * 0.8,
-            255,
-            255,
-            255,
-            200,
-            false,
-        );
+            graphics::draw_rect(
+                text_width - 0.0005,
+                output_height + input_height / 2.0,
+                0.001,
+                input_height * 0.8,
+                255,
+                255,
+                255,
+                200,
+                false,
+            );
+        }
     }
 }
-
-pub fn add_components(_world: &mut World) {}
-
-pub fn add_resources(_resources: &mut Resources) {}
-
-pub fn add_systems(_builder: &mut Builder) {}
 
 fn on_keyboard_callback(state: KeyboardCallbackState) {
     let mut console_data = match CONSOLE_DATA.try_lock() {

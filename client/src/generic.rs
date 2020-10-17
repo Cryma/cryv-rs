@@ -1,3 +1,4 @@
+use crate::modules::Module;
 use legion::systems::Builder;
 use legion::*;
 
@@ -6,16 +7,12 @@ pub struct GenericFunctionComponent {
     pub function: fn(),
 }
 
-pub fn run_initial() {}
+pub struct GenericModule;
 
-pub fn run_on_tick(_resources: &mut Resources) {}
-
-pub fn add_components(_world: &mut World) {}
-
-pub fn add_resources(_resources: &mut Resources) {}
-
-pub fn add_systems(builder: &mut Builder) {
-    builder.add_thread_local(run_generic_functions_system());
+impl Module for GenericModule {
+    fn add_systems(&self, builder: &mut Builder) {
+        builder.add_thread_local(run_generic_functions_system());
+    }
 }
 
 #[system(for_each)]

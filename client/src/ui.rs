@@ -1,4 +1,4 @@
-use crate::wrapped_natives::*;
+use crate::{modules::Module, wrapped_natives::*};
 use legion::systems::Builder;
 use legion::*;
 
@@ -11,24 +11,22 @@ struct TextEntry {
     color: (i32, i32, i32, i32),
 }
 
-pub fn run_initial() {}
+pub struct UiModule;
 
-pub fn run_on_tick(_resources: &mut Resources) {}
+impl Module for UiModule {
+    fn add_components(&self, world: &mut World) {
+        let _entity = world.push((TextEntry {
+            text: "CryV".to_owned(),
+            pos_x: 0.975,
+            pos_y: 0.01,
+            scale: 0.42,
+            color: (200, 200, 200, 255),
+        },));
+    }
 
-pub fn add_components(world: &mut World) {
-    let _entity = world.push((TextEntry {
-        text: "CryV".to_owned(),
-        pos_x: 0.975,
-        pos_y: 0.01,
-        scale: 0.42,
-        color: (200, 200, 200, 255),
-    },));
-}
-
-pub fn add_resources(_resources: &mut Resources) {}
-
-pub fn add_systems(builder: &mut Builder) {
-    builder.add_thread_local(draw_text_entries_system());
+    fn add_systems(&self, builder: &mut Builder) {
+        builder.add_thread_local(draw_text_entries_system());
+    }
 }
 
 #[system(for_each)]

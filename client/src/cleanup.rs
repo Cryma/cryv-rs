@@ -1,4 +1,4 @@
-use crate::generic::GenericFunctionComponent;
+use crate::{generic::GenericFunctionComponent, modules::Module};
 use hook::natives::*;
 use legion::systems::Builder;
 use legion::*;
@@ -21,61 +21,71 @@ pub struct EntityPool {
     pub entities: Vec<i32>,
 }
 
-pub fn run_initial() {
-    let player_ped_id = player::player_ped_id();
-    entity::set_entity_coords_no_offset(player_ped_id, 412.4, -976.71, 29.43, false, false, false);
+pub struct CleanupModule;
 
-    cam::destroy_all_cams(true);
-    script::set_no_loading_screen(true);
+impl Module for CleanupModule {
+    fn run_initial(&self) {
+        let player_ped_id = player::player_ped_id();
+        entity::set_entity_coords_no_offset(
+            player_ped_id,
+            412.4,
+            -976.71,
+            29.43,
+            false,
+            false,
+            false,
+        );
 
-    dlc::on_enter_mp();
+        cam::destroy_all_cams(true);
+        script::set_no_loading_screen(true);
 
-    let weather_type = std::ffi::CString::new("EXTRASUNNY").unwrap();
-    misc::set_weather_type_now(&weather_type);
+        dlc::on_enter_mp();
 
-    clock::pause_clock(true);
+        let weather_type = std::ffi::CString::new("EXTRASUNNY").unwrap();
+        misc::set_weather_type_now(&weather_type);
 
-    for i in 0..=50 {
-        misc::disable_stunt_jump_set(i);
-        misc::delete_stunt_jump(i);
+        clock::pause_clock(true);
+
+        for i in 0..=50 {
+            misc::disable_stunt_jump_set(i);
+            misc::delete_stunt_jump(i);
+        }
+
+        for gameplay_script in &GAMEPLAY_SCRIPTS {
+            let gameplay_script_cstring = std::ffi::CString::new(*gameplay_script).unwrap();
+            misc::terminate_all_scripts_with_this_name(&gameplay_script_cstring);
+        }
     }
 
-    for gameplay_script in &GAMEPLAY_SCRIPTS {
-        let gameplay_script_cstring = std::ffi::CString::new(*gameplay_script).unwrap();
-        misc::terminate_all_scripts_with_this_name(&gameplay_script_cstring);
+    fn add_components(&self, world: &mut World) {
+        world.extend(vec![
+            (GenericFunctionComponent {
+                function: hijack_frontend_menu,
+            },),
+            (GenericFunctionComponent {
+                function: run_cleanup_tick,
+            },),
+        ]);
+
+        world.extend(vec![
+            (EntityCleanupData {
+                cleanup_type: EntityCleanupType::Ped,
+                last_run_at: std::time::SystemTime::UNIX_EPOCH,
+            },),
+            (EntityCleanupData {
+                cleanup_type: EntityCleanupType::Vehicle,
+                last_run_at: std::time::SystemTime::UNIX_EPOCH,
+            },),
+        ]);
     }
-}
 
-pub fn run_on_tick(_resources: &mut Resources) {}
+    fn add_resources(&self, resources: &mut Resources) {
+        resources.insert(EntityPool { entities: vec![] });
+    }
 
-pub fn add_components(world: &mut World) {
-    world.extend(vec![
-        (GenericFunctionComponent {
-            function: hijack_frontend_menu,
-        },),
-        (GenericFunctionComponent {
-            function: run_cleanup_tick,
-        },),
-    ]);
-
-    world.extend(vec![
-        (EntityCleanupData {
-            cleanup_type: EntityCleanupType::Ped,
-            last_run_at: std::time::SystemTime::UNIX_EPOCH,
-        },),
-        (EntityCleanupData {
-            cleanup_type: EntityCleanupType::Vehicle,
-            last_run_at: std::time::SystemTime::UNIX_EPOCH,
-        },),
-    ]);
-}
-
-pub fn add_resources(resources: &mut Resources) {
-    resources.insert(EntityPool { entities: vec![] });
-}
-
-pub fn add_systems(builder: &mut Builder) {
-    builder.add_thread_local(run_entity_cleanup_system());
+    fn add_systems(&self, builder: &mut Builder) {
+        builder.add_thread_local(run_entity_cleanup_system());
+    }
 }
 
 fn hijack_frontend_menu() {

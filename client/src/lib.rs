@@ -3,27 +3,15 @@
 use legion::*;
 use log::info;
 use once_cell::sync::Lazy;
-use std::sync::Mutex;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
 mod console;
 mod generic;
+mod modules;
 mod ui;
 mod utility;
 mod wrapped_natives;
-
-macro_rules! register_module {
-    ($module:ident, $world:expr, $resources:expr, $schedule_builder:expr) => {{
-        let mut on_tick_callbacks = ON_TICK_CALLBACKS.lock().unwrap();
-        on_tick_callbacks.push($module::run_on_tick);
-
-        $module::run_initial();
-        $module::add_components(&mut $world);
-        $module::add_resources(&mut $resources);
-        $module::add_systems(&mut $schedule_builder);
-    }};
-}
 
 static INSTALL_DIRECTORY: Lazy<String> = Lazy::new(|| {
     let key = RegKey::predef(HKEY_LOCAL_MACHINE)
@@ -34,8 +22,6 @@ static INSTALL_DIRECTORY: Lazy<String> = Lazy::new(|| {
 
     value
 });
-
-static ON_TICK_CALLBACKS: Lazy<Mutex<Vec<fn(&mut Resources)>>> = Lazy::new(|| Mutex::new(vec![]));
 
 make_entrypoint!(entrypoint);
 
@@ -55,10 +41,19 @@ fn script_callback() {
     let mut resources = Resources::default();
     let mut schedule_builder = Schedule::builder();
 
-    register_module!(cleanup, world, resources, schedule_builder);
-    register_module!(console, world, resources, schedule_builder);
-    register_module!(generic, world, resources, schedule_builder);
-    register_module!(ui, world, resources, schedule_builder);
+    let mut modules: Vec<Box<dyn modules::Module>> = vec![];
+
+    modules.push(Box::new(cleanup::CleanupModule {}));
+    modules.push(Box::new(console::ConsoleModule {}));
+    modules.push(Box::new(generic::GenericModule {}));
+    modules.push(Box::new(ui::UiModule {}));
+
+    for module in &modules {
+        module.run_initial();
+        module.add_components(&mut world);
+        module.add_resources(&mut resources);
+        module.add_systems(&mut schedule_builder);
+    }
 
     let mut schedule = schedule_builder.build();
 
@@ -67,9 +62,8 @@ fn script_callback() {
 
         schedule.execute(&mut world, &mut resources);
 
-        let on_tick_callbacks = &ON_TICK_CALLBACKS.lock().unwrap().clone();
-        for callback in on_tick_callbacks {
-            callback(&mut resources);
+        for module in &modules {
+            module.run_on_tick(&mut resources);
         }
 
         hook::script_wait(0);
