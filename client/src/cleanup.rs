@@ -1,4 +1,5 @@
 use crate::modules::Module;
+use crate::wrapped_natives::entities::delete_entity;
 use hook::natives::*;
 use legion::*;
 use legion::{systems::Builder, world::SubWorld};
@@ -148,8 +149,6 @@ fn run_entity_cleanup(world: &mut SubWorld) {
         .iter_mut(world)
         .collect::<Vec<&mut EntityCleanupData>>();
 
-    log::debug!("Amount of entities: {}", existing_entities.len());
-
     let now = std::time::SystemTime::now();
 
     for data in entity_cleanup_data {
@@ -193,10 +192,7 @@ fn run_entity_cleanup(world: &mut SubWorld) {
                 continue;
             }
 
-            entity::set_entity_as_no_longer_needed(&mut entity);
-            entity::set_entity_as_mission_entity(entity, false, true);
-
-            entity::delete_entity(&mut entity);
+            delete_entity(&mut entity);
 
             deleted_entities += 1;
         }

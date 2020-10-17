@@ -16,6 +16,7 @@ static COMMANDS: Lazy<HashMap<&str, CommandCallback>> = Lazy::new(|| {
     let mut commands: HashMap<&str, CommandCallback> = HashMap::new();
 
     commands.insert("veh", commands::command_veh);
+    commands.insert("rmveh", commands::command_rmveh);
 
     commands
 });
