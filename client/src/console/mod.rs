@@ -1,5 +1,3 @@
-use std::{collections::VecDeque, sync::Mutex, time::SystemTime};
-
 use crate::{modules::Module, wrapped_natives::*};
 use hook::natives::*;
 use hook::KeyboardCallbackState;
@@ -7,8 +5,20 @@ use legion::systems::{Builder, CommandBuffer};
 use legion::*;
 use log::{error, info};
 use once_cell::sync::Lazy;
+use std::{collections::HashMap, collections::VecDeque, sync::Mutex, time::SystemTime};
+
+mod commands;
+
+type CommandCallback = fn(&mut CommandBuffer, &mut ConsoleData, Vec<String>);
 
 static CONSOLE_DATA: Lazy<Mutex<ConsoleData>> = Lazy::new(|| Mutex::new(ConsoleData::default()));
+static COMMANDS: Lazy<HashMap<&str, CommandCallback>> = Lazy::new(|| {
+    let mut commands: HashMap<&str, CommandCallback> = HashMap::new();
+
+    commands.insert("veh", commands::command_veh);
+
+    commands
+});
 
 const BACKGROUND_INPUT_HEIGHT: f32 = 18.0;
 const BACKGROUND_LINE_HEIGHT: f32 = 16.0;
@@ -23,10 +33,7 @@ struct ConsoleData {
     cursor_index: usize,
     input_history: Vec<String>,
     current_history_index: isize,
-    command_queue: VecDeque<(
-        Vec<String>,
-        fn(&mut CommandBuffer, &mut ConsoleData, Vec<String>),
-    )>,
+    command_queue: VecDeque<(Vec<String>, CommandCallback)>,
 }
 
 impl Default for ConsoleData {
@@ -201,18 +208,15 @@ fn handle_command(console_data: &mut ConsoleData) {
         console_data.input_history.pop();
     }
 
-    match command_name.as_str() {
-        // TODO: Improve command registration
-        "veh" => {
-            console_data
-                .command_queue
-                .push_back((command_array.clone(), command_veh));
-        }
-        _ => print_line(
+    match COMMANDS.get(command_name.as_str()) {
+        Some(command) => console_data
+            .command_queue
+            .push_back((command_array.clone(), *command)),
+        None => print_line(
             console_data,
             format!("~o~Unknown command: ~s~{}", command_name).as_str(),
         ),
-    }
+    };
 }
 
 fn on_keyboard_callback(state: KeyboardCallbackState) {
@@ -345,34 +349,4 @@ fn print_line(console_data: &mut ConsoleData, text: &str) {
     }
 
     info!("GameConsole: {}", text);
-}
-
-fn command_veh(
-    command_buffer: &mut CommandBuffer,
-    console_data: &mut ConsoleData,
-    arguments: Vec<String>,
-) {
-    // TODO: Improve argument system or at least validate them
-    let mut arguments = arguments.clone();
-    arguments.reverse();
-
-    let model_string = arguments.pop().unwrap();
-    let model_cstring = std::ffi::CString::new(model_string).unwrap();
-    let model = misc::get_hash_key(&model_cstring);
-
-    crate::utility::StreamedModel::new(model);
-
-    let position =
-        hook::natives::entity::get_entity_coords(hook::natives::player::player_ped_id(), true);
-
-    let id = hook::natives::vehicle::create_vehicle(
-        model, position.x, position.y, position.z, 0.0, false, false, false,
-    );
-
-    command_buffer.push((crate::cleanup::Entity { id },));
-
-    print_line(
-        console_data,
-        format!("Spawned vehicle ({}) with model: {:#X}", id, model).as_str(),
-    );
 }
