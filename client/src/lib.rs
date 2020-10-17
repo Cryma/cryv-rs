@@ -7,7 +7,6 @@ use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
 mod console;
-mod generic;
 mod modules;
 mod ui;
 mod utility;
@@ -45,7 +44,6 @@ fn script_callback() {
 
     modules.push(Box::new(cleanup::CleanupModule {}));
     modules.push(Box::new(console::ConsoleModule {}));
-    modules.push(Box::new(generic::GenericModule {}));
     modules.push(Box::new(ui::UiModule {}));
 
     for module in &modules {
@@ -61,10 +59,6 @@ fn script_callback() {
         hook::update_keyboard();
 
         schedule.execute(&mut world, &mut resources);
-
-        for module in &modules {
-            module.run_on_tick(&mut resources);
-        }
 
         hook::script_wait(0);
     }

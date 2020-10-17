@@ -1,4 +1,4 @@
-use crate::{generic::GenericFunctionComponent, modules::Module};
+use crate::modules::Module;
 use hook::natives::*;
 use legion::*;
 use legion::{systems::Builder, world::SubWorld};
@@ -60,15 +60,6 @@ impl Module for CleanupModule {
 
     fn add_components(&self, world: &mut World) {
         world.extend(vec![
-            (GenericFunctionComponent {
-                function: hijack_frontend_menu,
-            },),
-            (GenericFunctionComponent {
-                function: run_cleanup_tick,
-            },),
-        ]);
-
-        world.extend(vec![
             (EntityCleanupData {
                 cleanup_type: EntityCleanupType::Ped,
                 last_run_at: std::time::SystemTime::UNIX_EPOCH,
@@ -81,10 +72,14 @@ impl Module for CleanupModule {
     }
 
     fn add_systems(&self, builder: &mut Builder) {
-        builder.add_thread_local(run_entity_cleanup_system());
+        builder
+            .add_thread_local(run_entity_cleanup_system())
+            .add_thread_local(hijack_frontend_menu_system())
+            .add_thread_local(run_cleanup_system());
     }
 }
 
+#[system]
 fn hijack_frontend_menu() {
     pad::disable_control_action(0, 199, true);
     pad::disable_control_action(0, 200, true);
@@ -100,7 +95,8 @@ fn hijack_frontend_menu() {
     }
 }
 
-fn run_cleanup_tick() {
+#[system]
+fn run_cleanup() {
     vehicle::set_random_trains(false);
     vehicle::set_random_boats(false);
     vehicle::set_number_of_parked_vehicles(-1);
