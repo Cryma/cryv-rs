@@ -1,7 +1,7 @@
 use crate::{generic::GenericFunctionComponent, modules::Module};
 use hook::natives::*;
-use legion::systems::Builder;
 use legion::*;
+use legion::{systems::Builder, world::SubWorld};
 use log::{debug, error};
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -16,9 +16,10 @@ struct EntityCleanupData {
     last_run_at: std::time::SystemTime,
 }
 
-#[derive(Clone, Debug, PartialEq)]
-pub struct EntityPool {
-    pub entities: Vec<i32>,
+// TODO: Move to proper module
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct Entity {
+    pub id: i32,
 }
 
 pub struct CleanupModule;
@@ -79,10 +80,6 @@ impl Module for CleanupModule {
         ]);
     }
 
-    fn add_resources(&self, resources: &mut Resources) {
-        resources.insert(EntityPool { entities: vec![] });
-    }
-
     fn add_systems(&self, builder: &mut Builder) {
         builder.add_thread_local(run_entity_cleanup_system());
     }
@@ -139,57 +136,81 @@ fn run_cleanup_tick() {
     pad::disable_control_action(0, 243, true); // INPUT_ENTER_CHEAT_CODE
 }
 
-#[system(for_each)]
-fn run_entity_cleanup(data: &mut EntityCleanupData, #[resource] entity_pool: &EntityPool) {
+#[system]
+#[write_component(EntityCleanupData)]
+#[read_component(Entity)]
+fn run_entity_cleanup(world: &mut SubWorld) {
+    let mut entity_cleanup_data_query = <&mut EntityCleanupData>::query();
+    let mut entity_query = <&Entity>::query();
+
+    let read_only_world = world.clone();
+
+    let existing_entities = entity_query
+        .iter(&read_only_world)
+        .collect::<Vec<&Entity>>();
+    let entity_cleanup_data = entity_cleanup_data_query
+        .iter_mut(world)
+        .collect::<Vec<&mut EntityCleanupData>>();
+
+    log::debug!("Amount of entities: {}", existing_entities.len());
+
     let now = std::time::SystemTime::now();
 
-    match now.duration_since(data.last_run_at) {
-        Ok(duration) => {
-            if duration.as_millis() < 500 {
+    for data in entity_cleanup_data {
+        match now.duration_since(data.last_run_at) {
+            Ok(duration) => {
+                if duration.as_millis() < 500 {
+                    return;
+                }
+
+                data.last_run_at = now;
+            }
+            Err(error) => {
+                error!(
+                    "Error while running entity cleanup for type {:?}: {}",
+                    data.cleanup_type, error
+                );
+
                 return;
             }
-
-            data.last_run_at = now;
         }
-        Err(error) => {
-            error!(
-                "Error while running entity cleanup for type {:?}: {}",
-                data.cleanup_type, error
+
+        let (_, entities) = match data.cleanup_type {
+            EntityCleanupType::Ped => hook::get_all_peds(),
+            EntityCleanupType::Vehicle => hook::get_all_vehicles(),
+        };
+
+        let mut deleted_entities = 0;
+
+        for mut entity in entities {
+            if entity::does_entity_exist(entity) == false {
+                continue;
+            }
+
+            let does_entity_exist = existing_entities
+                .clone()
+                .into_iter()
+                .find(|x| x.id == entity)
+                .is_some();
+
+            if does_entity_exist {
+                continue;
+            }
+
+            entity::set_entity_as_no_longer_needed(&mut entity);
+            entity::set_entity_as_mission_entity(entity, false, true);
+
+            entity::delete_entity(&mut entity);
+
+            deleted_entities += 1;
+        }
+
+        if deleted_entities != 0 {
+            debug!(
+                "Deleted {} entities of type {:?}",
+                deleted_entities, data.cleanup_type
             );
-
-            return;
         }
-    }
-
-    let (_, entities) = match data.cleanup_type {
-        EntityCleanupType::Ped => hook::get_all_peds(),
-        EntityCleanupType::Vehicle => hook::get_all_vehicles(),
-    };
-
-    let mut deleted_entities = 0;
-
-    for mut entity in entities {
-        if entity::does_entity_exist(entity) == false {
-            continue;
-        }
-
-        if entity_pool.entities.contains(&entity) {
-            continue;
-        }
-
-        entity::set_entity_as_no_longer_needed(&mut entity);
-        entity::set_entity_as_mission_entity(entity, false, true);
-
-        entity::delete_entity(&mut entity);
-
-        deleted_entities += 1;
-    }
-
-    if deleted_entities != 0 {
-        debug!(
-            "Deleted {} entities of type {:?}",
-            deleted_entities, data.cleanup_type
-        );
     }
 }
 
