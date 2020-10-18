@@ -1,8 +1,6 @@
-use crate::modules::Module;
 use crate::wrapped_natives::entities::delete_entity;
+use bevy::ecs::prelude::*;
 use hook::natives::*;
-use legion::*;
-use legion::{systems::Builder, world::SubWorld};
 use log::{debug, error};
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -12,7 +10,7 @@ enum EntityCleanupType {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-struct EntityCleanupData {
+pub struct EntityCleanupData {
     cleanup_type: EntityCleanupType,
     last_run_at: std::time::SystemTime,
 }
@@ -23,81 +21,42 @@ pub struct Entity {
     pub id: i32,
 }
 
-pub struct CleanupModule;
+pub fn startup_system(world: &mut World, _resources: &mut Resources) {
+    let player_ped_id = player::player_ped_id();
+    entity::set_entity_coords_no_offset(player_ped_id, 412.4, -976.71, 29.43, false, false, false);
 
-impl Module for CleanupModule {
-    fn run_initial(&mut self) {
-        let player_ped_id = player::player_ped_id();
-        entity::set_entity_coords_no_offset(
-            player_ped_id,
-            412.4,
-            -976.71,
-            29.43,
-            false,
-            false,
-            false,
-        );
+    cam::destroy_all_cams(true);
+    script::set_no_loading_screen(true);
 
-        cam::destroy_all_cams(true);
-        script::set_no_loading_screen(true);
+    dlc::on_enter_mp();
 
-        dlc::on_enter_mp();
+    let weather_type = std::ffi::CString::new("EXTRASUNNY").unwrap();
+    misc::set_weather_type_now(&weather_type);
 
-        let weather_type = std::ffi::CString::new("EXTRASUNNY").unwrap();
-        misc::set_weather_type_now(&weather_type);
+    clock::pause_clock(true);
 
-        clock::pause_clock(true);
-
-        for i in 0..=50 {
-            misc::disable_stunt_jump_set(i);
-            misc::delete_stunt_jump(i);
-        }
-
-        for gameplay_script in &GAMEPLAY_SCRIPTS {
-            let gameplay_script_cstring = std::ffi::CString::new(*gameplay_script).unwrap();
-            misc::terminate_all_scripts_with_this_name(&gameplay_script_cstring);
-        }
+    for i in 0..=50 {
+        misc::disable_stunt_jump_set(i);
+        misc::delete_stunt_jump(i);
     }
 
-    fn add_components(&mut self, world: &mut World) {
-        world.extend(vec![
-            (EntityCleanupData {
-                cleanup_type: EntityCleanupType::Ped,
-                last_run_at: std::time::SystemTime::UNIX_EPOCH,
-            },),
-            (EntityCleanupData {
-                cleanup_type: EntityCleanupType::Vehicle,
-                last_run_at: std::time::SystemTime::UNIX_EPOCH,
-            },),
-        ]);
+    for gameplay_script in &GAMEPLAY_SCRIPTS {
+        let gameplay_script_cstring = std::ffi::CString::new(*gameplay_script).unwrap();
+        misc::terminate_all_scripts_with_this_name(&gameplay_script_cstring);
     }
 
-    fn add_systems(&mut self, builder: &mut Builder) {
-        builder
-            .add_thread_local(run_entity_cleanup_system())
-            .add_thread_local(hijack_frontend_menu_system())
-            .add_thread_local(run_cleanup_system());
-    }
+    world.spawn((EntityCleanupData {
+        cleanup_type: EntityCleanupType::Ped,
+        last_run_at: std::time::SystemTime::UNIX_EPOCH,
+    },));
+
+    world.spawn((EntityCleanupData {
+        cleanup_type: EntityCleanupType::Vehicle,
+        last_run_at: std::time::SystemTime::UNIX_EPOCH,
+    },));
 }
 
-#[system]
-fn hijack_frontend_menu() {
-    pad::disable_control_action(0, 199, true);
-    pad::disable_control_action(0, 200, true);
-
-    if pad::is_disabled_control_just_released(0, 199)
-        || pad::is_disabled_control_just_released(0, 200)
-    {
-        hud::activate_frontend_menu(
-            misc::get_hash_key(&std::ffi::CString::new("FE_MENU_VERSION_SP_PAUSE").unwrap()),
-            false,
-            -1,
-        );
-    }
-}
-
-#[system]
-fn run_cleanup() {
+pub fn cleanup_tick_system(_world: &mut World, _resources: &mut Resources) {
     vehicle::set_random_trains(false);
     vehicle::set_random_boats(false);
     vehicle::set_number_of_parked_vehicles(-1);
@@ -133,25 +92,21 @@ fn run_cleanup() {
     pad::disable_control_action(0, 243, true); // INPUT_ENTER_CHEAT_CODE
 }
 
-#[system]
-#[write_component(EntityCleanupData)]
-#[read_component(Entity)]
-fn run_entity_cleanup(world: &mut SubWorld) {
-    let mut entity_cleanup_data_query = <&mut EntityCleanupData>::query();
-    let mut entity_query = <&Entity>::query();
+pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
+    let mut existing_entities = Vec::<Entity>::new();
 
-    let read_only_world = world.clone();
+    {
+        let mut entities = world.query::<&Entity>();
+        for entity in &mut entities.iter() {
+            existing_entities.push(entity.clone());
+        }
+    }
 
-    let existing_entities = entity_query
-        .iter(&read_only_world)
-        .collect::<Vec<&Entity>>();
-    let entity_cleanup_data = entity_cleanup_data_query
-        .iter_mut(world)
-        .collect::<Vec<&mut EntityCleanupData>>();
+    let mut entity_cleanup_data = world.query_mut::<&mut EntityCleanupData>();
 
     let now = std::time::SystemTime::now();
 
-    for data in entity_cleanup_data {
+    for mut data in &mut entity_cleanup_data.iter() {
         match now.duration_since(data.last_run_at) {
             Ok(duration) => {
                 if duration.as_millis() < 500 {
@@ -183,13 +138,12 @@ fn run_entity_cleanup(world: &mut SubWorld) {
                 continue;
             }
 
-            let does_entity_exist = existing_entities
-                .clone()
-                .into_iter()
+            let should_entity_exist = (&mut existing_entities)
+                .iter()
                 .find(|x| x.id == entity)
                 .is_some();
 
-            if does_entity_exist {
+            if should_entity_exist {
                 continue;
             }
 
@@ -204,6 +158,21 @@ fn run_entity_cleanup(world: &mut SubWorld) {
                 deleted_entities, data.cleanup_type
             );
         }
+    }
+}
+
+pub fn hijack_frontend_menu(_world: &mut World, _resources: &mut Resources) {
+    pad::disable_control_action(0, 199, true);
+    pad::disable_control_action(0, 200, true);
+
+    if pad::is_disabled_control_just_released(0, 199)
+        || pad::is_disabled_control_just_released(0, 200)
+    {
+        hud::activate_frontend_menu(
+            misc::get_hash_key(&std::ffi::CString::new("FE_MENU_VERSION_SP_PAUSE").unwrap()),
+            false,
+            -1,
+        );
     }
 }
 

@@ -1,13 +1,14 @@
 #![forbid(unsafe_code)]
 
-use legion::*;
+use std::time::Duration;
+
+use bevy::{app::ScheduleRunnerPlugin, prelude::*};
 use log::info;
 use once_cell::sync::Lazy;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
 mod console;
-mod modules;
 mod ui;
 mod utility;
 mod wrapped_natives;
@@ -35,37 +36,29 @@ fn entrypoint() {
     info!("Successfully started CryV");
 }
 
+fn update_keyboard(_world: &mut World, _resources: &mut Resources) {
+    hook::update_keyboard();
+}
+
+fn script_wait(_world: &mut World, _resources: &mut Resources) {
+    hook::script_wait(0);
+}
+
 fn script_callback() {
-    let mut world = World::default();
-    let mut resources = Resources::default();
-    let mut schedule_builder = Schedule::builder();
-
-    let mut modules: Vec<Box<dyn modules::Module>> = vec![];
-
-    modules.push(Box::new(cleanup::CleanupModule {}));
-    modules.push(Box::new(console::ConsoleModule::default()));
-    modules.push(Box::new(ui::UiModule {}));
-
-    for module in modules.iter_mut() {
-        module.run_initial();
-        module.add_components(&mut world);
-        module.add_resources(&mut resources);
-        module.add_systems(&mut schedule_builder);
-    }
-
-    let mut schedule = schedule_builder.build();
-
-    loop {
-        hook::update_keyboard();
-
-        for module in modules.iter_mut() {
-            module.run_on_tick(&mut world, &mut resources);
-        }
-
-        schedule.execute(&mut world, &mut resources);
-
-        hook::script_wait(0);
-    }
+    App::build()
+        .add_plugin(ScheduleRunnerPlugin::run_loop(Duration::from_millis(0)))
+        .init_resource::<console::ConsoleData>()
+        .add_startup_system(cleanup::startup_system.thread_local_system())
+        .add_startup_system(console::run_startup_system.thread_local_system())
+        .add_startup_system(ui::ui_startup_system.thread_local_system())
+        .add_system(update_keyboard.thread_local_system())
+        .add_system(cleanup::cleanup_tick_system.thread_local_system())
+        .add_system(cleanup::cleanup_system.thread_local_system())
+        .add_system(cleanup::hijack_frontend_menu.thread_local_system())
+        .add_system(console::run_on_tick.thread_local_system())
+        .add_system(ui::draw_text_entries.thread_local_system())
+        .add_system(script_wait.thread_local_system())
+        .run();
 }
 
 fn create_logger() -> Result<(), fern::InitError> {

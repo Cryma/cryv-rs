@@ -1,9 +1,8 @@
-use crate::{modules::Module, wrapped_natives::*};
-use legion::systems::Builder;
-use legion::*;
+use crate::wrapped_natives::*;
+use bevy::ecs::prelude::*;
 
 #[derive(Clone, Debug, PartialEq)]
-struct TextEntry {
+pub struct TextEntry {
     text: String,
     pos_x: f32,
     pos_y: f32,
@@ -11,33 +10,28 @@ struct TextEntry {
     color: (i32, i32, i32, i32),
 }
 
-pub struct UiModule;
-
-impl Module for UiModule {
-    fn add_components(&mut self, world: &mut World) {
-        let _entity = world.push((TextEntry {
-            text: "CryV".to_owned(),
-            pos_x: 0.975,
-            pos_y: 0.01,
-            scale: 0.42,
-            color: (200, 200, 200, 255),
-        },));
-    }
-
-    fn add_systems(&mut self, builder: &mut Builder) {
-        builder.add_thread_local(draw_text_entries_system());
-    }
+pub fn ui_startup_system(world: &mut World, _resources: &mut Resources) {
+    world.spawn((TextEntry {
+        text: "CryV".to_owned(),
+        pos_x: 0.975,
+        pos_y: 0.01,
+        scale: 0.42,
+        color: (200, 200, 200, 255),
+    },));
 }
 
-#[system(for_each)]
-fn draw_text_entries(text_entry: &TextEntry) {
-    ui::draw_text(
-        &text_entry.text,
-        text_entry.pos_x,
-        text_entry.pos_y,
-        text_entry.scale,
-        text_entry.color,
-        true,
-        1.0,
-    );
+pub fn draw_text_entries(world: &mut World, _resources: &mut Resources) {
+    let mut text_entries = world.query::<&TextEntry>();
+
+    for entry in text_entries.iter() {
+        ui::draw_text(
+            &entry.text,
+            entry.pos_x,
+            entry.pos_y,
+            entry.scale,
+            entry.color,
+            true,
+            1.0,
+        );
+    }
 }

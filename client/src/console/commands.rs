@@ -1,14 +1,14 @@
-use super::ConsoleModule;
+use super::{print_line, ConsoleData};
 use crate::wrapped_natives::*;
-use legion::*;
+use bevy::ecs::prelude::*;
 
 pub(super) fn command_veh(
     world: &mut World,
-    console: &mut ConsoleModule,
+    console_data: &mut ConsoleData,
     arguments: &mut Vec<String>,
 ) {
     if arguments.len() < 1 {
-        console.print_line("Please specifiy a vehicle model name.");
+        print_line(console_data, "Please specifiy a vehicle model name.");
 
         return;
     }
@@ -27,21 +27,24 @@ pub(super) fn command_veh(
 
     hook::natives::ped::set_ped_into_vehicle(player_ped_id, id, -1);
 
-    world.push((crate::cleanup::Entity { id },));
+    world.spawn((crate::cleanup::Entity { id },));
 
-    console.print_line(format!("Spawned vehicle ({}) with model: {}", id, model).as_str());
+    print_line(
+        console_data,
+        format!("Spawned vehicle ({}) with model: {}", id, model).as_str(),
+    );
 }
 
 pub(super) fn command_rmveh(
     world: &mut World,
-    console: &mut ConsoleModule,
+    console_data: &mut ConsoleData,
     _arguments: &mut Vec<String>,
 ) {
     let player_ped_id = hook::natives::player::player_ped_id();
     let is_in_vehicle = hook::natives::ped::is_ped_in_any_vehicle(player_ped_id, false);
 
     if is_in_vehicle == false {
-        console.print_line("You are not in any vehicle.");
+        print_line(console_data, "You are not in any vehicle.");
 
         return;
     }
@@ -52,24 +55,19 @@ pub(super) fn command_rmveh(
 
     entities::delete_entity(&mut vehicle_id);
 
-    let mut vehicle_query = Read::<crate::cleanup::Entity>::query();
-    let entities = vehicle_query.iter_chunks(world);
+    let mut existing_entities = world.query::<(Entity, &crate::cleanup::Entity)>();
 
     let mut found_entity: Option<Entity> = None;
 
-    for chunk in entities {
-        for (entity, entity_data) in chunk.into_iter_entities() {
-            if entity_data.id != vehicle_id_copy {
-                continue;
-            }
-
-            found_entity = Some(entity);
-
-            break;
+    for (entity, entity_data) in existing_entities.iter() {
+        if entity_data.id != vehicle_id_copy {
+            continue;
         }
+
+        found_entity = Some(entity);
     }
 
     if let Some(x) = found_entity {
-        world.remove(x);
+        world.despawn(x).unwrap();
     }
 }
