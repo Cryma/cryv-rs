@@ -47,16 +47,10 @@ fn script_wait(_world: &mut World, _resources: &mut Resources) {
 fn script_callback() {
     App::build()
         .add_plugin(ScheduleRunnerPlugin::run_loop(Duration::from_millis(0)))
-        .init_resource::<console::ConsoleData>()
-        .add_startup_system(cleanup::startup_system.thread_local_system())
-        .add_startup_system(console::run_startup_system.thread_local_system())
-        .add_startup_system(ui::ui_startup_system.thread_local_system())
         .add_system(update_keyboard.thread_local_system())
-        .add_system(cleanup::cleanup_tick_system.thread_local_system())
-        .add_system(cleanup::cleanup_system.thread_local_system())
-        .add_system(cleanup::hijack_frontend_menu.thread_local_system())
-        .add_system(console::run_on_tick.thread_local_system())
-        .add_system(ui::draw_text_entries.thread_local_system())
+        .add_plugin(cleanup::CleanupPlugin)
+        .add_plugin(console::ConsolePlugin)
+        .add_plugin(ui::UiPlugin)
         .add_system(script_wait.thread_local_system())
         .run();
 }

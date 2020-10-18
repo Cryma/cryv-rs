@@ -1,7 +1,17 @@
 use crate::wrapped_natives::entities::delete_entity;
-use bevy::ecs::prelude::*;
+use bevy::prelude::*;
 use hook::natives::*;
 use log::{debug, error};
+
+pub struct CleanupPlugin;
+impl Plugin for CleanupPlugin {
+    fn build(&self, app: &mut bevy::prelude::AppBuilder) {
+        app.add_startup_system(startup_system.thread_local_system())
+            .add_system(cleanup_tick_system.thread_local_system())
+            .add_system(cleanup_system.thread_local_system())
+            .add_system(hijack_frontend_menu.thread_local_system());
+    }
+}
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 enum EntityCleanupType {

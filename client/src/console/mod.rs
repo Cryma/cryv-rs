@@ -1,5 +1,5 @@
 use crate::wrapped_natives::*;
-use bevy::ecs::prelude::*;
+use bevy::prelude::*;
 use hook::natives::*;
 use hook::KeyboardCallbackState;
 use log::{error, info};
@@ -23,6 +23,15 @@ static COMMANDS: Lazy<HashMap<&str, CommandCallback>> = Lazy::new(|| {
 
 const BACKGROUND_INPUT_HEIGHT: f32 = 18.0;
 const BACKGROUND_LINE_HEIGHT: f32 = 16.0;
+
+pub struct ConsolePlugin;
+impl Plugin for ConsolePlugin {
+    fn build(&self, app: &mut bevy::prelude::AppBuilder) {
+        app.init_resource::<ConsoleData>()
+            .add_startup_system(run_startup_system.thread_local_system())
+            .add_system(run_on_tick.thread_local_system());
+    }
+}
 
 pub struct ConsoleData {
     is_visible: bool,

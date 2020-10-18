@@ -1,5 +1,13 @@
 use crate::wrapped_natives::*;
-use bevy::ecs::prelude::*;
+use bevy::prelude::*;
+
+pub struct UiPlugin;
+impl Plugin for UiPlugin {
+    fn build(&self, app: &mut bevy::prelude::AppBuilder) {
+        app.add_startup_system(ui_startup_system.thread_local_system())
+            .add_system(draw_text_entries.thread_local_system());
+    }
+}
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct TextEntry {
