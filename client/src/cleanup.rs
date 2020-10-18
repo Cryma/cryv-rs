@@ -178,7 +178,8 @@ fn run_entity_cleanup(world: &mut SubWorld) {
         let mut deleted_entities = 0;
 
         for mut entity in entities {
-            if entity::does_entity_exist(entity) == false {
+            // Don't try to delete the own player ped or non-existing entities
+            if player::player_ped_id() == entity || entity::does_entity_exist(entity) == false {
                 continue;
             }
 
