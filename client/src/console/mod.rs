@@ -1,7 +1,6 @@
 use crate::{modules::Module, wrapped_natives::*};
 use hook::natives::*;
 use hook::KeyboardCallbackState;
-use legion::systems::{Builder, CommandBuffer};
 use legion::*;
 use log::{error, info};
 use once_cell::sync::Lazy;
@@ -9,9 +8,10 @@ use std::{collections::HashMap, collections::VecDeque, sync::Mutex, time::System
 
 mod commands;
 
-type CommandCallback = fn(&mut CommandBuffer, &mut ConsoleData, &mut Vec<String>);
+type CommandCallback = fn(&mut World, &mut ConsoleModule, &mut Vec<String>);
 
-static CONSOLE_DATA: Lazy<Mutex<ConsoleData>> = Lazy::new(|| Mutex::new(ConsoleData::default()));
+static KEY_EVENT_QUEUE: Lazy<Mutex<VecDeque<KeyboardCallbackState>>> =
+    Lazy::new(|| Mutex::new(VecDeque::new()));
 static COMMANDS: Lazy<HashMap<&str, CommandCallback>> = Lazy::new(|| {
     let mut commands: HashMap<&str, CommandCallback> = HashMap::new();
 
@@ -24,7 +24,7 @@ static COMMANDS: Lazy<HashMap<&str, CommandCallback>> = Lazy::new(|| {
 const BACKGROUND_INPUT_HEIGHT: f32 = 18.0;
 const BACKGROUND_LINE_HEIGHT: f32 = 16.0;
 
-struct ConsoleData {
+pub struct ConsoleModule {
     is_visible: bool,
     input: String,
     output: Vec<String>,
@@ -37,9 +37,9 @@ struct ConsoleData {
     command_queue: VecDeque<(Vec<String>, CommandCallback)>,
 }
 
-impl Default for ConsoleData {
+impl Default for ConsoleModule {
     fn default() -> Self {
-        ConsoleData {
+        ConsoleModule {
             is_visible: false,
             input: "".to_owned(),
             output: Vec::new(),
@@ -49,184 +49,295 @@ impl Default for ConsoleData {
             cursor_index: 0,
             input_history: Vec::new(),
             current_history_index: -1,
-            command_queue: VecDeque::new(),
+            command_queue: VecDeque::<(Vec<String>, CommandCallback)>::new(),
         }
     }
 }
 
-// TODO: Merge ConsoleModule and ConsoleData
-// This is currently not possible, as the keyboard callback
-// can't take a function pointer of a struct.
-pub struct ConsoleModule;
-
 impl Module for ConsoleModule {
-    fn run_initial(&self) {
+    fn run_initial(&mut self) {
         hook::register_keyboard_callback(on_keyboard_callback);
     }
 
-    fn add_systems(&self, builder: &mut Builder) {
-        builder.add_thread_local(on_console_tick_system());
-    }
-}
+    fn run_on_tick(&mut self, world: &mut World, _resources: &mut Resources) {
+        self.process_key_events();
 
-#[system]
-fn on_console_tick(command_buffer: &mut CommandBuffer) {
-    let mut console_data = match CONSOLE_DATA.try_lock() {
-        Ok(val) => val,
-        Err(error) => {
-            error!(
-                "Error while trying to lock console data in no_console_tick: {}",
-                error
-            );
+        while self.command_queue.is_empty() == false {
+            let (mut arguments, callback) = self.command_queue.pop_front().unwrap();
 
+            callback(world, self, &mut arguments);
+        }
+
+        if hook::is_key_released(hook::keycodes::KEY_F1, true) {
+            self.is_visible = !self.is_visible;
+        }
+
+        if self.is_visible == false {
             return;
         }
-    };
 
-    while console_data.command_queue.is_empty() == false {
-        let (mut arguments, callback) = console_data.command_queue.pop_front().unwrap();
+        pad::disable_all_control_actions(0);
 
-        callback(command_buffer, &mut console_data, &mut arguments);
-    }
+        let mut width: i32 = 0;
+        let mut height = 0;
+        graphics::get_screen_resolution(&mut width, &mut height);
 
-    if hook::is_key_released(hook::keycodes::KEY_F1, true) {
-        console_data.is_visible = !console_data.is_visible;
-    }
+        let output_height = BACKGROUND_LINE_HEIGHT * self.output_lines as f32 / height as f32;
+        let input_height = BACKGROUND_INPUT_HEIGHT / height as f32;
 
-    if console_data.is_visible == false {
-        return;
-    }
+        graphics::draw_rect(
+            0.5,
+            output_height / 2.0,
+            1.0,
+            output_height,
+            50,
+            50,
+            50,
+            150,
+            false,
+        );
 
-    pad::disable_all_control_actions(0);
+        graphics::draw_rect(
+            0.5,
+            output_height + input_height / 2.0,
+            1.0,
+            input_height,
+            0,
+            0,
+            0,
+            150,
+            false,
+        );
 
-    let mut width: i32 = 0;
-    let mut height = 0;
-    graphics::get_screen_resolution(&mut width, &mut height);
+        let mut count = 0;
 
-    let output_height = BACKGROUND_LINE_HEIGHT * console_data.output_lines as f32 / height as f32;
-    let input_height = BACKGROUND_INPUT_HEIGHT / height as f32;
+        for line in &self.output {
+            ui::draw_text(
+                line,
+                0.001,
+                BACKGROUND_LINE_HEIGHT * count as f32 / height as f32,
+                0.3,
+                (255, 255, 255, 255),
+                false,
+                1.0,
+            );
 
-    graphics::draw_rect(
-        0.5,
-        output_height / 2.0,
-        1.0,
-        output_height,
-        50,
-        50,
-        50,
-        150,
-        false,
-    );
+            count += 1;
+        }
 
-    graphics::draw_rect(
-        0.5,
-        output_height + input_height / 2.0,
-        1.0,
-        input_height,
-        0,
-        0,
-        0,
-        150,
-        false,
-    );
-
-    let mut count = 0;
-
-    for line in &console_data.output {
         ui::draw_text(
-            line,
+            &self.input,
             0.001,
-            BACKGROUND_LINE_HEIGHT * count as f32 / height as f32,
+            output_height,
             0.3,
             (255, 255, 255, 255),
             false,
             1.0,
         );
 
-        count += 1;
-    }
+        let now = SystemTime::now();
+        if now
+            .duration_since(self.last_blink_update)
+            .unwrap()
+            .as_millis()
+            > 500
+        {
+            self.blink_state = !self.blink_state;
 
-    ui::draw_text(
-        &console_data.input,
-        0.001,
-        output_height,
-        0.3,
-        (255, 255, 255, 255),
-        false,
-        1.0,
-    );
+            self.last_blink_update = now;
+        }
 
-    let now = SystemTime::now();
-    if now
-        .duration_since(console_data.last_blink_update)
-        .unwrap()
-        .as_millis()
-        > 500
-    {
-        console_data.blink_state = !console_data.blink_state;
+        if self.blink_state {
+            let input = &self.input[..self.cursor_index];
+            let text_width = ui::get_text_width(input, 0.3);
 
-        console_data.last_blink_update = now;
-    }
-
-    if console_data.blink_state {
-        let input = &console_data.input[..console_data.cursor_index];
-        let text_width = ui::get_text_width(input, 0.3);
-
-        graphics::draw_rect(
-            text_width - 0.0005,
-            output_height + input_height / 2.0,
-            0.001,
-            input_height * 0.8,
-            255,
-            255,
-            255,
-            200,
-            false,
-        );
+            graphics::draw_rect(
+                text_width - 0.0005,
+                output_height + input_height / 2.0,
+                0.001,
+                input_height * 0.8,
+                255,
+                255,
+                255,
+                200,
+                false,
+            );
+        }
     }
 }
 
-fn handle_command(console_data: &mut ConsoleData) {
-    if console_data.input.is_empty() {
-        return;
+impl ConsoleModule {
+    fn process_key_events(&mut self) {
+        let mut key_event_queue = match KEY_EVENT_QUEUE.try_lock() {
+            Ok(val) => val,
+            Err(error) => {
+                error!(
+                    "Error while trying to lock key event queue in on_keyboard_callback: {}",
+                    error
+                );
+
+                return;
+            }
+        };
+
+        let key_events = key_event_queue.clone();
+
+        key_event_queue.clear();
+
+        for state in key_events.iter() {
+            if self.is_visible == false || state.is_pressed == false {
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_RETURN {
+                self.handle_command();
+
+                self.input = String::default();
+                self.current_history_index = -1;
+                self.cursor_index = 0;
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_BACK_SPACE {
+                if self.input.len() == 0 || self.cursor_index == 0 {
+                    return;
+                }
+
+                let cursor_index = self.cursor_index;
+                if cursor_index >= self.input.len() {
+                    self.input.pop();
+                } else {
+                    self.input.remove(cursor_index);
+                }
+
+                self.cursor_index -= 1;
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_DELETE {
+                if self.input.len() == 0 || self.cursor_index == self.input.len() {
+                    return;
+                }
+
+                let cursor_index = self.cursor_index as usize;
+                self.input.remove(cursor_index);
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_END {
+                self.cursor_index = self.input.len();
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_HOME {
+                self.cursor_index = 0;
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_DOWN {
+                if self.current_history_index <= 0 {
+                    return;
+                }
+
+                self.current_history_index -= 1;
+                self.input = self.input_history[self.current_history_index as usize].clone();
+                self.cursor_index = self.input.len();
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_UP {
+                if self.current_history_index + 1 >= self.input_history.len() as isize {
+                    return;
+                }
+
+                self.current_history_index += 1;
+                self.input = self.input_history[self.current_history_index as usize].clone();
+                self.cursor_index = self.input.len();
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_LEFT {
+                if self.cursor_index <= 0 {
+                    return;
+                }
+
+                self.cursor_index -= 1;
+
+                return;
+            }
+
+            if state.key == hook::keycodes::KEY_RIGHT {
+                if self.cursor_index >= self.input.len() {
+                    return;
+                }
+
+                self.cursor_index += 1;
+
+                return;
+            }
+
+            if state.key < 32 || state.key > 111 {
+                return;
+            }
+
+            let cursor_index = self.cursor_index;
+            self.input.insert(cursor_index, state.character);
+            self.cursor_index += 1;
+        }
     }
 
-    let input = console_data.input.clone();
+    fn handle_command(&mut self) {
+        if self.input.is_empty() {
+            return;
+        }
 
-    let command_array = input
-        .split(' ')
-        .map(|x| x.to_owned())
-        .collect::<Vec<String>>();
+        let input = self.input.clone();
 
-    let command_name = command_array.first().unwrap();
-    let mut command_array = (&command_array[1..]).to_vec();
-    command_array.reverse();
+        let command_array = input
+            .split(' ')
+            .map(|x| x.to_owned())
+            .collect::<Vec<String>>();
 
-    console_data
-        .input_history
-        .insert(0, console_data.input.clone());
+        let command_name = command_array.first().unwrap();
+        let mut command_array = (&command_array[1..]).to_vec();
+        command_array.reverse();
 
-    if console_data.input_history.len() > 20 {
-        console_data.input_history.pop();
+        self.input_history.insert(0, self.input.clone());
+
+        if self.input_history.len() > 20 {
+            self.input_history.pop();
+        }
+
+        match COMMANDS.get(command_name.as_str()) {
+            Some(command) => self.command_queue.push_back((command_array, *command)),
+            None => self.print_line(format!("~o~Unknown command: ~s~{}", command_name).as_str()),
+        };
     }
 
-    match COMMANDS.get(command_name.as_str()) {
-        Some(command) => console_data
-            .command_queue
-            .push_back((command_array, *command)),
-        None => print_line(
-            console_data,
-            format!("~o~Unknown command: ~s~{}", command_name).as_str(),
-        ),
-    };
+    fn print_line(&mut self, text: &str) {
+        self.output.push(text.to_owned());
+
+        while self.output.len() > self.output_lines as usize {
+            self.output.remove(0);
+        }
+
+        info!("GameConsole: {}", text);
+    }
 }
 
 fn on_keyboard_callback(state: KeyboardCallbackState) {
-    let mut console_data = match CONSOLE_DATA.try_lock() {
+    let mut key_event_queue = match KEY_EVENT_QUEUE.try_lock() {
         Ok(val) => val,
         Err(error) => {
             error!(
-                "Error while trying to lock console data in on_keyboard_callback: {}",
+                "Error while trying to lock key event queue in on_keyboard_callback: {}",
                 error
             );
 
@@ -234,121 +345,5 @@ fn on_keyboard_callback(state: KeyboardCallbackState) {
         }
     };
 
-    if console_data.is_visible == false || state.is_pressed == false {
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_RETURN {
-        handle_command(&mut console_data);
-
-        console_data.input = String::default();
-        console_data.current_history_index = -1;
-        console_data.cursor_index = 0;
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_BACK_SPACE {
-        if console_data.input.len() == 0 || console_data.cursor_index == 0 {
-            return;
-        }
-
-        let cursor_index = console_data.cursor_index;
-        if cursor_index >= console_data.input.len() {
-            console_data.input.pop();
-        } else {
-            console_data.input.remove(cursor_index);
-        }
-
-        console_data.cursor_index -= 1;
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_DELETE {
-        if console_data.input.len() == 0 || console_data.cursor_index == console_data.input.len() {
-            return;
-        }
-
-        let cursor_index = console_data.cursor_index as usize;
-        console_data.input.remove(cursor_index);
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_END {
-        console_data.cursor_index = console_data.input.len();
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_HOME {
-        console_data.cursor_index = 0;
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_DOWN {
-        if console_data.current_history_index <= 0 {
-            return;
-        }
-
-        console_data.current_history_index -= 1;
-        console_data.input =
-            console_data.input_history[console_data.current_history_index as usize].clone();
-        console_data.cursor_index = console_data.input.len();
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_UP {
-        if console_data.current_history_index + 1 >= console_data.input_history.len() as isize {
-            return;
-        }
-
-        console_data.current_history_index += 1;
-        console_data.input =
-            console_data.input_history[console_data.current_history_index as usize].clone();
-        console_data.cursor_index = console_data.input.len();
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_LEFT {
-        if console_data.cursor_index <= 0 {
-            return;
-        }
-
-        console_data.cursor_index -= 1;
-
-        return;
-    }
-
-    if state.key == hook::keycodes::KEY_RIGHT {
-        if console_data.cursor_index >= console_data.input.len() {
-            return;
-        }
-
-        console_data.cursor_index += 1;
-
-        return;
-    }
-
-    if state.key < 32 || state.key > 111 {
-        return;
-    }
-
-    let cursor_index = console_data.cursor_index;
-    console_data.input.insert(cursor_index, state.character);
-    console_data.cursor_index += 1;
-}
-
-fn print_line(console_data: &mut ConsoleData, text: &str) {
-    console_data.output.push(text.to_owned());
-
-    while console_data.output.len() > console_data.output_lines as usize {
-        console_data.output.remove(0);
-    }
-
-    info!("GameConsole: {}", text);
+    key_event_queue.push_back(state);
 }

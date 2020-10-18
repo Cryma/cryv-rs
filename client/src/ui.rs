@@ -14,7 +14,7 @@ struct TextEntry {
 pub struct UiModule;
 
 impl Module for UiModule {
-    fn add_components(&self, world: &mut World) {
+    fn add_components(&mut self, world: &mut World) {
         let _entity = world.push((TextEntry {
             text: "CryV".to_owned(),
             pos_x: 0.975,
@@ -24,7 +24,7 @@ impl Module for UiModule {
         },));
     }
 
-    fn add_systems(&self, builder: &mut Builder) {
+    fn add_systems(&mut self, builder: &mut Builder) {
         builder.add_thread_local(draw_text_entries_system());
     }
 }

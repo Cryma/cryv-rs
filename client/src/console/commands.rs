@@ -1,15 +1,14 @@
-use super::{print_line, ConsoleData};
+use super::ConsoleModule;
 use crate::wrapped_natives::*;
-use legion::systems::CommandBuffer;
 use legion::*;
 
 pub(super) fn command_veh(
-    command_buffer: &mut CommandBuffer,
-    console_data: &mut ConsoleData,
+    world: &mut World,
+    console: &mut ConsoleModule,
     arguments: &mut Vec<String>,
 ) {
     if arguments.len() < 1 {
-        print_line(console_data, "Please specifiy a vehicle model name.");
+        console.print_line("Please specifiy a vehicle model name.");
 
         return;
     }
@@ -28,24 +27,21 @@ pub(super) fn command_veh(
 
     hook::natives::ped::set_ped_into_vehicle(player_ped_id, id, -1);
 
-    command_buffer.push((crate::cleanup::Entity { id },));
+    world.push((crate::cleanup::Entity { id },));
 
-    print_line(
-        console_data,
-        format!("Spawned vehicle ({}) with model: {}", id, model).as_str(),
-    );
+    console.print_line(format!("Spawned vehicle ({}) with model: {}", id, model).as_str());
 }
 
 pub(super) fn command_rmveh(
-    command_buffer: &mut CommandBuffer,
-    console_data: &mut ConsoleData,
+    world: &mut World,
+    console: &mut ConsoleModule,
     _arguments: &mut Vec<String>,
 ) {
     let player_ped_id = hook::natives::player::player_ped_id();
     let is_in_vehicle = hook::natives::ped::is_ped_in_any_vehicle(player_ped_id, false);
 
     if is_in_vehicle == false {
-        print_line(console_data, "You are not in any vehicle.");
+        console.print_line("You are not in any vehicle.");
 
         return;
     }
@@ -56,27 +52,24 @@ pub(super) fn command_rmveh(
 
     entities::delete_entity(&mut vehicle_id);
 
-    command_buffer.exec_mut(move |world| {
-        // TODO: Try to find a better solution for this
-        let mut vehicle_query = Read::<crate::cleanup::Entity>::query();
-        let entities = vehicle_query.iter_chunks(world);
+    let mut vehicle_query = Read::<crate::cleanup::Entity>::query();
+    let entities = vehicle_query.iter_chunks(world);
 
-        let mut found_entity: Option<Entity> = None;
+    let mut found_entity: Option<Entity> = None;
 
-        for chunk in entities {
-            for (entity, entity_data) in chunk.into_iter_entities() {
-                if entity_data.id != vehicle_id_copy {
-                    continue;
-                }
-
-                found_entity = Some(entity);
-
-                break;
+    for chunk in entities {
+        for (entity, entity_data) in chunk.into_iter_entities() {
+            if entity_data.id != vehicle_id_copy {
+                continue;
             }
-        }
 
-        if let Some(x) = found_entity {
-            world.remove(x);
+            found_entity = Some(entity);
+
+            break;
         }
-    });
+    }
+
+    if let Some(x) = found_entity {
+        world.remove(x);
+    }
 }

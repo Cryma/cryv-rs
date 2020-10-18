@@ -26,7 +26,7 @@ pub struct Entity {
 pub struct CleanupModule;
 
 impl Module for CleanupModule {
-    fn run_initial(&self) {
+    fn run_initial(&mut self) {
         let player_ped_id = player::player_ped_id();
         entity::set_entity_coords_no_offset(
             player_ped_id,
@@ -59,7 +59,7 @@ impl Module for CleanupModule {
         }
     }
 
-    fn add_components(&self, world: &mut World) {
+    fn add_components(&mut self, world: &mut World) {
         world.extend(vec![
             (EntityCleanupData {
                 cleanup_type: EntityCleanupType::Ped,
@@ -72,7 +72,7 @@ impl Module for CleanupModule {
         ]);
     }
 
-    fn add_systems(&self, builder: &mut Builder) {
+    fn add_systems(&mut self, builder: &mut Builder) {
         builder
             .add_thread_local(run_entity_cleanup_system())
             .add_thread_local(hijack_frontend_menu_system())

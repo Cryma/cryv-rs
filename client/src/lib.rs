@@ -43,10 +43,10 @@ fn script_callback() {
     let mut modules: Vec<Box<dyn modules::Module>> = vec![];
 
     modules.push(Box::new(cleanup::CleanupModule {}));
-    modules.push(Box::new(console::ConsoleModule {}));
+    modules.push(Box::new(console::ConsoleModule::default()));
     modules.push(Box::new(ui::UiModule {}));
 
-    for module in &modules {
+    for module in modules.iter_mut() {
         module.run_initial();
         module.add_components(&mut world);
         module.add_resources(&mut resources);
@@ -57,6 +57,10 @@ fn script_callback() {
 
     loop {
         hook::update_keyboard();
+
+        for module in modules.iter_mut() {
+            module.run_on_tick(&mut world, &mut resources);
+        }
 
         schedule.execute(&mut world, &mut resources);
 
