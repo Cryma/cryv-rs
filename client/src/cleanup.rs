@@ -1,4 +1,4 @@
-use crate::wrapped_natives::entities::delete_entity;
+use crate::{console::ConsoleData, wrapped_natives::entities::delete_entity};
 use bevy::prelude::*;
 use hook::natives::*;
 use log::{debug, error};
@@ -171,12 +171,20 @@ pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
     }
 }
 
-pub fn hijack_frontend_menu(_world: &mut World, _resources: &mut Resources) {
+pub fn hijack_frontend_menu(_world: &mut World, resources: &mut Resources) {
+    let console_data = resources.get::<ConsoleData>();
+
+    let is_console_visible = match console_data {
+        Some(console_data) => console_data.is_visible,
+        None => false,
+    };
+
     pad::disable_control_action(0, 199, true);
     pad::disable_control_action(0, 200, true);
 
-    if pad::is_disabled_control_just_released(0, 199)
-        || pad::is_disabled_control_just_released(0, 200)
+    if is_console_visible == false
+        && (pad::is_disabled_control_just_released(0, 199)
+            || pad::is_disabled_control_just_released(0, 200))
     {
         hud::activate_frontend_menu(
             misc::get_hash_key(&std::ffi::CString::new("FE_MENU_VERSION_SP_PAUSE").unwrap()),

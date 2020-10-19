@@ -34,7 +34,7 @@ impl Plugin for ConsolePlugin {
 }
 
 pub struct ConsoleData {
-    is_visible: bool,
+    pub is_visible: bool,
     input: String,
     output: Vec<String>,
     output_lines: i32,
