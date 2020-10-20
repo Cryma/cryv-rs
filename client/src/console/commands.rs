@@ -17,7 +17,15 @@ pub(super) fn command_veh(
         return;
     }
 
-    let model = arguments.pop().unwrap();
+    let model = &arguments.pop().unwrap()[..];
+    if model.is_valid_vehicle() == false {
+        print_line(
+            console_data,
+            "The vehicle model name you specified is not valid.",
+        );
+
+        return;
+    }
 
     let color_primary = match arguments.pop() {
         Some(value) => value.parse::<i32>().unwrap_or(0),
