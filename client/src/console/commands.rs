@@ -1,6 +1,7 @@
 use super::{print_line, ConsoleData};
 use crate::{
-    entities::{CryVEntity, Vehicle},
+    entities::{create_vehicle_with_model_name, CryVEntity},
+    utility::ModelValidityExt,
     wrapped_natives::*,
 };
 use bevy::ecs::prelude::*;
@@ -18,32 +19,30 @@ pub(super) fn command_veh(
 
     let model = arguments.pop().unwrap();
 
+    let color_primary = match arguments.pop() {
+        Some(value) => value.parse::<i32>().unwrap_or(0),
+        None => 0,
+    };
+
+    let color_secondary = match arguments.pop() {
+        Some(value) => value.parse::<i32>().unwrap_or(0),
+        None => 0,
+    };
+
     let player_ped_id = hook::natives::player::player_ped_id();
     let position = hook::natives::entity::get_entity_coords(player_ped_id, true);
     let rotation = hook::natives::entity::get_entity_rotation(player_ped_id, 2);
 
-    let handle = vehicles::create_vehicle_with_model_name(
-        &model,
-        (position.x, position.y, position.z),
-        (0.0, 0.0, rotation.z),
-    );
+    let (entity, vehicle) =
+        create_vehicle_with_model_name(&model, position, rotation, color_primary, color_secondary);
 
-    hook::natives::ped::set_ped_into_vehicle(player_ped_id, handle, -1);
+    hook::natives::ped::set_ped_into_vehicle(player_ped_id, entity.handle, -1);
 
-    world.spawn((
-        CryVEntity {
-            handle,
-            ..Default::default()
-        },
-        Vehicle {
-            color_primary: 0,
-            color_secondary: 0,
-        },
-    ));
+    world.spawn((entity, vehicle));
 
     print_line(
         console_data,
-        format!("Spawned vehicle ({}) with model: {}", handle, model).as_str(),
+        format!("Spawned vehicle ({}) with model: {}", entity.handle, model).as_str(),
     );
 }
 
