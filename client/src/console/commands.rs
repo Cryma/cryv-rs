@@ -1,5 +1,8 @@
 use super::{print_line, ConsoleData};
-use crate::wrapped_natives::*;
+use crate::{
+    entities::{CryVEntity, Vehicle},
+    wrapped_natives::*,
+};
 use bevy::ecs::prelude::*;
 
 pub(super) fn command_veh(
@@ -19,19 +22,28 @@ pub(super) fn command_veh(
     let position = hook::natives::entity::get_entity_coords(player_ped_id, true);
     let rotation = hook::natives::entity::get_entity_rotation(player_ped_id, 2);
 
-    let id = vehicles::create_vehicle_with_model_name(
+    let handle = vehicles::create_vehicle_with_model_name(
         &model,
         (position.x, position.y, position.z),
         (0.0, 0.0, rotation.z),
     );
 
-    hook::natives::ped::set_ped_into_vehicle(player_ped_id, id, -1);
+    hook::natives::ped::set_ped_into_vehicle(player_ped_id, handle, -1);
 
-    world.spawn((crate::cleanup::Entity { id },));
+    world.spawn((
+        CryVEntity {
+            handle,
+            ..Default::default()
+        },
+        Vehicle {
+            color_primary: 0,
+            color_secondary: 0,
+        },
+    ));
 
     print_line(
         console_data,
-        format!("Spawned vehicle ({}) with model: {}", id, model).as_str(),
+        format!("Spawned vehicle ({}) with model: {}", handle, model).as_str(),
     );
 }
 
@@ -55,12 +67,12 @@ pub(super) fn command_rmveh(
 
     entities::delete_entity(&mut vehicle_id);
 
-    let mut existing_entities = world.query::<(Entity, &crate::cleanup::Entity)>();
+    let mut existing_entities = world.query::<(Entity, &CryVEntity)>();
 
     let mut found_entity: Option<Entity> = None;
 
     for (entity, entity_data) in existing_entities.iter() {
-        if entity_data.id != vehicle_id_copy {
+        if entity_data.handle != vehicle_id_copy {
             continue;
         }
 

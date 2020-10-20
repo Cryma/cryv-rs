@@ -9,6 +9,7 @@ use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
 mod console;
+mod entities;
 mod ui;
 mod utility;
 mod wrapped_natives;

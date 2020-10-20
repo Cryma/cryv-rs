@@ -1,3 +1,4 @@
+use crate::entities::CryVEntity;
 use crate::{console::ConsoleData, wrapped_natives::entities::delete_entity};
 use bevy::prelude::*;
 use hook::natives::*;
@@ -23,12 +24,6 @@ enum EntityCleanupType {
 pub struct EntityCleanupData {
     cleanup_type: EntityCleanupType,
     last_run_at: std::time::SystemTime,
-}
-
-// TODO: Move to proper module
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub struct Entity {
-    pub id: i32,
 }
 
 pub fn startup_system(world: &mut World, _resources: &mut Resources) {
@@ -103,10 +98,10 @@ pub fn cleanup_tick_system(_world: &mut World, _resources: &mut Resources) {
 }
 
 pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
-    let mut existing_entities = Vec::<Entity>::new();
+    let mut existing_entities = Vec::<CryVEntity>::new();
 
     {
-        let mut entities = world.query::<&Entity>();
+        let mut entities = world.query::<&CryVEntity>();
         for entity in &mut entities.iter() {
             existing_entities.push(entity.clone());
         }
@@ -150,7 +145,7 @@ pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
 
             let should_entity_exist = (&mut existing_entities)
                 .iter()
-                .find(|x| x.id == entity)
+                .find(|x| x.handle == entity)
                 .is_some();
 
             if should_entity_exist {
