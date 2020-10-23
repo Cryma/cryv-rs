@@ -1,19 +1,13 @@
 [package]
-name = "client"
+name = "server"
 version = "0.1.0"
 authors = ["Fabian Vowie <crymaprivat@gmail.com>"]
 edition = "2018"
 
-[lib]
-crate-type = ["cdylib"]
-
 [dependencies]
-chrono = "0.4.19"
-fern = "0.6.0"
-hook = { path = "../hook" }
 bevy = { version = "0.2.1", default-features = false }
 bevy_prototype_networking_laminar = { git = "https://github.com/Dispersia/bevy_prototype_networking_laminar", branch = "main" }
+chrono = "0.4.19"
+fern = "0.6.0"
 log = "0.4.11"
 once_cell = "1.4.1"
-winapi = "0.3"
-winreg = "0.7.0"

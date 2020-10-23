@@ -4,6 +4,7 @@ members = [
     "hook",
     "launcher",
     "native-converter",
+    "server",
 ]
 
 default-members = ["launcher"]

@@ -1,27 +1,35 @@
-use super::{print_line, ConsoleData};
+use std::net::SocketAddr;
+
+use super::ConsoleData;
 use crate::{
     entities::{create_vehicle_with_model_name, CryVEntity},
     utility::ModelValidityExt,
     wrapped_natives::*,
 };
 use bevy::ecs::prelude::*;
+use bevy_prototype_networking_laminar::{NetworkDelivery, NetworkResource};
 
-pub(super) fn command_veh(
-    world: &mut World,
-    console_data: &mut ConsoleData,
-    arguments: &mut Vec<String>,
-) {
+macro_rules! console_print {
+    ($resources:expr, $text:expr) => {{
+        let mut console_data = $resources.get_mut::<ConsoleData>().unwrap();
+        console_data.print_line($text);
+    }};
+}
+
+pub(super) fn command_veh(world: &mut World, resources: &mut Resources, arguments: Vec<String>) {
+    let mut arguments = arguments.clone();
+
     if arguments.len() < 1 {
-        print_line(console_data, "Please specifiy a vehicle model name.");
+        console_print!(resources, "Please specifiy a vehicle model name.");
 
         return;
     }
 
     let model = &arguments.pop().unwrap()[..];
     if model.is_valid_vehicle() == false {
-        print_line(
-            console_data,
-            "The vehicle model name you specified is not valid.",
+        console_print!(
+            resources,
+            "The vehicle model name you specified is not valid."
         );
 
         return;
@@ -48,22 +56,18 @@ pub(super) fn command_veh(
 
     world.spawn((entity, vehicle));
 
-    print_line(
-        console_data,
-        format!("Spawned vehicle ({}) with model: {}", entity.handle, model).as_str(),
+    console_print!(
+        resources,
+        format!("Spawned vehicle ({}) with model: {}", entity.handle, model).as_str()
     );
 }
 
-pub(super) fn command_rmveh(
-    world: &mut World,
-    console_data: &mut ConsoleData,
-    _arguments: &mut Vec<String>,
-) {
+pub(super) fn command_rmveh(world: &mut World, resources: &mut Resources, _arguments: Vec<String>) {
     let player_ped_id = hook::natives::player::player_ped_id();
     let is_in_vehicle = hook::natives::ped::is_ped_in_any_vehicle(player_ped_id, false);
 
     if is_in_vehicle == false {
-        print_line(console_data, "You are not in any vehicle.");
+        console_print!(resources, "You are not in any vehicle.");
 
         return;
     }
@@ -89,4 +93,29 @@ pub(super) fn command_rmveh(
     if let Some(x) = found_entity {
         world.despawn(x).unwrap();
     }
+}
+
+pub(super) fn command_connect(
+    _world: &mut World,
+    resources: &mut Resources,
+    arguments: Vec<String>,
+) {
+    let mut network_resource = resources.get_mut::<NetworkResource>().unwrap();
+
+    network_resource.bind("127.0.0.1:1336").unwrap();
+
+    let server_address: SocketAddr = arguments.first().unwrap().parse().unwrap();
+
+    network_resource
+        .send(
+            server_address,
+            b"funkcheck",
+            NetworkDelivery::ReliableSequenced(Some(1)),
+        )
+        .expect("huch");
+
+    console_print!(
+        resources,
+        format!("Connected to \"{:?}\"", server_address).as_str()
+    );
 }

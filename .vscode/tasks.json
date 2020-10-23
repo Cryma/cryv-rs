@@ -22,9 +22,26 @@
             "problemMatcher": [
                 "$rustc"
             ],
-            "label": "Run",
+            "label": "Run (Client)",
             "dependsOn": [
                 "Build"
+            ],
+            "args": [
+                "--package launcher"
+            ]
+        },
+        {
+            "type": "cargo",
+            "command": "run",
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "label": "Run (Server)",
+            "dependsOn": [
+                "Build"
+            ],
+            "args": [
+                "--package server"
             ]
         }
     ]

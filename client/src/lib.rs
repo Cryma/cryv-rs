@@ -1,18 +1,32 @@
 #![forbid(unsafe_code)]
 
-use std::time::Duration;
-
 use bevy::{app::ScheduleRunnerPlugin, prelude::*};
+use bevy_prototype_networking_laminar::NetworkingPlugin;
 use log::info;
 use once_cell::sync::Lazy;
+use std::time::Duration;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
 mod console;
 mod entities;
+mod thread_jumper;
 mod ui;
 mod utility;
 mod wrapped_natives;
+
+#[macro_export]
+macro_rules! clone_query {
+    ($query:expr) => {{
+        let mut items = Vec::new();
+
+        for item in &mut $query.iter() {
+            items.push(item.clone());
+        }
+
+        items
+    }};
+}
 
 static INSTALL_DIRECTORY: Lazy<String> = Lazy::new(|| {
     let key = RegKey::predef(HKEY_LOCAL_MACHINE)
@@ -49,10 +63,12 @@ fn script_callback() {
     App::build()
         .add_plugin(ScheduleRunnerPlugin::run_loop(Duration::from_millis(0)))
         .add_system(update_keyboard.thread_local_system())
+        .add_plugin(NetworkingPlugin)
         .add_plugin(cleanup::CleanupPlugin)
         .add_plugin(console::ConsolePlugin)
         .add_plugin(ui::UiPlugin)
         .add_system(script_wait.thread_local_system())
+        .add_plugin(thread_jumper::ThreadJumperPlugin)
         .run();
 }
 
