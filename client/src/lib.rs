@@ -1,7 +1,6 @@
 #![forbid(unsafe_code)]
 
 use bevy::{app::ScheduleRunnerPlugin, prelude::*};
-use bevy_prototype_networking_laminar::NetworkingPlugin;
 use log::info;
 use once_cell::sync::Lazy;
 use std::time::Duration;
@@ -10,6 +9,7 @@ use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 mod cleanup;
 mod console;
 mod entities;
+mod networking;
 mod thread_jumper;
 mod ui;
 mod utility;
@@ -59,15 +59,42 @@ fn script_wait(_world: &mut World, _resources: &mut Resources) {
     hook::script_wait(0);
 }
 
+fn connection_established_handler(
+    mut console_data: ResMut<console::ConsoleData>,
+    mut state: ResMut<networking::NetworkMessageEventReader>,
+    events: Res<Events<networking::NetworkMessageEvent>>,
+) {
+    for event in state.network_messages.iter(&events) {
+        log::debug!(
+            "Received network message from {}: {:?}",
+            event.connection,
+            event.message
+        );
+
+        if let shared::NetworkMessage::ConnectionEstablished = event.message {
+            log::info!(
+                "Successfully established connection to: {}",
+                event.connection
+            );
+            console_data.print_line(&format!(
+                "Successfully established connection to: {}",
+                event.connection
+            ));
+        }
+    }
+}
+
 fn script_callback() {
     App::build()
         .add_plugin(ScheduleRunnerPlugin::run_loop(Duration::from_millis(0)))
         .add_system(update_keyboard.thread_local_system())
-        .add_plugin(NetworkingPlugin)
+        .add_plugin(bevy_prototype_networking_laminar::NetworkingPlugin)
+        .add_plugin(networking::NetworkingPlugin)
         .add_plugin(cleanup::CleanupPlugin)
         .add_plugin(console::ConsolePlugin)
         .add_plugin(ui::UiPlugin)
         .add_system(script_wait.thread_local_system())
+        .add_system(connection_established_handler.system())
         .add_plugin(thread_jumper::ThreadJumperPlugin)
         .run();
 }

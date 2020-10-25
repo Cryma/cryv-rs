@@ -105,17 +105,20 @@ pub(super) fn command_connect(
     network_resource.bind("127.0.0.1:1336").unwrap();
 
     let server_address: SocketAddr = arguments.first().unwrap().parse().unwrap();
+    let message = shared::NetworkMessage::EstablishConnection("funkcheck".to_owned());
 
-    network_resource
-        .send(
-            server_address,
-            b"funkcheck",
-            NetworkDelivery::ReliableSequenced(Some(1)),
-        )
-        .expect("huch");
-
-    console_print!(
-        resources,
-        format!("Connected to \"{:?}\"", server_address).as_str()
-    );
+    match network_resource.send(
+        server_address,
+        &message.encode()[..],
+        NetworkDelivery::ReliableOrdered(Some(1)),
+    ) {
+        Ok(_) => console_print!(
+            resources,
+            format!("Connecting to \"{:?}\"", server_address).as_str()
+        ),
+        Err(error) => console_print!(
+            resources,
+            &format!("Something went wrong while trying to connect: {}", error)
+        ),
+    };
 }

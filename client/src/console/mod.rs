@@ -378,7 +378,7 @@ fn handle_command(data: &mut ConsoleData, mut events: ResMut<Events<CommandEvent
 }
 
 impl ConsoleData {
-    fn print_line(&mut self, text: &str) {
+    pub fn print_line(&mut self, text: &str) {
         self.output.push(text.to_owned());
 
         while self.output.len() > self.output_lines as usize {
