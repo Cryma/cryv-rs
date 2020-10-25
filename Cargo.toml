@@ -5,6 +5,7 @@ members = [
     "launcher",
     "native-converter",
     "server",
+    "shared",
 ]
 
 default-members = ["launcher"]

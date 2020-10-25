@@ -11,3 +11,4 @@ chrono = "0.4.19"
 fern = "0.6.0"
 log = "0.4.11"
 once_cell = "1.4.1"
+shared = { path = "../shared" }
