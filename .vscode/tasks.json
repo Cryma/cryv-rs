@@ -11,9 +11,21 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "label": "Build",
+            "label": "Build (All)",
             "args": [
                 "--all"
+            ]
+        },
+        {
+            "type": "cargo",
+            "command": "build",
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": "build",
+            "label": "Build (Client)",
+            "args": [
+                "--package client"
             ]
         },
         {
@@ -24,7 +36,7 @@
             ],
             "label": "Run (Client)",
             "dependsOn": [
-                "Build"
+                "Build (Client)"
             ],
             "args": [
                 "--package launcher"
@@ -37,9 +49,6 @@
                 "$rustc"
             ],
             "label": "Run (Server)",
-            "dependsOn": [
-                "Build"
-            ],
             "args": [
                 "--package server"
             ]
