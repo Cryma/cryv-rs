@@ -2,10 +2,29 @@ use bevy::prelude::*;
 use bevy_prototype_networking_laminar::{Connection, NetworkEvent};
 use serde::{Deserialize, Serialize};
 
+#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq)]
+pub struct EntityTransform {
+    pub position: Vec3,
+    pub rotation: Vec3,
+    pub velocity: Vec3,
+}
+
+#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq)]
+pub struct EntityModel {
+    pub model: u32,
+}
+
+impl std::fmt::Display for EntityModel {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:#X}", self.model)
+    }
+}
+
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub enum NetworkMessage {
-    EstablishConnection(String),
+    EstablishConnection(EntityModel, EntityTransform),
     ConnectionEstablished,
+    UpdateEntityTransform(EntityTransform),
 }
 
 impl NetworkMessage {

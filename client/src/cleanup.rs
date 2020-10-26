@@ -1,5 +1,6 @@
-use crate::entities::CryVEntity;
-use crate::{console::ConsoleData, wrapped_natives::entities::delete_entity};
+use crate::{
+    console::ConsoleData, entities::EntityHandle, wrapped_natives::entities::delete_entity,
+};
 use bevy::prelude::*;
 use hook::natives::*;
 use log::{debug, error};
@@ -98,10 +99,10 @@ pub fn cleanup_tick_system(_world: &mut World, _resources: &mut Resources) {
 }
 
 pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
-    let mut existing_entities = Vec::<CryVEntity>::new();
+    let mut existing_entities = Vec::<EntityHandle>::new();
 
     {
-        let mut entities = world.query::<&CryVEntity>();
+        let mut entities = world.query::<&EntityHandle>();
         for entity in &mut entities.iter() {
             existing_entities.push(entity.clone());
         }

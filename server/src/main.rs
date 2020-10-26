@@ -1,8 +1,14 @@
 use bevy::{
     app::ScheduleRunnerPlugin, core::CorePlugin, prelude::*, type_registry::TypeRegistryPlugin,
 };
-use bevy_prototype_networking_laminar::{NetworkDelivery, NetworkResource, NetworkingPlugin};
+use bevy_prototype_networking_laminar::{
+    Connection, NetworkDelivery, NetworkResource, NetworkingPlugin,
+};
 use std::time::Duration;
+
+struct NetworkIdentifier {
+    pub connection: Connection,
+}
 
 fn main() {
     create_logger().expect("Something went wrong while creating the logger!");
@@ -21,6 +27,7 @@ fn main() {
 }
 
 fn connection_established_handler(
+    mut commands: Commands,
     net: Res<NetworkResource>,
     mut state: ResMut<shared::NetworkMessageEventReader>,
     events: Res<Events<shared::NetworkMessageEvent>>,
@@ -32,7 +39,7 @@ fn connection_established_handler(
             event.message
         );
 
-        if let shared::NetworkMessage::EstablishConnection(payload) = &event.message {
+        if let shared::NetworkMessage::EstablishConnection(model, transform) = &event.message {
             let connection_established_message = shared::NetworkMessage::ConnectionEstablished;
 
             if let Err(error) = net.send(
@@ -46,10 +53,19 @@ fn connection_established_handler(
                 );
             }
 
+            commands.spawn((
+                NetworkIdentifier {
+                    connection: event.connection,
+                },
+                *model,
+                *transform,
+            ));
+
             log::info!(
-                "Received introduction payload from {} with content: {}",
+                "Received introduction payload from {} with content model {} and transform {:?}",
                 event.connection,
-                payload
+                model,
+                transform
             );
         }
     }

@@ -2,12 +2,15 @@ use std::net::SocketAddr;
 
 use super::ConsoleData;
 use crate::{
-    entities::{create_vehicle_with_model_name, CryVEntity},
+    entities::create_vehicle_with_model_name,
+    entities::get_entity_transform,
+    entities::{get_entity_model, EntityHandle},
     utility::ModelValidityExt,
     wrapped_natives::*,
 };
 use bevy::ecs::prelude::*;
 use bevy_prototype_networking_laminar::{NetworkDelivery, NetworkResource};
+use hook::natives::*;
 
 macro_rules! console_print {
     ($resources:expr, $text:expr) => {{
@@ -49,16 +52,16 @@ pub(super) fn command_veh(world: &mut World, resources: &mut Resources, argument
     let position = hook::natives::entity::get_entity_coords(player_ped_id, true);
     let rotation = hook::natives::entity::get_entity_rotation(player_ped_id, 2);
 
-    let (entity, vehicle) =
+    let (handle, model, transform, vehicle) =
         create_vehicle_with_model_name(&model, position, rotation, color_primary, color_secondary);
 
-    hook::natives::ped::set_ped_into_vehicle(player_ped_id, entity.handle, -1);
+    hook::natives::ped::set_ped_into_vehicle(player_ped_id, handle.handle, -1);
 
-    world.spawn((entity, vehicle));
+    world.spawn((handle, model, transform, vehicle));
 
     console_print!(
         resources,
-        format!("Spawned vehicle ({}) with model: {}", entity.handle, model).as_str()
+        format!("Spawned vehicle ({}) with model: {}", handle.handle, model).as_str()
     );
 }
 
@@ -78,7 +81,7 @@ pub(super) fn command_rmveh(world: &mut World, resources: &mut Resources, _argum
 
     entities::delete_entity(&mut vehicle_id);
 
-    let mut existing_entities = world.query::<(Entity, &CryVEntity)>();
+    let mut existing_entities = world.query::<(Entity, &EntityHandle)>();
 
     let mut found_entity: Option<Entity> = None;
 
@@ -101,11 +104,15 @@ pub(super) fn command_connect(
     arguments: Vec<String>,
 ) {
     let mut network_resource = resources.get_mut::<NetworkResource>().unwrap();
-
     network_resource.bind("127.0.0.1:1336").unwrap();
 
     let server_address: SocketAddr = arguments.first().unwrap().parse().unwrap();
-    let message = shared::NetworkMessage::EstablishConnection("funkcheck".to_owned());
+
+    let player_ped_id = player::player_ped_id();
+    let model = get_entity_model(player_ped_id);
+    let transform = get_entity_transform(player_ped_id);
+
+    let message = shared::NetworkMessage::EstablishConnection(model, transform);
 
     match network_resource.send(
         server_address,

@@ -1,25 +1,12 @@
 use crate::utility::StreamedModel;
+use bevy::math::Vec3;
 use hook::natives::{entity, misc, vehicle};
 use hook::types::NativeVector3;
+use shared::{EntityModel, EntityTransform};
 
-// The name is prefixed with 'CryV' as it would inevitably conflict with 'Entity' from bevy_ecs
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub struct CryVEntity {
+pub struct EntityHandle {
     pub handle: i32,
-    pub model: u32,
-    pub position: NativeVector3, // TODO: Use proper vector type
-    pub rotation: NativeVector3, // TODO: Should probably use a quaternion
-}
-
-impl Default for CryVEntity {
-    fn default() -> Self {
-        CryVEntity {
-            handle: 0,
-            model: 0,
-            position: NativeVector3::default(),
-            rotation: NativeVector3::default(),
-        }
-    }
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -31,13 +18,31 @@ pub struct Vehicle {
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Ped;
 
+pub fn get_entity_transform(entity_id: i32) -> EntityTransform {
+    let position = entity::get_entity_coords(entity_id, false);
+    let rotation = entity::get_entity_rotation(entity_id, 2);
+    let velocity = entity::get_entity_velocity(entity_id);
+
+    EntityTransform {
+        position: Vec3::new(position.x, position.y, position.z),
+        rotation: Vec3::new(rotation.x, rotation.y, rotation.z),
+        velocity: Vec3::new(velocity.x, velocity.y, velocity.z),
+    }
+}
+
+pub fn get_entity_model(entity_id: i32) -> EntityModel {
+    let model = entity::get_entity_model(entity_id);
+
+    EntityModel { model }
+}
+
 pub fn create_vehicle_with_model_name(
     model: &str,
     position: NativeVector3,
     rotation: NativeVector3,
     color_primary: i32,
     color_secondary: i32,
-) -> (CryVEntity, Vehicle) {
+) -> (EntityHandle, EntityModel, EntityTransform, Vehicle) {
     let model_cstring = std::ffi::CString::new(model).unwrap();
     let model = misc::get_hash_key(&model_cstring);
 
@@ -50,7 +55,7 @@ pub fn create_vehicle_with_model_hash(
     rotation: NativeVector3,
     color_primary: i32,
     color_secondary: i32,
-) -> (CryVEntity, Vehicle) {
+) -> (EntityHandle, EntityModel, EntityTransform, Vehicle) {
     let _streamed_model = StreamedModel::new(model);
 
     let handle = vehicle::create_vehicle(
@@ -61,11 +66,13 @@ pub fn create_vehicle_with_model_hash(
     vehicle::set_vehicle_dirt_level(handle, 0.0);
     vehicle::set_vehicle_colours(handle, color_primary, color_secondary);
 
-    let entity = CryVEntity {
-        handle,
-        model,
-        position,
-        rotation,
+    let handle = EntityHandle { handle };
+    let model = EntityModel { model };
+
+    let transform = EntityTransform {
+        position: Vec3::new(position.x, position.y, position.z),
+        rotation: Vec3::new(rotation.x, rotation.y, rotation.z),
+        velocity: Vec3::default(),
     };
 
     let vehicle = Vehicle {
@@ -73,5 +80,5 @@ pub fn create_vehicle_with_model_hash(
         color_secondary,
     };
 
-    (entity, vehicle)
+    (handle, model, transform, vehicle)
 }
