@@ -31,7 +31,7 @@ fn main() {
 fn connection_established_handler(
     mut commands: Commands,
     net: Res<NetworkResource>,
-    mut state: ResMut<shared::NetworkMessageEventReader>,
+    mut state: Local<shared::NetworkMessageEventReader>,
     events: Res<Events<shared::NetworkMessageEvent>>,
 ) {
     for event in state.network_messages.iter(&events) {
@@ -68,7 +68,7 @@ fn connection_established_handler(
 }
 
 fn entity_transform_update_handler(
-    mut state: ResMut<shared::NetworkMessageEventReader>,
+    mut state: Local<shared::NetworkMessageEventReader>,
     events: Res<Events<shared::NetworkMessageEvent>>,
     mut query: Query<(&NetworkIdentifier, &mut EntityTransform)>,
 ) {

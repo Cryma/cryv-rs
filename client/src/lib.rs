@@ -68,7 +68,7 @@ fn script_wait(_world: &mut World, _resources: &mut Resources) {
 fn connection_established_handler(
     mut console_data: ResMut<console::ConsoleData>,
     mut network_info: ResMut<NetworkInfo>,
-    mut state: ResMut<shared::NetworkMessageEventReader>,
+    mut state: Local<shared::NetworkMessageEventReader>,
     events: Res<Events<shared::NetworkMessageEvent>>,
 ) {
     for event in state.network_messages.iter(&events) {
