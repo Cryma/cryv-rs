@@ -4,6 +4,7 @@ use bevy::{
 use bevy_prototype_networking_laminar::{
     Connection, NetworkDelivery, NetworkResource, NetworkingPlugin,
 };
+use shared::EntityTransform;
 use std::time::Duration;
 
 struct NetworkIdentifier {
@@ -22,6 +23,7 @@ fn main() {
         .add_plugin(NetworkingPlugin)
         .add_plugin(shared::NetworkingPlugin)
         .add_startup_system(start_server.system())
+        .add_system(entity_transform_update_handler.system())
         .add_system(connection_established_handler.system())
         .run();
 }
@@ -33,12 +35,6 @@ fn connection_established_handler(
     events: Res<Events<shared::NetworkMessageEvent>>,
 ) {
     for event in state.network_messages.iter(&events) {
-        log::debug!(
-            "Received network message from {}: {:?}",
-            event.connection,
-            event.message
-        );
-
         if let shared::NetworkMessage::EstablishConnection(model, transform) = &event.message {
             let connection_established_message = shared::NetworkMessage::ConnectionEstablished;
 
@@ -67,6 +63,32 @@ fn connection_established_handler(
                 model,
                 transform
             );
+        }
+    }
+}
+
+fn entity_transform_update_handler(
+    mut state: ResMut<shared::NetworkMessageEventReader>,
+    events: Res<Events<shared::NetworkMessageEvent>>,
+    mut query: Query<(&NetworkIdentifier, &mut EntityTransform)>,
+) {
+    for event in state.network_messages.iter(&events) {
+        if let shared::NetworkMessage::UpdateEntityTransform(transform) = &event.message {
+            for (network_identifier, mut entity_transform) in &mut query.iter() {
+                if network_identifier.connection.addr != event.connection.addr {
+                    continue;
+                }
+
+                entity_transform.position = transform.position;
+                entity_transform.rotation = transform.rotation;
+                entity_transform.velocity = transform.velocity;
+
+                log::info!(
+                    "Received entity transform update from {} with transform {:?}",
+                    event.connection,
+                    transform
+                );
+            }
         }
     }
 }
