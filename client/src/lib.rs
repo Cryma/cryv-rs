@@ -9,7 +9,6 @@ use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 mod cleanup;
 mod console;
 mod entities;
-mod networking;
 mod thread_jumper;
 mod ui;
 mod utility;
@@ -61,8 +60,8 @@ fn script_wait(_world: &mut World, _resources: &mut Resources) {
 
 fn connection_established_handler(
     mut console_data: ResMut<console::ConsoleData>,
-    mut state: ResMut<networking::NetworkMessageEventReader>,
-    events: Res<Events<networking::NetworkMessageEvent>>,
+    mut state: ResMut<shared::NetworkMessageEventReader>,
+    events: Res<Events<shared::NetworkMessageEvent>>,
 ) {
     for event in state.network_messages.iter(&events) {
         log::debug!(
@@ -71,7 +70,7 @@ fn connection_established_handler(
             event.message
         );
 
-        if let shared::NetworkMessage::ConnectionEstablished = event.message {
+        if let shared::NetworkMessage::ConnectionEstablished = &event.message {
             log::info!(
                 "Successfully established connection to: {}",
                 event.connection
@@ -89,7 +88,7 @@ fn script_callback() {
         .add_plugin(ScheduleRunnerPlugin::run_loop(Duration::from_millis(0)))
         .add_system(update_keyboard.thread_local_system())
         .add_plugin(bevy_prototype_networking_laminar::NetworkingPlugin)
-        .add_plugin(networking::NetworkingPlugin)
+        .add_plugin(shared::NetworkingPlugin)
         .add_plugin(cleanup::CleanupPlugin)
         .add_plugin(console::ConsolePlugin)
         .add_plugin(ui::UiPlugin)

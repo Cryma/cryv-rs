@@ -3109,7 +3109,10 @@ dependencies = [
 name = "shared"
 version = "0.1.0"
 dependencies = [
+ "bevy",
+ "bevy_prototype_networking_laminar",
  "bincode",
+ "log",
  "serde",
 ]
 
