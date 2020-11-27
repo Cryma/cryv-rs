@@ -4,7 +4,6 @@ use bevy::{app::ScheduleRunnerPlugin, prelude::*};
 use bevy_prototype_networking_laminar::{Connection, NetworkDelivery, NetworkResource};
 use log::info;
 use once_cell::sync::Lazy;
-use std::time::Duration;
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
@@ -117,7 +116,7 @@ fn update_local_player(_world: &mut World, resources: &mut Resources) {
 fn script_callback() {
     App::build()
         .init_resource::<NetworkInfo>()
-        .add_plugin(ScheduleRunnerPlugin::run_loop(Duration::from_millis(0)))
+        .add_plugin(ScheduleRunnerPlugin::default())
         .add_system(update_keyboard.thread_local_system())
         .add_plugin(bevy_prototype_networking_laminar::NetworkingPlugin)
         .add_plugin(shared::NetworkingPlugin)

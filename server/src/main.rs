@@ -5,7 +5,6 @@ use bevy_prototype_networking_laminar::{
     Connection, NetworkDelivery, NetworkResource, NetworkingPlugin,
 };
 use shared::EntityTransform;
-use std::time::Duration;
 
 struct NetworkIdentifier {
     pub connection: Connection,
@@ -17,9 +16,7 @@ fn main() {
     App::build()
         .add_plugin(TypeRegistryPlugin::default())
         .add_plugin(CorePlugin)
-        .add_plugin(ScheduleRunnerPlugin::run_loop(Duration::from_secs_f64(
-            1.0 / 60.0,
-        )))
+        .add_plugin(ScheduleRunnerPlugin::default())
         .add_plugin(NetworkingPlugin)
         .add_plugin(shared::NetworkingPlugin)
         .add_startup_system(start_server.system())
@@ -74,7 +71,7 @@ fn entity_transform_update_handler(
 ) {
     for event in state.network_messages.iter(&events) {
         if let shared::NetworkMessage::UpdateEntityTransform(transform) = &event.message {
-            for (network_identifier, mut entity_transform) in &mut query.iter() {
+            for (network_identifier, mut entity_transform) in query.iter_mut() {
                 if network_identifier.connection.addr != event.connection.addr {
                     continue;
                 }

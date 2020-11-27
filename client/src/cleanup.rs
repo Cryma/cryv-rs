@@ -102,17 +102,17 @@ pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
     let mut existing_entities = Vec::<EntityHandle>::new();
 
     {
-        let mut entities = world.query::<&EntityHandle>();
-        for entity in &mut entities.iter() {
+        let entities = world.query::<&EntityHandle>();
+        for entity in entities {
             existing_entities.push(entity.clone());
         }
     }
 
-    let mut entity_cleanup_data = world.query_mut::<&mut EntityCleanupData>();
+    let entity_cleanup_data = world.query_mut::<&mut EntityCleanupData>();
 
     let now = std::time::SystemTime::now();
 
-    for mut data in &mut entity_cleanup_data.iter() {
+    for mut data in entity_cleanup_data {
         match now.duration_since(data.last_run_at) {
             Ok(duration) => {
                 if duration.as_millis() < 500 {

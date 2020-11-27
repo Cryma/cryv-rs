@@ -81,11 +81,11 @@ pub(super) fn command_rmveh(world: &mut World, resources: &mut Resources, _argum
 
     entities::delete_entity(&mut vehicle_id);
 
-    let mut existing_entities = world.query::<(Entity, &EntityHandle)>();
+    let existing_entities = world.query::<(Entity, &EntityHandle)>();
 
     let mut found_entity: Option<Entity> = None;
 
-    for (entity, entity_data) in existing_entities.iter() {
+    for (entity, entity_data) in existing_entities {
         if entity_data.handle != vehicle_id_copy {
             continue;
         }

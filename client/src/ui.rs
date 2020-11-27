@@ -29,9 +29,9 @@ pub fn ui_startup_system(world: &mut World, _resources: &mut Resources) {
 }
 
 pub fn draw_text_entries(world: &mut World, _resources: &mut Resources) {
-    let mut text_entries = world.query::<&TextEntry>();
+    let text_entries = world.query::<&TextEntry>();
 
-    for entry in text_entries.iter() {
+    for entry in text_entries {
         ui::draw_text(
             &entry.text,
             entry.pos_x,

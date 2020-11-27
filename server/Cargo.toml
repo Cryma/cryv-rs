@@ -5,10 +5,10 @@ authors = ["Fabian Vowie <crymaprivat@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-bevy = { version = "0.2.1", default-features = false }
-bevy_prototype_networking_laminar = { git = "https://github.com/Dispersia/bevy_prototype_networking_laminar", branch = "main" }
+bevy = { version = "0.3.0", default-features = false }
+bevy_prototype_networking_laminar = { git = "https://github.com/programWhiz/bevy_prototype_networking_laminar", branch = "main" }
 chrono = "0.4.19"
 fern = "0.6.0"
 log = "0.4.11"
-once_cell = "1.4.1"
+once_cell = "1.5.2"
 shared = { path = "../shared" }
