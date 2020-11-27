@@ -1,9 +1,9 @@
 use crate::{thread_jumper::ThreadJumperData, wrapped_natives::*};
-use bevy::prelude::*;
 use hook::natives::*;
 use hook::KeyboardCallbackState;
 use log::{error, info};
 use once_cell::sync::Lazy;
+use shared::bevy::prelude::*;
 use std::{collections::VecDeque, sync::Mutex, time::SystemTime};
 
 mod commands;
@@ -16,7 +16,7 @@ const BACKGROUND_LINE_HEIGHT: f32 = 16.0;
 
 pub struct ConsolePlugin;
 impl Plugin for ConsolePlugin {
-    fn build(&self, app: &mut bevy::prelude::AppBuilder) {
+    fn build(&self, app: &mut AppBuilder) {
         app.add_event::<CommandEvent>()
             .init_resource::<ConsoleData>()
             .init_resource::<EventListenerState>()

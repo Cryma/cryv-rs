@@ -8,9 +8,9 @@ use crate::{
     utility::ModelValidityExt,
     wrapped_natives::*,
 };
-use bevy::ecs::prelude::*;
-use bevy_prototype_networking_laminar::{NetworkDelivery, NetworkResource};
 use hook::natives::*;
+use shared::bevy::ecs::prelude::*;
+use shared::bevy_prototype_networking_laminar::{NetworkDelivery, NetworkResource};
 
 macro_rules! console_print {
     ($resources:expr, $text:expr) => {{

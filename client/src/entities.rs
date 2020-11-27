@@ -1,7 +1,7 @@
 use crate::utility::StreamedModel;
-use bevy::math::Vec3;
 use hook::natives::{entity, misc, vehicle};
 use hook::types::NativeVector3;
+use shared::bevy::math::Vec3;
 use shared::{EntityModel, EntityTransform};
 
 #[derive(Copy, Clone, Debug, PartialEq)]

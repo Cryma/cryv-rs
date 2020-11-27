@@ -981,8 +981,6 @@ dependencies = [
 name = "client"
 version = "0.1.0"
 dependencies = [
- "bevy",
- "bevy_prototype_networking_laminar",
  "chrono",
  "fern",
  "hook",
@@ -3340,8 +3338,6 @@ dependencies = [
 name = "server"
 version = "0.1.0"
 dependencies = [
- "bevy",
- "bevy_prototype_networking_laminar",
  "chrono",
  "fern",
  "log",

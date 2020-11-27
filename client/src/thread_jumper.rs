@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use shared::bevy::prelude::*;
 use std::collections::VecDeque;
 
 pub struct ThreadJumperData {

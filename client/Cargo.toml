@@ -11,8 +11,6 @@ crate-type = ["cdylib"]
 chrono = "0.4.19"
 fern = "0.6.0"
 hook = { path = "../hook" }
-bevy = { version = "0.3.0", default-features = false }
-bevy_prototype_networking_laminar = { git = "https://github.com/programWhiz/bevy_prototype_networking_laminar", branch = "main" }
 log = "0.4.11"
 once_cell = "1.5.2"
 shared = { path = "../shared" }

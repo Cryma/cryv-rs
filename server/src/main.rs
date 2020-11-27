@@ -1,7 +1,7 @@
-use bevy::{
+use shared::bevy::{
     app::ScheduleRunnerPlugin, core::CorePlugin, prelude::*, type_registry::TypeRegistryPlugin,
 };
-use bevy_prototype_networking_laminar::{
+use shared::bevy_prototype_networking_laminar::{
     Connection, NetworkDelivery, NetworkResource, NetworkingPlugin,
 };
 use shared::EntityTransform;

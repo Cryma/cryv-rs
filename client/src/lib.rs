@@ -1,9 +1,9 @@
 #![forbid(unsafe_code)]
 
-use bevy::{app::ScheduleRunnerPlugin, prelude::*};
-use bevy_prototype_networking_laminar::{Connection, NetworkDelivery, NetworkResource};
 use log::info;
 use once_cell::sync::Lazy;
+use shared::bevy::{app::ScheduleRunnerPlugin, prelude::*};
+use shared::bevy_prototype_networking_laminar::{Connection, NetworkDelivery, NetworkResource};
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
@@ -118,7 +118,7 @@ fn script_callback() {
         .init_resource::<NetworkInfo>()
         .add_plugin(ScheduleRunnerPlugin::default())
         .add_system(update_keyboard.thread_local_system())
-        .add_plugin(bevy_prototype_networking_laminar::NetworkingPlugin)
+        .add_plugin(shared::bevy_prototype_networking_laminar::NetworkingPlugin)
         .add_plugin(shared::NetworkingPlugin)
         .add_plugin(cleanup::CleanupPlugin)
         .add_plugin(console::ConsolePlugin)

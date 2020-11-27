@@ -1,9 +1,9 @@
 use crate::wrapped_natives::*;
-use bevy::prelude::*;
+use shared::bevy::prelude::*;
 
 pub struct UiPlugin;
 impl Plugin for UiPlugin {
-    fn build(&self, app: &mut bevy::prelude::AppBuilder) {
+    fn build(&self, app: &mut AppBuilder) {
         app.add_startup_system(ui_startup_system.thread_local_system())
             .add_system(draw_text_entries.thread_local_system());
     }

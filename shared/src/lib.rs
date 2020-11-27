@@ -2,6 +2,9 @@ use bevy::prelude::*;
 use bevy_prototype_networking_laminar::{Connection, NetworkEvent};
 use serde::{Deserialize, Serialize};
 
+pub use bevy;
+pub use bevy_prototype_networking_laminar;
+
 #[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq)]
 pub struct EntityTransform {
     pub position: Vec3,
