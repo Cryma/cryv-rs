@@ -1,5 +1,6 @@
 #![recursion_limit = "1024"]
 use cpp::cpp;
+pub use d3drenderer::register_present_callback;
 use detour::static_detour;
 pub use keyboard::{
     is_key_pressed, is_key_released, register_keyboard_callback, update_keyboard, KeyboardCallback,
@@ -10,8 +11,10 @@ use log::{debug, error};
 use memory::{address_fill, get_pattern, get_pattern_rip, get_pattern_sub};
 pub use replay_interface::{get_all_peds, get_all_vehicles};
 use std::ffi::{c_void, CStr};
+use winapi::um::winnt::HRESULT;
 
 mod crossmap;
+mod d3drenderer;
 mod keyboard;
 mod memory;
 #[macro_use]
@@ -30,13 +33,14 @@ pub(crate) static mut SCRIPT_CALLBACK: Option<fn()> = None;
 static LABEL: &str = "Loading CryV Multiplayer\0";
 
 type AddressToEntity = fn(*mut c_void) -> i32;
+type SwapchainPresent = fn(*mut winapi::shared::dxgi::IDXGISwapChain, u32, u32) -> HRESULT;
 
 pub struct Pointers {
     pub logos: *mut c_void,
     pub game_legal_skip: *mut c_void,
     pub frame_count: *mut c_void,
     pub game_state: *mut c_void,
-    pub swapchain: *mut c_void,
+    pub swapchain: *mut *mut winapi::shared::dxgi::IDXGISwapChain,
     pub address_to_entity: Option<AddressToEntity>,
     pub registration_table: *mut c_void,
     pub get_label_text: *mut c_void,
@@ -46,6 +50,7 @@ pub struct Pointers {
     pub model_check_skip: *mut c_void,
     pub model_spawn_fix: *mut c_void,
     pub slowdown_fix: *mut c_void,
+    pub swapchain_hook: Option<d3drenderer::VmtHook>,
 }
 
 impl Pointers {
@@ -64,10 +69,28 @@ impl Pointers {
         model_check_skip: std::ptr::null_mut(),
         model_spawn_fix: std::ptr::null_mut(),
         slowdown_fix: std::ptr::null_mut(),
+        swapchain_hook: None,
     };
 }
 
 pub static mut POINTERS: Pointers = Pointers::INIT;
+
+fn swapchain_present(
+    swapchain: *mut winapi::shared::dxgi::IDXGISwapChain,
+    sync_interval: u32,
+    flags: u32,
+) -> HRESULT {
+    d3drenderer::present();
+
+    unsafe {
+        let mut hook = POINTERS.swapchain_hook.unwrap();
+        let obj = hook.get_original(8) as *mut SwapchainPresent;
+        let obj = (&(obj as *const SwapchainPresent) as *const *const SwapchainPresent)
+            as *const SwapchainPresent;
+
+        return (*obj)(swapchain, sync_interval, flags);
+    }
+}
 
 pub fn initialize(script_callback: fn()) {
     unsafe {
@@ -77,6 +100,20 @@ pub fn initialize(script_callback: fn()) {
     keyboard::initialize_keyboard_hook();
     fetch_pointers();
     hook_get_label_text();
+    d3drenderer::init();
+
+    unsafe {
+        POINTERS.swapchain_hook = Some(d3drenderer::VmtHook::new(
+            (*POINTERS.swapchain) as *mut std::ffi::c_void,
+            19,
+        ));
+
+        POINTERS
+            .swapchain_hook
+            .unwrap()
+            .hook(swapchain_present as *mut std::ffi::c_void, 8);
+        POINTERS.swapchain_hook.unwrap().enable();
+    };
 
     // Wait a few seconds until game "initializes"
     std::thread::sleep(std::time::Duration::from_secs(3));
@@ -112,7 +149,8 @@ fn fetch_pointers() {
         POINTERS.game_state = get_pattern_rip("83 3D ? ? ? ? ? 8A D9 74 0A".to_owned(), 2);
         debug!("GameState: {:p}", POINTERS.game_state);
 
-        POINTERS.swapchain = get_pattern_rip("48 8B 0D ? ? ? ? 48 8D 55 A0 48 8B 01".to_owned(), 3);
+        POINTERS.swapchain = get_pattern_rip("48 8B 0D ? ? ? ? 48 8D 55 A0 48 8B 01".to_owned(), 3)
+            as *mut *mut winapi::shared::dxgi::IDXGISwapChain;
         debug!("Swapchain: {:p}", POINTERS.swapchain);
 
         POINTERS.address_to_entity = Some(std::mem::transmute(get_pattern(
