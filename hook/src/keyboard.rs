@@ -154,6 +154,10 @@ unsafe extern "system" fn proc_window(
 ) -> LRESULT {
     wndproc(hwnd, message, w_param, l_param);
 
+    if WNDPROC.get().is_none() {
+        return 0;
+    }
+
     let wndproc = *WNDPROC.get().unwrap().lock().unwrap();
     CallWindowProcA(wndproc, hwnd, message, w_param, l_param)
 }
