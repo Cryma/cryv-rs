@@ -54,7 +54,8 @@ static KEY_STATES: Lazy<Mutex<HashMap<u8, KeyState>>> = Lazy::new(|| {
 });
 
 static KEYBOAD_CALLBACKS: Lazy<Mutex<Vec<KeyboardCallback>>> = Lazy::new(|| Mutex::new(vec![]));
-static WINDOW_PROC_CALLBACKS: Lazy<Mutex<Vec<WindowProcCallback>>> = Lazy::new(|| Mutex::new(vec![]));
+static WINDOW_PROC_CALLBACKS: Lazy<Mutex<Vec<WindowProcCallback>>> =
+    Lazy::new(|| Mutex::new(vec![]));
 static QUEUED_STATES: Lazy<Mutex<VecDeque<KeyboardCallbackState>>> =
     Lazy::new(|| Mutex::new(VecDeque::new()));
 static WNDPROC: OnceCell<Mutex<WNDPROC>> = OnceCell::new();
