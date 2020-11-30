@@ -984,6 +984,7 @@ dependencies = [
  "chrono",
  "fern",
  "hook",
+ "imgui-sys",
  "log",
  "once_cell",
  "shared",
@@ -2114,6 +2115,14 @@ dependencies = [
  "num-traits",
  "png",
  "scoped_threadpool",
+]
+
+[[package]]
+name = "imgui-sys"
+version = "0.6.0"
+source = "git+https://github.com/Cryma/imgui-rs#847d3c002feaf7be126e3e033b592c05ce080715"
+dependencies = [
+ "cc",
 ]
 
 [[package]]

@@ -81,7 +81,7 @@ fn swapchain_present(
     sync_interval: u32,
     flags: u32,
 ) -> HRESULT {
-    d3drenderer::present();
+    d3drenderer::present(swapchain);
 
     unsafe {
         let mut hook = POINTERS.swapchain_hook.unwrap();

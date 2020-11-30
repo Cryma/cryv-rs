@@ -3,7 +3,8 @@ use winapi::Interface;
 
 use crate::POINTERS;
 
-pub type D3DCallback = fn();
+pub type D3DCallback =
+    fn(*mut winapi::um::d3d11::ID3D11Device, *mut winapi::um::d3d11::ID3D11DeviceContext);
 
 struct RendererData {
     device: Option<*mut winapi::um::d3d11::ID3D11Device>,
@@ -111,10 +112,26 @@ pub fn register_present_callback(callback: D3DCallback) {
 //     };
 // }
 
-pub(crate) fn present() {
+pub(crate) fn present(swapchain: *mut winapi::shared::dxgi::IDXGISwapChain) {
     unsafe {
+        let mut device: *mut std::ffi::c_void = std::ptr::null_mut();
+        (*swapchain).GetDevice(
+            &winapi::um::d3d11::ID3D11Device::uuidof(),
+            (&mut device) as *mut *mut std::ffi::c_void,
+        );
+
+        let device = device as *mut winapi::um::d3d11::ID3D11Device;
+
+        let mut context: *mut std::ffi::c_void = std::ptr::null_mut();
+        (*device).GetImmediateContext(
+            (&mut context) as *mut *mut std::ffi::c_void
+                as *mut *mut winapi::um::d3d11::ID3D11DeviceContext,
+        );
+
+        let context = context as *mut winapi::um::d3d11::ID3D11DeviceContext;
+
         for callback in &RENDERER_DATA.present_callbacks {
-            callback();
+            callback(device, context);
         }
     }
 }
