@@ -18,6 +18,7 @@ pub struct KeyboardCallbackState {
 }
 
 pub type KeyboardCallback = fn(KeyboardCallbackState);
+pub type WindowProcCallback = fn(HWND, UINT, WPARAM, LPARAM);
 
 #[derive(Copy, Clone, Debug)]
 struct KeyState {
@@ -53,6 +54,7 @@ static KEY_STATES: Lazy<Mutex<HashMap<u8, KeyState>>> = Lazy::new(|| {
 });
 
 static KEYBOAD_CALLBACKS: Lazy<Mutex<Vec<KeyboardCallback>>> = Lazy::new(|| Mutex::new(vec![]));
+static WINDOW_PROC_CALLBACKS: Lazy<Mutex<Vec<WindowProcCallback>>> = Lazy::new(|| Mutex::new(vec![]));
 static QUEUED_STATES: Lazy<Mutex<VecDeque<KeyboardCallbackState>>> =
     Lazy::new(|| Mutex::new(VecDeque::new()));
 static WNDPROC: OnceCell<Mutex<WNDPROC>> = OnceCell::new();
@@ -107,6 +109,12 @@ pub fn register_keyboard_callback(callback: KeyboardCallback) {
     keyboard_callbacks.push(callback);
 }
 
+pub fn register_window_proc_callback(callback: WindowProcCallback) {
+    let mut window_proc_callbacks = WINDOW_PROC_CALLBACKS.lock().unwrap();
+
+    window_proc_callbacks.push(callback);
+}
+
 pub fn update_keyboard() {
     let mut queued_states = QUEUED_STATES.lock().unwrap();
 
@@ -156,6 +164,12 @@ unsafe extern "system" fn proc_window(
 
     if WNDPROC.get().is_none() {
         return 0;
+    }
+
+    let window_proc_callbacks = WINDOW_PROC_CALLBACKS.lock().unwrap().clone();
+
+    for callback in window_proc_callbacks {
+        callback(hwnd, message, w_param, l_param);
     }
 
     let wndproc = *WNDPROC.get().unwrap().lock().unwrap();
