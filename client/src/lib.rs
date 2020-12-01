@@ -12,7 +12,6 @@ use shared::bevy_prototype_networking_laminar::{Connection, NetworkDelivery, Net
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
-mod console;
 mod entities;
 mod thread_jumper;
 mod ui;
@@ -121,7 +120,6 @@ fn script_wait(_world: &mut World, _resources: &mut Resources) {
 }
 
 fn connection_established_handler(
-    mut console_data: ResMut<console::ConsoleData>,
     mut network_info: ResMut<NetworkInfo>,
     mut state: Local<shared::NetworkMessageEventReader>,
     events: Res<Events<shared::NetworkMessageEvent>>,
@@ -138,10 +136,6 @@ fn connection_established_handler(
                 "Successfully established connection to: {}",
                 event.connection
             );
-            console_data.print_line(&format!(
-                "Successfully established connection to: {}",
-                event.connection
-            ));
 
             network_info.connection = Some(event.connection);
             network_info.is_connected = true;
@@ -177,8 +171,8 @@ fn script_callback() {
         .add_plugin(shared::bevy_prototype_networking_laminar::NetworkingPlugin)
         .add_plugin(shared::NetworkingPlugin)
         .add_plugin(cleanup::CleanupPlugin)
-        .add_plugin(console::ConsolePlugin)
         .add_plugin(ui::UiPlugin)
+        .add_system(imgui::handle_cursor.thread_local_system())
         .add_system(script_wait.thread_local_system())
         .add_system(connection_established_handler.system())
         .add_system(update_local_player.thread_local_system())
