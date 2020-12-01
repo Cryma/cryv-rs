@@ -1,10 +1,6 @@
 // TODO: Move imgui related code to separate crate and disallow unsafe code
-// #![forbid(unsafe_code)]
+#![deny(unsafe_code)]
 
-use hook::winapi::{
-    shared::minwindef::LPARAM, shared::minwindef::UINT, shared::minwindef::WPARAM,
-    shared::windef::HWND, um::winuser::FindWindowA,
-};
 use log::info;
 use once_cell::sync::Lazy;
 use shared::bevy::{app::ScheduleRunnerPlugin, prelude::*};
@@ -13,6 +9,8 @@ use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
 mod entities;
+#[allow(unsafe_code)]
+mod imgui;
 mod thread_jumper;
 mod ui;
 mod utility;
@@ -57,58 +55,10 @@ fn entrypoint() {
 
     hook::initialize(script_callback);
 
-    hook::register_present_callback(d3d11_present);
-    hook::register_window_proc_callback(wndproc);
+    hook::register_present_callback(imgui::d3d11_present);
+    hook::register_window_proc_callback(imgui::wndproc);
 
     info!("Successfully started CryV");
-}
-
-static mut HAS_INIT: bool = false;
-fn d3d11_present(
-    device: *mut hook::winapi::um::d3d11::ID3D11Device,
-    context: *mut hook::winapi::um::d3d11::ID3D11DeviceContext,
-) {
-    unsafe {
-        if HAS_INIT == false {
-            let window_name = std::ffi::CString::new("grcWindow").unwrap();
-            let window = FindWindowA(window_name.as_ptr(), std::ptr::null());
-
-            imgui_sys::igCreateContext(std::ptr::null_mut());
-            imgui_sys::ImGui_ImplDX11_Init(
-                device as *mut imgui_sys::ID3D11Device,
-                context as *mut imgui_sys::ID3D11DeviceContext,
-            );
-            imgui_sys::ImGui_ImplWin32_Init(window as *mut std::ffi::c_void);
-
-            HAS_INIT = true;
-        }
-
-        imgui_sys::ImGui_ImplDX11_NewFrame();
-        imgui_sys::ImGui_ImplWin32_NewFrame();
-        imgui_sys::igNewFrame();
-
-        let window_title = std::ffi::CString::new("funkcheck").unwrap();
-        if imgui_sys::igBegin(window_title.as_ptr(), std::ptr::null_mut(), 0) {
-            if imgui_sys::igButton(window_title.as_ptr(), imgui_sys::ImVec2::new(60.0, 20.0)) {}
-        }
-        imgui_sys::igEnd();
-
-        imgui_sys::igRender();
-        imgui_sys::ImGui_ImplDX11_RenderDrawData(
-            imgui_sys::igGetDrawData() as *mut std::ffi::c_void
-        );
-    };
-}
-
-fn wndproc(hwnd: HWND, message: UINT, w_param: WPARAM, l_param: LPARAM) {
-    unsafe {
-        imgui_sys::ImGui_ImplWin32_WndProcHandler(
-            hwnd as *mut std::ffi::c_void,
-            message,
-            w_param as *mut u32,
-            l_param as i64,
-        );
-    };
 }
 
 fn update_keyboard(_world: &mut World, _resources: &mut Resources) {

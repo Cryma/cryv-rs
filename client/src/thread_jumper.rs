@@ -1,5 +1,10 @@
+use once_cell::sync::Lazy;
 use shared::bevy::prelude::*;
-use std::collections::VecDeque;
+use std::{collections::VecDeque, sync::Mutex};
+
+pub type NativeCallback = fn(&mut World, &mut Resources);
+
+static NATIVE_CALLBACKS: Lazy<Mutex<Vec<NativeCallback>>> = Lazy::new(|| Mutex::new(vec![]));
 
 pub struct ThreadJumperData {
     queue: VecDeque<Box<dyn Fn() + Send + Sync + 'static>>,
@@ -36,11 +41,25 @@ impl Plugin for ThreadJumperPlugin {
     }
 }
 
-fn run_native_callbacks(_world: &mut World, resources: &mut Resources) {
+fn run_native_callbacks(world: &mut World, resources: &mut Resources) {
+    let mut native_callbacks = NATIVE_CALLBACKS.lock().unwrap();
+
+    for callback in native_callbacks.as_slice() {
+        callback(world, resources);
+    }
+
+    native_callbacks.clear();
+
     let thread_jumper_data = resources.get_mut::<ThreadJumperData>();
 
     match thread_jumper_data {
         Some(mut thread_jumper_data) => thread_jumper_data.work(),
         None => log::error!("Could not fetch thread jumper data in run_native_callbacks system."),
     }
+}
+
+pub fn run(callback: NativeCallback) {
+    let mut callbacks = NATIVE_CALLBACKS.lock().unwrap();
+
+    callbacks.push(callback);
 }
