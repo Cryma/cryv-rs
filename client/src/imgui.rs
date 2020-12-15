@@ -190,6 +190,14 @@ unsafe fn draw_modals() {
             None,
             std::ptr::null_mut(),
         );
+
+        static mut VEHICLE_COLOR_PRIMARY: i32 = 112;
+        static mut VEHICLE_COLOR_SECONDARY: i32 = 112;
+        imgui_sys::igInputInt(std::ffi::CString::new("Color1").unwrap().as_ptr(),
+            &mut VEHICLE_COLOR_PRIMARY, 1, 1, 0);
+        imgui_sys::igInputInt(std::ffi::CString::new("Color2").unwrap().as_ptr(),
+            &mut VEHICLE_COLOR_SECONDARY, 1, 1, 0);
+
         imgui_sys::igSeparator();
 
         let done_text = std::ffi::CString::new("Done").unwrap();
@@ -211,8 +219,8 @@ unsafe fn draw_modals() {
                         &model_name,
                         position,
                         rotation,
-                        112,
-                        112,
+                        VEHICLE_COLOR_PRIMARY,
+                        VEHICLE_COLOR_SECONDARY,
                     );
 
                 hook::natives::ped::set_ped_into_vehicle(player_ped_id, handle.handle, -1);
