@@ -167,12 +167,9 @@ fn fetch_pointers() {
         POINTERS.get_label_text = get_pattern_sub("75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9".to_owned(), 19);
         debug!("GetLabelText: {:p}", POINTERS.get_label_text);
 
-        let replay_interface = get_pattern("48 8B 05 ? ? ? ? 41 8B 1E".to_owned(), 0).add(0xEE);
-        let replay_interface =
-            replay_interface.add(((*(replay_interface.add(0x3) as *mut u32)) + 0x7) as usize);
-        let replay_interface = *(replay_interface as *mut *mut replay_interface::CReplayInterface);
 
-        POINTERS.replay_interface = replay_interface;
+        let replay_interface = get_pattern_rip("48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?".to_owned(), 3);
+        POINTERS.replay_interface = *(replay_interface as *mut *mut replay_interface::CReplayInterface);
         debug!("ReplayInterface: {:p}", POINTERS.replay_interface);
 
         let set_vector_results = get_pattern("83 79 18 00 48 8B D1 74 4A FF 4A 18".to_owned(), 0);
