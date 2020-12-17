@@ -2,7 +2,7 @@ use once_cell::sync::Lazy;
 use shared::bevy::prelude::*;
 use std::{collections::VecDeque, sync::Mutex};
 
-pub type NativeCallback = fn(&mut World, &mut Resources);
+pub type NativeCallback = Box<dyn Fn(&mut World, &mut Resources) + Send + Sync>;
 
 static NATIVE_CALLBACKS: Lazy<Mutex<Vec<NativeCallback>>> = Lazy::new(|| Mutex::new(vec![]));
 
