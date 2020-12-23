@@ -65,11 +65,11 @@ fn script_wait(_world: &mut World, _resources: &mut Resources) {
 fn script_callback() {
     App::build()
         .add_plugin(ScheduleRunnerPlugin::default())
-        .add_system(update_keyboard.thread_local_system())
+        .add_system(update_keyboard.system())
         .add_plugin(cleanup::CleanupPlugin)
         .add_plugin(ui::UiPlugin)
-        .add_system(imgui::handle_cursor.thread_local_system())
-        .add_system(script_wait.thread_local_system())
+        .add_system(imgui::handle_cursor.system())
+        .add_system(script_wait.system())
         .add_plugin(thread_jumper::ThreadJumperPlugin)
         .run();
 }

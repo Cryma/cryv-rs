@@ -1,12 +1,9 @@
-use shared::bevy::{
-    app::ScheduleRunnerPlugin, core::CorePlugin, prelude::*, type_registry::TypeRegistryPlugin,
-};
+use shared::bevy::{app::ScheduleRunnerPlugin, core::CorePlugin, prelude::*};
 
 fn main() {
     create_logger().expect("Something went wrong while creating the logger!");
 
     App::build()
-        .add_plugin(TypeRegistryPlugin::default())
         .add_plugin(CorePlugin)
         .add_plugin(ScheduleRunnerPlugin::default())
         .run();

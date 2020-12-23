@@ -61,7 +61,7 @@ fn main() {
         let system = sysinfo::System::new_all();
         for (pid, process) in system.get_processes() {
             if process.name() == "GTA5.exe" {
-                process_id = pid.clone();
+                process_id = *pid;
 
                 break;
             }

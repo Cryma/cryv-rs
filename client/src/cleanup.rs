@@ -6,10 +6,10 @@ use shared::bevy::prelude::*;
 pub struct CleanupPlugin;
 impl Plugin for CleanupPlugin {
     fn build(&self, app: &mut AppBuilder) {
-        app.add_startup_system(startup_system.thread_local_system())
-            .add_system(cleanup_tick_system.thread_local_system())
-            .add_system(cleanup_system.thread_local_system())
-            .add_system(hijack_frontend_menu.thread_local_system());
+        app.add_startup_system(startup_system.system())
+            .add_system(cleanup_tick_system.system())
+            .add_system(cleanup_system.system())
+            .add_system(hijack_frontend_menu.system());
     }
 }
 

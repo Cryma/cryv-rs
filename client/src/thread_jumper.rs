@@ -37,7 +37,7 @@ pub struct ThreadJumperPlugin;
 impl Plugin for ThreadJumperPlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.init_resource::<ThreadJumperData>()
-            .add_system(run_native_callbacks.thread_local_system());
+            .add_system(run_native_callbacks.system());
     }
 }
 
