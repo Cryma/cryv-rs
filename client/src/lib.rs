@@ -4,7 +4,6 @@
 use log::info;
 use once_cell::sync::Lazy;
 use shared::bevy::{app::ScheduleRunnerPlugin, prelude::*};
-use shared::bevy_prototype_networking_laminar::{Connection, NetworkDelivery, NetworkResource};
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
 
 mod cleanup;
@@ -39,12 +38,6 @@ static INSTALL_DIRECTORY: Lazy<String> = Lazy::new(|| {
     value
 });
 
-#[derive(Default)]
-struct NetworkInfo {
-    connection: Option<Connection>,
-    is_connected: bool,
-}
-
 make_entrypoint!(entrypoint);
 
 fn entrypoint() {
@@ -69,63 +62,14 @@ fn script_wait(_world: &mut World, _resources: &mut Resources) {
     hook::script_wait(0);
 }
 
-fn connection_established_handler(
-    mut network_info: ResMut<NetworkInfo>,
-    mut state: Local<shared::NetworkMessageEventReader>,
-    events: Res<Events<shared::NetworkMessageEvent>>,
-) {
-    for event in state.network_messages.iter(&events) {
-        log::debug!(
-            "Received network message from {}: {:?}",
-            event.connection,
-            event.message
-        );
-
-        if let shared::NetworkMessage::ConnectionEstablished = &event.message {
-            log::info!(
-                "Successfully established connection to: {}",
-                event.connection
-            );
-
-            network_info.connection = Some(event.connection);
-            network_info.is_connected = true;
-        }
-    }
-}
-
-fn update_local_player(_world: &mut World, resources: &mut Resources) {
-    let network_info = resources.get::<NetworkInfo>().unwrap();
-
-    if network_info.is_connected == false || network_info.connection.is_none() {
-        return;
-    }
-
-    let network_resource = resources.get::<NetworkResource>().unwrap();
-
-    let transform = entities::get_entity_transform(hook::natives::player::player_ped_id());
-
-    if let Err(error) = network_resource.send(
-        network_info.connection.unwrap().addr,
-        &shared::NetworkMessage::UpdateEntityTransform(transform).encode()[..],
-        NetworkDelivery::ReliableOrdered(Some(1)),
-    ) {
-        log::error!("Error while trying to update entity transform: {}", error);
-    }
-}
-
 fn script_callback() {
     App::build()
-        .init_resource::<NetworkInfo>()
         .add_plugin(ScheduleRunnerPlugin::default())
         .add_system(update_keyboard.thread_local_system())
-        .add_plugin(shared::bevy_prototype_networking_laminar::NetworkingPlugin)
-        .add_plugin(shared::NetworkingPlugin)
         .add_plugin(cleanup::CleanupPlugin)
         .add_plugin(ui::UiPlugin)
         .add_system(imgui::handle_cursor.thread_local_system())
         .add_system(script_wait.thread_local_system())
-        .add_system(connection_established_handler.system())
-        .add_system(update_local_player.thread_local_system())
         .add_plugin(thread_jumper::ThreadJumperPlugin)
         .run();
 }
