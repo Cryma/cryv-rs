@@ -7,13 +7,13 @@ pub fn create_vehicle(
     z: f32,
     heading: f32,
     isNetwork: bool,
-    netMissionEntity: bool,
+    bScriptHostVeh: bool,
     p7: bool,
 ) -> i32 {
     let value = native!(
         i32,
         0xAF35D0D2583051B0,
-        native_parameters!(modelHash, x, y, z, heading, isNetwork, netMissionEntity, p7)
+        native_parameters!(modelHash, x, y, z, heading, isNetwork, bScriptHostVeh, p7)
     );
 
     value
@@ -51,7 +51,7 @@ pub fn set_vehicle_allow_no_passengers_lockon(veh: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0xe6b0e8cfc3633bf0(vehicle: i32) -> i32 {
+pub fn get_vehicle_homing_lockon_state(vehicle: i32) -> i32 {
     let value = native!(i32, 0xE6B0E8CFC3633BF0, native_parameters!(vehicle));
 
     value
@@ -306,7 +306,7 @@ pub fn set_vehicle_doors_locked(vehicle: i32, doorLockStatus: i32) -> () {
     value
 }
 
-pub fn _set_vehicle_door_destroy_type(vehicle: i32, doorIndex: i32, destroyType: i32) -> () {
+pub fn set_vehicle_individual_doors_locked(vehicle: i32, doorIndex: i32, destroyType: i32) -> () {
     let value = native!(
         (),
         0xBE70724027F85BCD,
@@ -568,6 +568,12 @@ pub fn force_submarine_surface_mode(vehicle: i32, toggle: bool) -> () {
     value
 }
 
+pub fn _0xc67db108a9ade3be(p0: u32, p1: u32) -> () {
+    let value = native!((), 0xC67DB108A9ADE3BE, native_parameters!(p0, p1));
+
+    value
+}
+
 pub fn set_submarine_crush_depths(
     vehicle: i32,
     p1: bool,
@@ -580,6 +586,18 @@ pub fn set_submarine_crush_depths(
         0xC59872A5134879C7,
         native_parameters!(vehicle, p1, depth1, depth2, depth3)
     );
+
+    value
+}
+
+pub fn _get_submarine_is_below_first_crush_depth(submarine: i32) -> bool {
+    let value = native!(bool, 0x3E71D0B300B7AA79, native_parameters!(submarine));
+
+    value
+}
+
+pub fn _get_submarine_crush_depth_warning_state(submarine: i32) -> i32 {
+    let value = native!(i32, 0x093D6DDCA5B8FBAE, native_parameters!(submarine));
 
     value
 }
@@ -684,21 +702,21 @@ pub fn get_vehicle_colours(vehicle: i32, colorPrimary: *mut i32, colorSecondary:
     value
 }
 
-pub fn is_vehicle_seat_free(vehicle: i32, seatIndex: i32, p2: bool) -> bool {
+pub fn is_vehicle_seat_free(vehicle: i32, seatIndex: i32, isTaskRunning: bool) -> bool {
     let value = native!(
         bool,
         0x22AC59A870E6A669,
-        native_parameters!(vehicle, seatIndex, p2)
+        native_parameters!(vehicle, seatIndex, isTaskRunning)
     );
 
     value
 }
 
-pub fn get_ped_in_vehicle_seat(vehicle: i32, index: i32, p2: u32) -> i32 {
+pub fn get_ped_in_vehicle_seat(vehicle: i32, seatIndex: i32, p2: bool) -> i32 {
     let value = native!(
         i32,
         0xBB40DD2270B65366,
-        native_parameters!(vehicle, index, p2)
+        native_parameters!(vehicle, seatIndex, p2)
     );
 
     value
@@ -756,26 +774,32 @@ pub fn bring_vehicle_to_halt(vehicle: i32, distance: f32, duration: i32, unknown
     value
 }
 
-pub fn _0xdce97bdf8a0eabc8(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xDCE97BDF8A0EABC8, native_parameters!(p0, p1));
+pub fn _0xdce97bdf8a0eabc8(vehicle: i32, p1: u32) -> () {
+    let value = native!((), 0xDCE97BDF8A0EABC8, native_parameters!(vehicle, p1));
 
     value
 }
 
-pub fn _0x9849de24fcf23ccc(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x9849DE24FCF23CCC, native_parameters!(p0, p1));
+pub fn _0x9849de24fcf23ccc(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0x9849DE24FCF23CCC, native_parameters!(vehicle, toggle));
 
     value
 }
 
-pub fn _0x7c06330bfdda182e(p0: u32) -> () {
-    let value = native!((), 0x7C06330BFDDA182E, native_parameters!(p0));
+pub fn _0x8664170ef165c4a6(p0: u32, p1: u32) -> () {
+    let value = native!((), 0x8664170EF165C4A6, native_parameters!(p0, p1));
 
     value
 }
 
-pub fn _0xc69bb1d832a710ef(p0: u32) -> u32 {
-    let value = native!(u32, 0xC69BB1D832A710EF, native_parameters!(p0));
+pub fn _stop_bring_vehicle_to_halt(vehicle: i32) -> () {
+    let value = native!((), 0x7C06330BFDDA182E, native_parameters!(vehicle));
+
+    value
+}
+
+pub fn _is_vehicle_being_halted(vehicle: i32) -> bool {
+    let value = native!(bool, 0xC69BB1D832A710EF, native_parameters!(vehicle));
 
     value
 }
@@ -796,7 +820,7 @@ pub fn is_entity_attached_to_handler_frame(vehicle: i32, entity: i32) -> bool {
     value
 }
 
-pub fn _0x62ca17b74c435651(vehicle: i32) -> bool {
+pub fn is_any_entity_attached_to_handler_frame(vehicle: i32) -> bool {
     let value = native!(bool, 0x62CA17B74C435651, native_parameters!(vehicle));
 
     value
@@ -848,8 +872,8 @@ pub fn is_heli_landing_area_blocked(vehicle: i32) -> bool {
     value
 }
 
-pub fn _0x107a473d7a6647a9(p0: u32) -> () {
-    let value = native!((), 0x107A473D7A6647A9, native_parameters!(p0));
+pub fn _0x107a473d7a6647a9(vehicle: i32) -> () {
+    let value = native!((), 0x107A473D7A6647A9, native_parameters!(vehicle));
 
     value
 }
@@ -914,8 +938,12 @@ pub fn set_vehicle_door_open(vehicle: i32, doorIndex: i32, loose: bool, openInst
     value
 }
 
-pub fn _0x3b458ddb57038f08(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0x3B458DDB57038F08, native_parameters!(p0, p1, p2));
+pub fn _0x3b458ddb57038f08(vehicle: i32, doorIndex: i32, toggle: bool) -> () {
+    let value = native!(
+        (),
+        0x3B458DDB57038F08,
+        native_parameters!(vehicle, doorIndex, toggle)
+    );
 
     value
 }
@@ -974,7 +1002,7 @@ pub fn fix_vehicle_window(vehicle: i32, index: i32) -> () {
     value
 }
 
-pub fn _detach_vehicle_windscreen(vehicle: i32) -> () {
+pub fn pop_out_vehicle_windscreen(vehicle: i32) -> () {
     let value = native!((), 0x6D645D59FB5F5AD3, native_parameters!(vehicle));
 
     value
@@ -992,8 +1020,8 @@ pub fn set_vehicle_lights(vehicle: i32, state: i32) -> () {
     value
 }
 
-pub fn _set_vehicle_use_player_light_settings(vehicle: i32, p1: bool) -> () {
-    let value = native!((), 0xC45C27EF50F36ADC, native_parameters!(vehicle, p1));
+pub fn set_vehicle_use_player_light_settings(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0xC45C27EF50F36ADC, native_parameters!(vehicle, toggle));
 
     value
 }
@@ -1028,8 +1056,8 @@ pub fn set_vehicle_interiorlight(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0x8821196d91fa2de5(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x8821196D91FA2DE5, native_parameters!(p0, p1));
+pub fn _0x8821196d91fa2de5(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0x8821196D91FA2DE5, native_parameters!(vehicle, toggle));
 
     value
 }
@@ -1057,21 +1085,34 @@ pub fn attach_vehicle_to_trailer(vehicle: i32, trailer: i32, radius: f32) -> () 
 pub fn attach_vehicle_on_to_trailer(
     vehicle: i32,
     trailer: i32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
-    p8: f32,
-    p9: f32,
-    p10: f32,
-    p11: f32,
+    offsetX: f32,
+    offsetY: f32,
+    offsetZ: f32,
+    coordsX: f32,
+    coordsY: f32,
+    coordsZ: f32,
+    rotationX: f32,
+    rotationY: f32,
+    rotationZ: f32,
+    disableCollisions: f32,
 ) -> () {
     let value = native!(
         (),
         0x16B5E274BDE402F8,
-        native_parameters!(vehicle, trailer, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
+        native_parameters!(
+            vehicle,
+            trailer,
+            offsetX,
+            offsetY,
+            offsetZ,
+            coordsX,
+            coordsY,
+            coordsZ,
+            rotationX,
+            rotationY,
+            rotationZ,
+            disableCollisions
+        )
     );
 
     value
@@ -1182,12 +1223,8 @@ pub fn create_mission_train(variation: i32, x: f32, y: f32, z: f32, direction: b
     value
 }
 
-pub fn switch_train_track(intersectionId: i32, state: bool) -> () {
-    let value = native!(
-        (),
-        0xFD813BB7DB977F20,
-        native_parameters!(intersectionId, state)
-    );
+pub fn switch_train_track(trackId: i32, state: bool) -> () {
+    let value = native!((), 0xFD813BB7DB977F20, native_parameters!(trackId, state));
 
     value
 }
@@ -1749,7 +1786,7 @@ pub fn set_vehicle_can_be_visibly_damaged(vehicle: i32, state: bool) -> () {
     value
 }
 
-pub fn _set_vehicle_lights_can_be_visibly_damaged(vehicle: i32, p1: bool) -> () {
+pub fn set_vehicle_has_unbreakable_lights(vehicle: i32, p1: bool) -> () {
     let value = native!((), 0x1AA8A837D2169D94, native_parameters!(vehicle, p1));
 
     value
@@ -1799,11 +1836,16 @@ pub fn is_vehicle_door_fully_open(vehicle: i32, doorIndex: i32) -> bool {
     value
 }
 
-pub fn set_vehicle_engine_on(vehicle: i32, value: bool, instantly: bool, noAutoTurnOn: bool) -> () {
+pub fn set_vehicle_engine_on(
+    vehicle: i32,
+    value: bool,
+    instantly: bool,
+    disableAutoStart: bool,
+) -> () {
     let value = native!(
         (),
         0x2497C4717C8B881E,
-        native_parameters!(vehicle, value, instantly, noAutoTurnOn)
+        native_parameters!(vehicle, value, instantly, disableAutoStart)
     );
 
     value
@@ -2001,8 +2043,12 @@ pub fn get_vehicle_door_lock_status(vehicle: i32) -> i32 {
     value
 }
 
-pub fn _0xca4ac3eaae46ec7b(p0: u32, p1: u32) -> u32 {
-    let value = native!(u32, 0xCA4AC3EAAE46EC7B, native_parameters!(p0, p1));
+pub fn _get_vehicle_door_destroy_type(vehicle: i32, doorIndex: i32) -> i32 {
+    let value = native!(
+        i32,
+        0xCA4AC3EAAE46EC7B,
+        native_parameters!(vehicle, doorIndex)
+    );
 
     value
 }
@@ -2055,8 +2101,8 @@ pub fn is_vehicle_on_all_wheels(vehicle: i32) -> bool {
     value
 }
 
-pub fn _0x5873c14a52d74236(p0: u32) -> u32 {
-    let value = native!(u32, 0x5873C14A52D74236, native_parameters!(p0));
+pub fn _get_vehicle_model_monetary_value(vehicleModel: u32) -> i32 {
+    let value = native!(i32, 0x5873C14A52D74236, native_parameters!(vehicleModel));
 
     value
 }
@@ -2253,8 +2299,12 @@ pub fn does_extra_exist(vehicle: i32, extraId: i32) -> bool {
     value
 }
 
-pub fn _0x534e36d4db9ecc5d(p0: u32, p1: u32) -> u32 {
-    let value = native!(u32, 0x534E36D4DB9ECC5D, native_parameters!(p0, p1));
+pub fn _does_vehicle_tyre_exist(vehicle: i32, tyreIndex: i32) -> bool {
+    let value = native!(
+        bool,
+        0x534E36D4DB9ECC5D,
+        native_parameters!(vehicle, tyreIndex)
+    );
 
     value
 }
@@ -2336,12 +2386,20 @@ pub fn set_vehicle_damage(
     zOffset: f32,
     damage: f32,
     radius: f32,
-    p6: bool,
+    focusOnModel: bool,
 ) -> () {
     let value = native!(
         (),
         0xA1DD317EA8FD4F29,
-        native_parameters!(vehicle, xOffset, yOffset, zOffset, damage, radius, p6)
+        native_parameters!(
+            vehicle,
+            xOffset,
+            yOffset,
+            zOffset,
+            damage,
+            radius,
+            focusOnModel
+        )
     );
 
     value
@@ -2365,8 +2423,8 @@ pub fn set_vehicle_engine_health(vehicle: i32, health: f32) -> () {
     value
 }
 
-pub fn _0x2a86a0475b6a1434(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x2A86A0475B6A1434, native_parameters!(p0, p1));
+pub fn _set_plane_engine_health(vehicle: i32, health: f32) -> () {
+    let value = native!((), 0x2A86A0475B6A1434, native_parameters!(vehicle, health));
 
     value
 }
@@ -2586,8 +2644,8 @@ pub fn _0x4056ea1105f5abd7(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _set_heli_tail_rotor_health(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xFE205F38AAA58E5B, native_parameters!(p0, p1));
+pub fn _set_heli_tail_rotor_health(vehicle: i32, health: f32) -> () {
+    let value = native!((), 0xFE205F38AAA58E5B, native_parameters!(vehicle, health));
 
     value
 }
@@ -2808,14 +2866,14 @@ pub fn _0x737e398138550fff(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _0x1093408b4b9d1146(p0: u32, p1: f32) -> () {
-    let value = native!((), 0x1093408B4B9D1146, native_parameters!(p0, p1));
+pub fn set_vehicle_turret_speed_this_frame(vehicle: i32, speed: f32) -> () {
+    let value = native!((), 0x1093408B4B9D1146, native_parameters!(vehicle, speed));
 
     value
 }
 
-pub fn _disable_vehicle_turret_movement_this_frame(p0: u32) -> () {
-    let value = native!((), 0x32CAEDF24A583345, native_parameters!(p0));
+pub fn _disable_vehicle_turret_movement_this_frame(vehicle: i32) -> () {
+    let value = native!((), 0x32CAEDF24A583345, native_parameters!(vehicle));
 
     value
 }
@@ -2842,8 +2900,8 @@ pub fn _get_vehicle_flight_nozzle_position(plane: i32) -> f32 {
     value
 }
 
-pub fn _set_disable_vehicle_flight_nozzle_position(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xCE2B43770B655F8F, native_parameters!(p0, p1));
+pub fn _set_disable_vehicle_flight_nozzle_position(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0xCE2B43770B655F8F, native_parameters!(vehicle, toggle));
 
     value
 }
@@ -2886,8 +2944,8 @@ pub fn set_vehicle_reduce_grip(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0x6dee944e1ee90cfb(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x6DEE944E1EE90CFB, native_parameters!(p0, p1));
+pub fn _set_vehicle_reduce_traction(vehicle: i32, val: i32) -> () {
+    let value = native!((), 0x6DEE944E1EE90CFB, native_parameters!(vehicle, val));
 
     value
 }
@@ -2920,13 +2978,13 @@ pub fn set_vehicle_brake(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0x48adc8a773564670() -> () {
+pub fn instantly_fill_vehicle_population() -> () {
     let value = native!((), 0x48ADC8A773564670, native_parameters!());
 
     value
 }
 
-pub fn _0x91d6dd290888cbab() -> bool {
+pub fn _has_filled_vehicle_population() -> bool {
     let value = native!(bool, 0x91D6DD290888CBAB, native_parameters!());
 
     value
@@ -2938,7 +2996,7 @@ pub fn _0x51db102f4a3ba5e0(toggle: bool) -> () {
     value
 }
 
-pub fn _0xa4a9a4c40e615885(p0: u32) -> () {
+pub fn _0xa4a9a4c40e615885(p0: i32) -> () {
     let value = native!((), 0xA4A9A4C40E615885, native_parameters!(p0));
 
     value
@@ -3074,7 +3132,7 @@ pub fn get_vehicle_class_max_braking(vehicleClass: i32) -> f32 {
     value
 }
 
-pub fn _add_speed_zone_for_coord(x: f32, y: f32, z: f32, radius: f32, speed: f32, p5: bool) -> i32 {
+pub fn add_road_node_speed_zone(x: f32, y: f32, z: f32, radius: f32, speed: f32, p5: bool) -> i32 {
     let value = native!(
         i32,
         0x2CE544C68FB812A0,
@@ -3084,7 +3142,7 @@ pub fn _add_speed_zone_for_coord(x: f32, y: f32, z: f32, radius: f32, speed: f32
     value
 }
 
-pub fn _remove_speed_zone(speedzone: i32) -> bool {
+pub fn remove_road_node_speed_zone(speedzone: i32) -> bool {
     let value = native!(bool, 0x1033371FC8E842A7, native_parameters!(speedzone));
 
     value
@@ -3124,11 +3182,23 @@ pub fn set_vehicle_searchlight(heli: i32, toggle: bool, canBeUsedByAI: bool) -> 
     value
 }
 
-pub fn _0x639431e895b9aa57(ped: i32, vehicle: i32, p2: bool, p3: bool, p4: bool) -> bool {
+pub fn _does_vehicle_have_searchlight(vehicle: i32) -> bool {
+    let value = native!(bool, 0x99015ED7DBEA5113, native_parameters!(vehicle));
+
+    value
+}
+
+pub fn _is_vehicle_seat_accessible(
+    ped: i32,
+    vehicle: i32,
+    seatIndex: i32,
+    side: bool,
+    onEnter: bool,
+) -> bool {
     let value = native!(
         bool,
         0x639431E895B9AA57,
-        native_parameters!(ped, vehicle, p2, p3, p4)
+        native_parameters!(ped, vehicle, seatIndex, side, onEnter)
     );
 
     value
@@ -3144,8 +3214,12 @@ pub fn _get_entry_position_of_door(vehicle: i32, doorIndex: i32) -> NativeVector
     value
 }
 
-pub fn can_shuffle_seat(vehicle: i32, p1: u32) -> bool {
-    let value = native!(bool, 0x30785D90C956BF35, native_parameters!(vehicle, p1));
+pub fn can_shuffle_seat(vehicle: i32, seatIndex: i32) -> bool {
+    let value = native!(
+        bool,
+        0x30785D90C956BF35,
+        native_parameters!(vehicle, seatIndex)
+    );
 
     value
 }
@@ -3190,17 +3264,22 @@ pub fn set_vehicle_wheel_type(vehicle: i32, WheelType: i32) -> () {
     value
 }
 
-pub fn get_num_mod_colors(p0: i32, p1: bool) -> i32 {
-    let value = native!(i32, 0xA551BE18C11A476D, native_parameters!(p0, p1));
+pub fn get_num_mod_colors(paintType: i32, p1: bool) -> i32 {
+    let value = native!(i32, 0xA551BE18C11A476D, native_parameters!(paintType, p1));
 
     value
 }
 
-pub fn set_vehicle_mod_color_1(vehicle: i32, paintType: i32, color: i32, p3: i32) -> () {
+pub fn set_vehicle_mod_color_1(
+    vehicle: i32,
+    paintType: i32,
+    color: i32,
+    pearlescentColor: i32,
+) -> () {
     let value = native!(
         (),
         0x43FEB945EE7F85B8,
-        native_parameters!(vehicle, paintType, color, p3)
+        native_parameters!(vehicle, paintType, color, pearlescentColor)
     );
 
     value
@@ -3220,12 +3299,12 @@ pub fn get_vehicle_mod_color_1(
     vehicle: i32,
     paintType: *mut i32,
     color: *mut i32,
-    p3: *mut i32,
+    pearlescentColor: *mut i32,
 ) -> () {
     let value = native!(
         (),
         0xE8D65CA700C9A693,
-        native_parameters!(vehicle, paintType, color, p3)
+        native_parameters!(vehicle, paintType, color, pearlescentColor)
     );
 
     value
@@ -3259,7 +3338,7 @@ pub fn get_vehicle_mod_color_2_name(vehicle: i32) -> String {
     value
 }
 
-pub fn _is_vehicle_mod_load_done(vehicle: i32) -> bool {
+pub fn have_vehicle_mods_streamed_in(vehicle: i32) -> bool {
     let value = native!(bool, 0x9A83F5F9963775EF, native_parameters!(vehicle));
 
     value
@@ -3498,8 +3577,12 @@ pub fn _0x1f9fb66f3a3842d2(vehicle: i32, p1: bool) -> () {
     value
 }
 
-pub fn _0x59c3757b3b7408e8(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0x59C3757B3B7408E8, native_parameters!(p0, p1, p2));
+pub fn _0x59c3757b3b7408e8(vehicle: i32, toggle: bool, p2: f32) -> () {
+    let value = native!(
+        (),
+        0x59C3757B3B7408E8,
+        native_parameters!(vehicle, toggle, p2)
+    );
 
     value
 }
@@ -3528,7 +3611,7 @@ pub fn remove_vehicle_combat_avoidance_area(p0: u32) -> () {
     value
 }
 
-pub fn _is_any_passenger_rappeling_from_vehicle(vehicle: i32) -> bool {
+pub fn is_any_ped_rappelling_from_heli(vehicle: i32) -> bool {
     let value = native!(bool, 0x291E373D483E7EE7, native_parameters!(vehicle));
 
     value
@@ -3552,20 +3635,20 @@ pub fn set_vehicle_is_wanted(vehicle: i32, state: bool) -> () {
     value
 }
 
-pub fn _0xf488c566413b4232(p0: u32, p1: f32) -> () {
-    let value = native!((), 0xF488C566413B4232, native_parameters!(p0, p1));
+pub fn _set_boat_boom_position_ratio(vehicle: i32, ratio: f32) -> () {
+    let value = native!((), 0xF488C566413B4232, native_parameters!(vehicle, ratio));
 
     value
 }
 
-pub fn _0xc1f981a6f74f0c23(vehicle: i32, p1: bool) -> () {
+pub fn _get_boat_boom_position_ratio_2(vehicle: i32, p1: bool) -> () {
     let value = native!((), 0xC1F981A6F74F0C23, native_parameters!(vehicle, p1));
 
     value
 }
 
-pub fn _0x0f3b4d4e43177236(p0: u32, p1: bool) -> () {
-    let value = native!((), 0x0F3B4D4E43177236, native_parameters!(p0, p1));
+pub fn _get_boat_boom_position_ratio_3(vehicle: i32, p1: bool) -> () {
+    let value = native!((), 0x0F3B4D4E43177236, native_parameters!(vehicle, p1));
 
     value
 }
@@ -3814,13 +3897,13 @@ pub fn set_vehicle_engine_can_degrade(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0xf0e4ba16d1db546c(vehicle: i32, p1: i32, p2: i32) -> () {
+pub fn _set_vehicle_shadow_effect(vehicle: i32, p1: i32, p2: i32) -> () {
     let value = native!((), 0xF0E4BA16D1DB546C, native_parameters!(vehicle, p1, p2));
 
     value
 }
 
-pub fn _0xf87d9f2301f7d206(vehicle: i32) -> () {
+pub fn _remove_vehicle_shadow_effect(vehicle: i32) -> () {
     let value = native!((), 0xF87D9F2301F7D206, native_parameters!(vehicle));
 
     value
@@ -3866,8 +3949,12 @@ pub fn set_vehicle_is_stolen(vehicle: i32, isStolen: bool) -> () {
     value
 }
 
-pub fn set_plane_turbulence_multiplier(vehicle: i32, value: f32) -> () {
-    let value = native!((), 0xAD2D28A1AFDFF131, native_parameters!(vehicle, value));
+pub fn set_plane_turbulence_multiplier(vehicle: i32, multiplier: f32) -> () {
+    let value = native!(
+        (),
+        0xAD2D28A1AFDFF131,
+        native_parameters!(vehicle, multiplier)
+    );
 
     value
 }
@@ -3959,8 +4046,8 @@ pub fn _attach_entity_to_cargobob(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p
     value
 }
 
-pub fn _0x571feb383f629926(cargobob: i32, p1: bool) -> () {
-    let value = native!((), 0x571FEB383F629926, native_parameters!(cargobob, p1));
+pub fn _set_cargobob_hook_can_detach(cargobob: i32, toggle: bool) -> () {
+    let value = native!((), 0x571FEB383F629926, native_parameters!(cargobob, toggle));
 
     value
 }
@@ -4005,11 +4092,16 @@ pub fn remove_pick_up_rope_for_cargobob(cargobob: i32) -> () {
     value
 }
 
-pub fn _set_cargobob_hook_position(p0: u32, p1: f32, p2: f32, state: i32) -> () {
+pub fn set_pickup_rope_length_for_cargobob(
+    cargobob: i32,
+    length1: f32,
+    length2: f32,
+    p3: bool,
+) -> () {
     let value = native!(
         (),
         0x877C1EAEAC531023,
-        native_parameters!(p0, p1, p2, state)
+        native_parameters!(cargobob, length1, length2, p3)
     );
 
     value
@@ -4133,8 +4225,12 @@ pub fn disable_vehicle_weapon(disabled: bool, weaponHash: u32, vehicle: i32, own
     value
 }
 
-pub fn _is_vehicle_weapon_disabled(p0: u32, p1: u32, p2: u32) -> u32 {
-    let value = native!(u32, 0x563B65A643ED072E, native_parameters!(p0, p1, p2));
+pub fn _is_vehicle_weapon_disabled(weaponHash: u32, vehicle: i32, owner: i32) -> bool {
+    let value = native!(
+        bool,
+        0x563B65A643ED072E,
+        native_parameters!(weaponHash, vehicle, owner)
+    );
 
     value
 }
@@ -4193,8 +4289,8 @@ pub fn _set_vehicle_jet_engine_on(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0x6a973569ba094650(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x6A973569BA094650, native_parameters!(p0, p1));
+pub fn _0x6a973569ba094650(vehicle: i32, p1: u32) -> () {
+    let value = native!((), 0x6A973569BA094650, native_parameters!(vehicle, p1));
 
     value
 }
@@ -4315,8 +4411,8 @@ pub fn set_vehicle_force_afterburner(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _set_disable_vehicle_window_collisions(vehicle: i32, togle: bool) -> () {
-    let value = native!((), 0x1087BC8EC540DAEB, native_parameters!(vehicle, togle));
+pub fn _set_disable_vehicle_window_collisions(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0x1087BC8EC540DAEB, native_parameters!(vehicle, toggle));
 
     value
 }
@@ -4327,14 +4423,14 @@ pub fn _0x4ad280eb48b2d8e6(vehicle: i32, togle: bool) -> () {
     value
 }
 
-pub fn _0xb68cfaf83a02768d(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xB68CFAF83A02768D, native_parameters!(p0, p1));
+pub fn _0xb68cfaf83a02768d(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0xB68CFAF83A02768D, native_parameters!(vehicle, toggle));
 
     value
 }
 
-pub fn _0x0205f5365292d2eb(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x0205F5365292D2EB, native_parameters!(p0, p1));
+pub fn _0x0205f5365292d2eb(vehicle: i32, p1: f32) -> () {
+    let value = native!((), 0x0205F5365292D2EB, native_parameters!(vehicle, p1));
 
     value
 }
@@ -4357,8 +4453,8 @@ pub fn _set_vehicle_neon_lights_colour(vehicle: i32, r: i32, g: i32, b: i32) -> 
     value
 }
 
-pub fn _0xb93b2867f7b479d1(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xB93B2867F7B479D1, native_parameters!(p0, p1));
+pub fn _0xb93b2867f7b479d1(vehicle: i32, index: i32) -> () {
+    let value = native!((), 0xB93B2867F7B479D1, native_parameters!(vehicle, index));
 
     value
 }
@@ -4397,7 +4493,7 @@ pub fn _disable_vehicle_neon_lights(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0xb088e9a47ae6edd5(vehicle: i32, p1: bool) -> () {
+pub fn _set_disable_superdummy_mode(vehicle: i32, p1: bool) -> () {
     let value = native!((), 0xB088E9A47AE6EDD5, native_parameters!(vehicle, p1));
 
     value
@@ -4519,8 +4615,12 @@ pub fn _0x26d99d5a82fd18e8(p0: u32) -> () {
     value
 }
 
-pub fn _set_hydraulic_state(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0x84EA99C62CB3EF0C, native_parameters!(p0, p1, p2));
+pub fn _set_hydraulic_wheel_value(vehicle: i32, wheelId: i32, value: f32) -> () {
+    let value = native!(
+        (),
+        0x84EA99C62CB3EF0C,
+        native_parameters!(vehicle, wheelId, value)
+    );
 
     value
 }
@@ -4537,11 +4637,17 @@ pub fn _set_hydraulic_wheel_state(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _set_hydraulic_wheel_state_transition(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn _set_hydraulic_wheel_state_transition(
+    vehicle: i32,
+    wheelId: i32,
+    state: i32,
+    value: f32,
+    p4: u32,
+) -> () {
     let value = native!(
         (),
         0xC24075310A8B9CD1,
-        native_parameters!(p0, p1, p2, p3, p4)
+        native_parameters!(vehicle, wheelId, state, value, p4)
     );
 
     value
@@ -4903,8 +5009,8 @@ pub fn _set_vehicle_rocket_boost_percentage(vehicle: i32, percentage: f32) -> ()
     value
 }
 
-pub fn _0x544996c0081abdeb(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x544996C0081ABDEB, native_parameters!(p0, p1));
+pub fn _set_oppressor_transform_state(vehicle: i32, state: bool) -> () {
+    let value = native!((), 0x544996C0081ABDEB, native_parameters!(vehicle, state));
 
     value
 }
@@ -4927,23 +5033,23 @@ pub fn _0x430a7631a84c9be7(p0: u32) -> () {
     value
 }
 
-pub fn _0x75627043c6aa90ad(p0: u32) -> () {
-    let value = native!((), 0x75627043C6AA90AD, native_parameters!(p0));
+pub fn _disable_vehicle_world_collision(vehicle: i32) -> () {
+    let value = native!((), 0x75627043C6AA90AD, native_parameters!(vehicle));
 
     value
 }
 
-pub fn _0x8235f1bead557629(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x8235F1BEAD557629, native_parameters!(p0, p1));
+pub fn _0x8235f1bead557629(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0x8235F1BEAD557629, native_parameters!(vehicle, toggle));
 
     value
 }
 
-pub fn _0x9640e30a7f395e4b(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn _0x9640e30a7f395e4b(vehicle: i32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     let value = native!(
         (),
         0x9640E30A7F395E4B,
-        native_parameters!(p0, p1, p2, p3, p4)
+        native_parameters!(vehicle, p1, p2, p3, p4)
     );
 
     value
@@ -4955,8 +5061,8 @@ pub fn _0x0bbb9a7a8ffe931b(p0: u32, p1: u32, p2: u32) -> () {
     value
 }
 
-pub fn _0x94a68da412c4007d(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x94A68DA412C4007D, native_parameters!(p0, p1));
+pub fn _set_cargobob_hook_can_attach(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0x94A68DA412C4007D, native_parameters!(vehicle, toggle));
 
     value
 }
@@ -4993,34 +5099,34 @@ pub fn _get_vehicle_countermeasure_count(vehicle: i32) -> i32 {
     value
 }
 
-pub fn _0x0a3f820a9a9a9ac5(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
-    let value = native!((), 0x0A3F820A9A9A9AC5, native_parameters!(p0, p1, p2, p3));
+pub fn _0x0a3f820a9a9a9ac5(vehicle: i32, x: f32, y: f32, z: f32) -> () {
+    let value = native!((), 0x0A3F820A9A9A9AC5, native_parameters!(vehicle, x, y, z));
 
     value
 }
 
 pub fn _0x51f30db60626a20e(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
-    p4: u32,
-    p5: u32,
-    p6: u32,
-    p7: u32,
+    vehicle: i32,
+    x: f32,
+    y: f32,
+    z: f32,
+    rotX: f32,
+    rotY: f32,
+    rotZ: f32,
+    p7: i32,
     p8: u32,
-) -> u32 {
+) -> bool {
     let value = native!(
-        u32,
+        bool,
         0x51F30DB60626A20E,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8)
+        native_parameters!(vehicle, x, y, z, rotX, rotY, rotZ, p7, p8)
     );
 
     value
 }
 
-pub fn _0x97841634ef7df1d6(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x97841634EF7DF1D6, native_parameters!(p0, p1));
+pub fn _0x97841634ef7df1d6(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0x97841634EF7DF1D6, native_parameters!(vehicle, toggle));
 
     value
 }
@@ -5041,8 +5147,8 @@ pub fn _set_vehicle_hover_transform_percentage(vehicle: i32, percentage: f32) ->
     value
 }
 
-pub fn _set_vehicle_hover_transform_enabled(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xF1211889DF15A763, native_parameters!(p0, p1));
+pub fn _set_vehicle_hover_transform_enabled(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0xF1211889DF15A763, native_parameters!(vehicle, toggle));
 
     value
 }
@@ -5059,32 +5165,40 @@ pub fn _0x3a9128352eac9e85(p0: u32) -> u32 {
     value
 }
 
-pub fn _0x8dc9675797123522(p0: u32) -> u32 {
-    let value = native!(u32, 0x8DC9675797123522, native_parameters!(p0));
+pub fn _find_random_point_in_space(ped: i32) -> NativeVector3 {
+    let value = native!(NativeVector3, 0x8DC9675797123522, native_parameters!(ped));
 
     value
 }
 
-pub fn _0xb251e0b33e58b424(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0xB251E0B33E58B424, native_parameters!(p0, p1, p2));
+pub fn _set_deploy_heli_stub_wings(vehicle: i32, deploy: bool, p2: bool) -> () {
+    let value = native!(
+        (),
+        0xB251E0B33E58B424,
+        native_parameters!(vehicle, deploy, p2)
+    );
 
     value
 }
 
-pub fn _0xaef12960fa943792(p0: u32) -> u32 {
-    let value = native!(u32, 0xAEF12960FA943792, native_parameters!(p0));
+pub fn _are_heli_stub_wings_deployed(vehicle: i32) -> bool {
+    let value = native!(bool, 0xAEF12960FA943792, native_parameters!(vehicle));
 
     value
 }
 
-pub fn _0xaa653ae61924b0a0(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xAA653AE61924B0A0, native_parameters!(p0, p1));
+pub fn _0xaa653ae61924b0a0(vehicle: i32, toggle: bool) -> () {
+    let value = native!((), 0xAA653AE61924B0A0, native_parameters!(vehicle, toggle));
 
     value
 }
 
-pub fn _0xc60060eb0d8ac7b1(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0xC60060EB0D8AC7B1, native_parameters!(p0, p1, p2));
+pub fn _set_vehicle_turret_unk(vehicle: i32, index: i32, toggle: bool) -> () {
+    let value = native!(
+        (),
+        0xC60060EB0D8AC7B1,
+        native_parameters!(vehicle, index, toggle)
+    );
 
     value
 }
@@ -5095,14 +5209,18 @@ pub fn _set_specialflight_wing_ratio(vehicle: i32, ratio: f32) -> () {
     value
 }
 
-pub fn _0xe615bb7a7752c76a(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xE615BB7A7752C76A, native_parameters!(p0, p1));
+pub fn _set_disable_turret_movement_this_frame(vehicle: i32, turretId: i32) -> () {
+    let value = native!(
+        (),
+        0xE615BB7A7752C76A,
+        native_parameters!(vehicle, turretId)
+    );
 
     value
 }
 
-pub fn _0x887fa38787de8c72(p0: u32) -> () {
-    let value = native!((), 0x887FA38787DE8C72, native_parameters!(p0));
+pub fn _0x887fa38787de8c72(vehicle: i32) -> () {
+    let value = native!((), 0x887FA38787DE8C72, native_parameters!(vehicle));
 
     value
 }
@@ -5260,21 +5378,21 @@ pub fn _set_tyre_wear_multiplier(vehicle: i32, wheelIndex: i32, multiplier: f32)
     value
 }
 
-pub fn _0x392183bb9ea57697(vehicle: i32, wheelIndex: i32, p2: f32) -> () {
+pub fn _set_tyre_softness_multiplier(vehicle: i32, wheelIndex: i32, multiplier: f32) -> () {
     let value = native!(
         (),
         0x392183BB9EA57697,
-        native_parameters!(vehicle, wheelIndex, p2)
+        native_parameters!(vehicle, wheelIndex, multiplier)
     );
 
     value
 }
 
-pub fn _0xc970d0e0fc31d768(vehicle: i32, wheelIndex: i32, p2: f32) -> () {
+pub fn _set_tyre_traction_loss_multiplier(vehicle: i32, wheelIndex: i32, multiplier: f32) -> () {
     let value = native!(
         (),
         0xC970D0E0FC31D768,
-        native_parameters!(vehicle, wheelIndex, p2)
+        native_parameters!(vehicle, wheelIndex, multiplier)
     );
 
     value

@@ -7,13 +7,13 @@ pub fn set_roads_in_area(
     x2: f32,
     y2: f32,
     z2: f32,
-    unknown1: bool,
+    nodeEnabled: bool,
     unknown2: bool,
 ) -> () {
     let value = native!(
         (),
         0xBF1A602B5BA52FEE,
-        native_parameters!(x1, y1, z1, x2, y2, z2, unknown1, unknown2)
+        native_parameters!(x1, y1, z1, x2, y2, z2, nodeEnabled, unknown2)
     );
 
     value
@@ -26,7 +26,7 @@ pub fn set_roads_in_angled_area(
     x2: f32,
     y2: f32,
     z2: f32,
-    angle: f32,
+    width: f32,
     unknown1: bool,
     unknown2: bool,
     unknown3: bool,
@@ -34,7 +34,7 @@ pub fn set_roads_in_angled_area(
     let value = native!(
         (),
         0x1A5AA1208AF5DB59,
-        native_parameters!(x1, y1, z1, x2, y2, z2, angle, unknown1, unknown2, unknown3)
+        native_parameters!(x1, y1, z1, x2, y2, z2, width, unknown1, unknown2, unknown3)
     );
 
     value
@@ -330,20 +330,26 @@ pub fn get_closest_road(
     value
 }
 
-pub fn _0x228e5c6ad4d74bfd(toggle: bool) -> () {
+pub fn _set_all_paths_cache_boundingstruct(toggle: bool) -> () {
     let value = native!((), 0x228E5C6AD4D74BFD, native_parameters!(toggle));
 
     value
 }
 
-pub fn _are_path_nodes_loaded_in_area(x1: f32, y1: f32, x2: f32, y2: f32) -> bool {
+pub fn _set_ai_global_path_nodes_type(type_esc: i32) -> () {
+    let value = native!((), 0xF74B1FFA4A15FBEA, native_parameters!(type_esc));
+
+    value
+}
+
+pub fn are_nodes_loaded_for_area(x1: f32, y1: f32, x2: f32, y2: f32) -> bool {
     let value = native!(bool, 0xF7B79A50B905A30D, native_parameters!(x1, y1, x2, y2));
 
     value
 }
 
-pub fn _0x07fb139b592fa687(p0: f32, p1: f32, p2: f32, p3: f32) -> bool {
-    let value = native!(bool, 0x07FB139B592FA687, native_parameters!(p0, p1, p2, p3));
+pub fn _request_paths_prefer_accurate_boundingstruct(x1: f32, y1: f32, x2: f32, y2: f32) -> bool {
+    let value = native!(bool, 0x07FB139B592FA687, native_parameters!(x1, y1, x2, y2));
 
     value
 }
@@ -373,13 +379,13 @@ pub fn set_roads_back_to_original_in_angled_area(
     x2: f32,
     y2: f32,
     z2: f32,
-    p6: f32,
+    width: f32,
     p7: u32,
 ) -> () {
     let value = native!(
         (),
         0x0027501B9F3B407E,
-        native_parameters!(x1, y1, z1, x2, y2, z2, p6, p7)
+        native_parameters!(x1, y1, z1, x2, y2, z2, width, p7)
     );
 
     value
@@ -513,21 +519,33 @@ pub fn get_gps_blip_route_found() -> bool {
     value
 }
 
-pub fn _get_road_side_point_with_heading(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> u32 {
+pub fn _get_road_side_point_with_heading(
+    x: f32,
+    y: f32,
+    z: f32,
+    heading: f32,
+    outPosition: *mut NativeVector3,
+) -> bool {
     let value = native!(
-        u32,
+        bool,
         0xA0F8A7517A273C05,
-        native_parameters!(p0, p1, p2, p3, p4)
+        native_parameters!(x, y, z, heading, outPosition)
     );
 
     value
 }
 
-pub fn _get_point_on_road_side(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> u32 {
+pub fn _get_point_on_road_side(
+    x: f32,
+    y: f32,
+    z: f32,
+    p3: i32,
+    outPosition: *mut NativeVector3,
+) -> bool {
     let value = native!(
-        u32,
+        bool,
         0x16F46FB18C8009E4,
-        native_parameters!(p0, p1, p2, p3, p4)
+        native_parameters!(x, y, z, p3, outPosition)
     );
 
     value
@@ -687,26 +705,26 @@ pub fn does_navmesh_blocking_object_exist(p0: u32) -> bool {
     value
 }
 
-pub fn _get_heightmap_top_z_for_position(p0: f32, p1: f32) -> f32 {
-    let value = native!(f32, 0x29C24BFBED8AB8FB, native_parameters!(p0, p1));
+pub fn _get_heightmap_top_z_for_position(x: f32, y: f32) -> f32 {
+    let value = native!(f32, 0x29C24BFBED8AB8FB, native_parameters!(x, y));
 
     value
 }
 
-pub fn _get_heightmap_top_z_for_area(p0: f32, p1: f32, p2: f32, p3: f32) -> f32 {
-    let value = native!(f32, 0x8ABE8608576D9CE3, native_parameters!(p0, p1, p2, p3));
+pub fn _get_heightmap_top_z_for_area(x1: f32, y1: f32, x2: f32, y2: f32) -> f32 {
+    let value = native!(f32, 0x8ABE8608576D9CE3, native_parameters!(x1, y1, x2, y2));
 
     value
 }
 
-pub fn _get_heightmap_bottom_z_for_position(left: f32, right: f32) -> f32 {
-    let value = native!(f32, 0x336511A34F2E5185, native_parameters!(left, right));
+pub fn _get_heightmap_bottom_z_for_position(x: f32, y: f32) -> f32 {
+    let value = native!(f32, 0x336511A34F2E5185, native_parameters!(x, y));
 
     value
 }
 
-pub fn _get_heightmap_bottom_z_for_area(p0: f32, p1: f32, p2: f32, p3: f32) -> f32 {
-    let value = native!(f32, 0x3599D741C9AC6310, native_parameters!(p0, p1, p2, p3));
+pub fn _get_heightmap_bottom_z_for_area(x1: f32, y1: f32, x2: f32, y2: f32) -> f32 {
+    let value = native!(f32, 0x3599D741C9AC6310, native_parameters!(x1, y1, x2, y2));
 
     value
 }

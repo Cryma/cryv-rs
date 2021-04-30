@@ -218,14 +218,14 @@ pub fn interrupt_conversation(p0: u32, p1: *mut u32, p2: *mut u32) -> () {
 }
 
 pub fn interrupt_conversation_and_pause(
-    p0: i32,
+    ped: i32,
     p1: &std::ffi::CString,
     p2: &std::ffi::CString,
 ) -> () {
     let value = native!(
         (),
         0x8A694D7A68F8DC38,
-        native_parameters!(p0, p1.as_ptr(), p2.as_ptr())
+        native_parameters!(ped, p1.as_ptr(), p2.as_ptr())
     );
 
     value
@@ -275,7 +275,7 @@ pub fn request_ambient_audio_bank(p0: &std::ffi::CString, p1: bool, p2: u32) -> 
     value
 }
 
-pub fn request_script_audio_bank(p0: &std::ffi::CString, p1: bool, p2: u32) -> bool {
+pub fn request_script_audio_bank(p0: &std::ffi::CString, p1: bool, p2: i32) -> bool {
     let value = native!(
         bool,
         0x2F844A8B08D76685,
@@ -528,7 +528,7 @@ pub fn has_sound_finished(soundId: i32) -> bool {
     value
 }
 
-pub fn _play_ambient_speech1(
+pub fn play_ped_ambient_speech_native(
     ped: i32,
     speechName: &std::ffi::CString,
     speechParam: &std::ffi::CString,
@@ -543,7 +543,7 @@ pub fn _play_ambient_speech1(
     value
 }
 
-pub fn _play_ambient_speech2(
+pub fn play_ped_ambient_speech_and_clone_native(
     ped: i32,
     speechName: &std::ffi::CString,
     speechParam: &std::ffi::CString,
@@ -558,8 +558,8 @@ pub fn _play_ambient_speech2(
     value
 }
 
-pub fn _play_ambient_speech_with_voice(
-    p0: i32,
+pub fn play_ped_ambient_speech_with_voice_native(
+    ped: i32,
     speechName: &std::ffi::CString,
     voiceName: &std::ffi::CString,
     speechParam: &std::ffi::CString,
@@ -569,7 +569,7 @@ pub fn _play_ambient_speech_with_voice(
         (),
         0x3523634255FC3318,
         native_parameters!(
-            p0,
+            ped,
             speechName.as_ptr(),
             voiceName.as_ptr(),
             speechParam.as_ptr(),
@@ -580,25 +580,36 @@ pub fn _play_ambient_speech_with_voice(
     value
 }
 
-pub fn _play_ambient_speech_at_coords(
-    p0: &std::ffi::CString,
-    p1: &std::ffi::CString,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: &std::ffi::CString,
+pub fn play_ambient_speech_from_position_native(
+    speechName: &std::ffi::CString,
+    voiceName: &std::ffi::CString,
+    x: f32,
+    y: f32,
+    z: f32,
+    speechParam: &std::ffi::CString,
 ) -> () {
     let value = native!(
         (),
         0xED640017ED337E45,
-        native_parameters!(p0.as_ptr(), p1.as_ptr(), p2, p3, p4, p5.as_ptr())
+        native_parameters!(
+            speechName.as_ptr(),
+            voiceName.as_ptr(),
+            x,
+            y,
+            z,
+            speechParam.as_ptr()
+        )
     );
 
     value
 }
 
-pub fn override_trevor_rage(p0: &std::ffi::CString) -> () {
-    let value = native!((), 0x13AD665062541A7E, native_parameters!(p0.as_ptr()));
+pub fn override_trevor_rage(voiceEffect: &std::ffi::CString) -> () {
+    let value = native!(
+        (),
+        0x13AD665062541A7E,
+        native_parameters!(voiceEffect.as_ptr())
+    );
 
     value
 }
@@ -687,7 +698,7 @@ pub fn _set_ped_voice_group(ped: i32, voiceGroupHash: u32) -> () {
     value
 }
 
-pub fn _0xa5342d390cda41d6(ped: i32, p1: bool) -> () {
+pub fn _set_ped_audio_gender(ped: i32, p1: bool) -> () {
     let value = native!((), 0xA5342D390CDA41D6, native_parameters!(ped, p1));
 
     value
@@ -723,6 +734,12 @@ pub fn is_any_speech_playing(ped: i32) -> bool {
     value
 }
 
+pub fn _0x30ca2ef91d15adf8() -> u32 {
+    let value = native!(u32, 0x30CA2EF91D15ADF8, native_parameters!());
+
+    value
+}
+
 pub fn _can_ped_speak(ped: i32, speechName: &std::ffi::CString, unk: bool) -> bool {
     let value = native!(
         bool,
@@ -745,11 +762,11 @@ pub fn set_ped_is_drunk(ped: i32, toggle: bool) -> () {
     value
 }
 
-pub fn play_animal_vocalization(pedHandle: i32, p1: u32, p2: *mut u32) -> () {
+pub fn play_animal_vocalization(pedHandle: i32, p1: i32, speechName: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xEE066C7006C49C0A,
-        native_parameters!(pedHandle, p1, p2)
+        native_parameters!(pedHandle, p1, speechName.as_ptr())
     );
 
     value
@@ -1100,8 +1117,8 @@ pub fn set_radio_station_music_only(radioStation: &std::ffi::CString, toggle: bo
     value
 }
 
-pub fn set_radio_frontend_fade_time(p0: f32) -> () {
-    let value = native!((), 0x2C96CDB04FCA358E, native_parameters!(p0));
+pub fn set_radio_frontend_fade_time(fadeTime: f32) -> () {
+    let value = native!((), 0x2C96CDB04FCA358E, native_parameters!(fadeTime));
 
     value
 }
@@ -1135,13 +1152,13 @@ pub fn _lock_radio_station(radioStationName: &std::ffi::CString, toggle: bool) -
     value
 }
 
-pub fn _0xc64a06d939f826f5(p0: *mut f32, p1: *mut u32, p2: *mut i32) -> bool {
+pub fn _0xc64a06d939f826f5(p0: *mut f32, p1: *mut f32, p2: *mut i32) -> bool {
     let value = native!(bool, 0xC64A06D939F826F5, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0x3e65cde5215832c1(radioStationName: &std::ffi::CString) -> i32 {
+pub fn _get_current_radio_station_hash(radioStationName: &std::ffi::CString) -> i32 {
     let value = native!(
         i32,
         0x3E65CDE5215832C1,
@@ -1281,11 +1298,11 @@ pub fn blip_siren(vehicle: i32) -> () {
     value
 }
 
-pub fn override_veh_horn(vehicle: i32, mute: bool, p2: i32) -> () {
+pub fn override_veh_horn(vehicle: i32, r#override: bool, hornHash: i32) -> () {
     let value = native!(
         (),
         0x3CDC1E622CCE0356,
-        native_parameters!(vehicle, mute, p2)
+        native_parameters!(vehicle, r#override, hornHash)
     );
 
     value
@@ -1441,8 +1458,8 @@ pub fn set_siren_with_no_driver(vehicle: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0x66c3fb05206041ba(p0: u32) -> () {
-    let value = native!((), 0x66C3FB05206041BA, native_parameters!(p0));
+pub fn _trigger_siren(vehicle: i32) -> () {
+    let value = native!((), 0x66C3FB05206041BA, native_parameters!(vehicle));
 
     value
 }
@@ -1487,8 +1504,8 @@ pub fn _force_vehicle_engine_audio(vehicle: i32, audioName: &std::ffi::CString) 
     value
 }
 
-pub fn _0xca4cea6ae0000a7e(p0: u32) -> () {
-    let value = native!((), 0xCA4CEA6AE0000A7E, native_parameters!(p0));
+pub fn _preload_vehicle_audio(vehicleModel: u32) -> () {
+    let value = native!((), 0xCA4CEA6AE0000A7E, native_parameters!(vehicleModel));
 
     value
 }
@@ -1525,7 +1542,7 @@ pub fn set_vehicle_audio_engine_damage_factor(vehicle: i32, damageFactor: f32) -
     value
 }
 
-pub fn _0x01bb4d577d38bd9e(vehicle: i32, p1: f32) -> () {
+pub fn set_vehicle_audio_body_damage_factor(vehicle: i32, p1: f32) -> () {
     let value = native!((), 0x01BB4D577D38BD9E, native_parameters!(vehicle, p1));
 
     value
@@ -1665,8 +1682,8 @@ pub fn set_audio_scene_variable(
     value
 }
 
-pub fn _0xa5f377b175a699c5(p0: i32) -> () {
-    let value = native!((), 0xA5F377B175A699C5, native_parameters!(p0));
+pub fn set_audio_script_cleanup_time(time: i32) -> () {
+    let value = native!((), 0xA5F377B175A699C5, native_parameters!(time));
 
     value
 }
@@ -1847,13 +1864,13 @@ pub fn reset_ped_audio_flags(ped: i32) -> () {
     value
 }
 
-pub fn _0x0653b735bfbdfe87(ped: i32, toggle: bool) -> () {
+pub fn _set_ped_audio_footstep_loud(ped: i32, toggle: bool) -> () {
     let value = native!((), 0x0653B735BFBDFE87, native_parameters!(ped, toggle));
 
     value
 }
 
-pub fn _0x29da3ca8d8b2692d(ped: i32, toggle: bool) -> () {
+pub fn _set_ped_audio_footstep_quiet(ped: i32, toggle: bool) -> () {
     let value = native!((), 0x29DA3CA8D8B2692D, native_parameters!(ped, toggle));
 
     value

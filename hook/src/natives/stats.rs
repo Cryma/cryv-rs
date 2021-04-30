@@ -66,7 +66,7 @@ pub fn _0xe496a53ba5f50a56(p0: u32) -> u32 {
     value
 }
 
-pub fn _0xf434a10ba01c37d0(toggle: bool) -> () {
+pub fn stat_set_block_saves(toggle: bool) -> () {
     let value = native!((), 0xF434A10BA01C37D0, native_parameters!(toggle));
 
     value
@@ -405,7 +405,7 @@ pub fn get_packed_int_stat_key(index: i32, spStat: bool, charStat: bool, charact
     value
 }
 
-pub fn _get_packed_title_update_bool_stat_key(
+pub fn get_packed_tu_bool_stat_key(
     index: i32,
     spStat: bool,
     charStat: bool,
@@ -420,12 +420,7 @@ pub fn _get_packed_title_update_bool_stat_key(
     value
 }
 
-pub fn _get_packed_title_update_int_stat_key(
-    index: i32,
-    spStat: bool,
-    charStat: bool,
-    character: i32,
-) -> u32 {
+pub fn get_packed_tu_int_stat_key(index: i32, spStat: bool, charStat: bool, character: i32) -> u32 {
     let value = native!(
         u32,
         0xD16C2AD6B8E32854,
@@ -525,13 +520,13 @@ pub fn _playstats_start_offline_mode() -> () {
     value
 }
 
-pub fn _0xa071e0ed98f91286(p0: u32, p1: u32) -> () {
+pub fn playstats_activity_done(p0: u32, p1: u32) -> () {
     let value = native!((), 0xA071E0ED98F91286, native_parameters!(p0, p1));
 
     value
 }
 
-pub fn _0xc5be134ec7ba96a0(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn playstats_leave_job_chain(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     let value = native!(
         (),
         0xC5BE134EC7BA96A0,
@@ -619,7 +614,7 @@ pub fn playstats_shop_item(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     value
 }
 
-pub fn _playstats_crate_drop(
+pub fn playstats_crate_drop_mission_done(
     p0: u32,
     p1: u32,
     p2: u32,
@@ -638,25 +633,25 @@ pub fn _playstats_crate_drop(
     value
 }
 
-pub fn _playstats_crate_created(p0: f32, p1: f32, p2: f32) -> () {
+pub fn _playstats_crate_created_mission_done(p0: f32, p1: f32, p2: f32) -> () {
     let value = native!((), 0xAFC7E5E075A96F46, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _playstats_hold_up(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn playstats_hold_up_mission_done(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0xCB00196B31C39EB1, native_parameters!(p0, p1, p2, p3));
 
     value
 }
 
-pub fn _playstats_imp_exp(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn playstats_import_export_mission_done(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0x2B69F5074C894811, native_parameters!(p0, p1, p2, p3));
 
     value
 }
 
-pub fn _playstats_race_to_point(
+pub fn playstats_race_to_point_mission_done(
     p0: u32,
     p1: u32,
     p2: u32,
@@ -1156,7 +1151,7 @@ pub fn _0xc141b8917e0017ec() -> () {
     value
 }
 
-pub fn _0xb475f27c6a994d65() -> () {
+pub fn set_profile_setting_prologue_complete() -> () {
     let value = native!((), 0xB475F27C6A994D65, native_parameters!());
 
     value
@@ -1204,7 +1199,7 @@ pub fn _0x428eaf89e24f6c36(p0: u32, p1: f32) -> () {
     value
 }
 
-pub fn _0x047cbed6f6f8b63c() -> () {
+pub fn stat_set_cheat_is_active() -> () {
     let value = native!((), 0x047CBED6F6F8B63C, native_parameters!());
 
     value
@@ -1558,26 +1553,26 @@ pub fn _playstats_spent_pi_custom_loadout(amount: i32) -> () {
     value
 }
 
-pub fn _0xd6781e42755531f7(p0: u32) -> () {
-    let value = native!((), 0xD6781E42755531F7, native_parameters!(p0));
+pub fn _playstats_buy_contraband(data: *mut u32) -> () {
+    let value = native!((), 0xD6781E42755531F7, native_parameters!(data));
 
     value
 }
 
-pub fn _0xc729991a9065376e(p0: u32) -> () {
-    let value = native!((), 0xC729991A9065376E, native_parameters!(p0));
+pub fn _playstats_sell_contraband(data: *mut u32) -> () {
+    let value = native!((), 0xC729991A9065376E, native_parameters!(data));
 
     value
 }
 
-pub fn _0x2605663bd4f23b5d(p0: u32) -> () {
-    let value = native!((), 0x2605663BD4F23B5D, native_parameters!(p0));
+pub fn _playstats_defend_contraband(data: *mut u32) -> () {
+    let value = native!((), 0x2605663BD4F23B5D, native_parameters!(data));
 
     value
 }
 
-pub fn _0x04d90ba8207ada2d(p0: u32) -> () {
-    let value = native!((), 0x04D90BA8207ADA2D, native_parameters!(p0));
+pub fn _playstats_recover_contraband(data: *mut u32) -> () {
+    let value = native!((), 0x04D90BA8207ADA2D, native_parameters!(data));
 
     value
 }
@@ -1857,14 +1852,14 @@ pub fn _0x830c3a44eb3f2cf9(p0: u32) -> () {
     value
 }
 
-pub fn _0xb26f670685631727(p0: u32) -> () {
-    let value = native!((), 0xB26F670685631727, native_parameters!(p0));
+pub fn _0xb26f670685631727(p0: u32, p1: u32) -> () {
+    let value = native!((), 0xB26F670685631727, native_parameters!(p0, p1));
 
     value
 }
 
-pub fn _0xc14bd9f5337219b2(p0: u32) -> () {
-    let value = native!((), 0xC14BD9F5337219B2, native_parameters!(p0));
+pub fn _0xc14bd9f5337219b2(p0: u32, p1: u32) -> () {
+    let value = native!((), 0xC14BD9F5337219B2, native_parameters!(p0, p1));
 
     value
 }
@@ -2130,6 +2125,56 @@ pub fn _0x5cdaed54b34b0ed0(p0: u32) -> () {
 
 pub fn _0x4aff7e02e485e92b() -> () {
     let value = native!((), 0x4AFF7E02E485E92B, native_parameters!());
+
+    value
+}
+
+pub fn _0xdfcdb14317a9b361(p0: u32) -> () {
+    let value = native!((), 0xDFCDB14317A9B361, native_parameters!(p0));
+
+    value
+}
+
+pub fn _0xc1e963c58664b556(p0: u32) -> () {
+    let value = native!((), 0xC1E963C58664B556, native_parameters!(p0));
+
+    value
+}
+
+pub fn _0x2fa3173480008493(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+    let value = native!(
+        (),
+        0x2FA3173480008493,
+        native_parameters!(p0, p1, p2, p3, p4)
+    );
+
+    value
+}
+
+pub fn _0xd4367d310f079db0(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+    let value = native!((), 0xD4367D310F079DB0, native_parameters!(p0, p1, p2, p3));
+
+    value
+}
+
+pub fn _0x4dc416f246a41fc8(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+    let value = native!(
+        (),
+        0x4DC416F246A41FC8,
+        native_parameters!(p0, p1, p2, p3, p4)
+    );
+
+    value
+}
+
+pub fn _0x2818ff6638cb09de(p0: u32) -> () {
+    let value = native!((), 0x2818FF6638CB09DE, native_parameters!(p0));
+
+    value
+}
+
+pub fn _0xd6ca58b3b53a0f22(p0: u32) -> () {
+    let value = native!((), 0xD6CA58B3B53A0F22, native_parameters!(p0));
 
     value
 }

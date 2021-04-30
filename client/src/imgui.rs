@@ -175,7 +175,7 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                 if ui.button(imgui::im_str!("Load Cayo Perico"), [0.0, 0.0]) {
                     crate::thread_jumper::run(Box::new(|_| {
                         let heist_island_cstring = std::ffi::CString::new("HeistIsland").unwrap();
-                        hook::natives::dlc::load_cayo_perico(&heist_island_cstring, true);
+                        hook::natives::streaming::_set_island_hopper_enabled(&heist_island_cstring, true);
                     }));
                 }
 
@@ -184,7 +184,7 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                 if ui.button(imgui::im_str!("Unload Cayo Perico"), [0.0, 0.0]) {
                     crate::thread_jumper::run(Box::new(|_| {
                         let x = std::ffi::CString::new("HeistIsland").unwrap();
-                        hook::natives::dlc::load_cayo_perico(&x, false);
+                        hook::natives::streaming::_set_island_hopper_enabled(&x, false);
                     }));
                 }
 

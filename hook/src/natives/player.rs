@@ -480,8 +480,8 @@ pub fn get_player_underwater_time_remaining(player: i32) -> f32 {
     value
 }
 
-pub fn _0xa0d3e4f7aafb7e78(p0: u32, p1: u32) -> u32 {
-    let value = native!(u32, 0xA0D3E4F7AAFB7E78, native_parameters!(p0, p1));
+pub fn _set_player_underwater_time_remaining(player: i32, time: f32) -> u32 {
+    let value = native!(u32, 0xA0D3E4F7AAFB7E78, native_parameters!(player, time));
 
     value
 }
@@ -1101,19 +1101,19 @@ pub fn start_player_teleport(
     z: f32,
     heading: f32,
     p5: bool,
-    p6: bool,
+    findCollisionLand: bool,
     p7: bool,
 ) -> () {
     let value = native!(
         (),
         0xAD15F075A4DA0FDE,
-        native_parameters!(player, x, y, z, heading, p5, p6, p7)
+        native_parameters!(player, x, y, z, heading, p5, findCollisionLand, p7)
     );
 
     value
 }
 
-pub fn _has_player_teleport_finished(player: i32) -> bool {
+pub fn update_player_teleport(player: i32) -> bool {
     let value = native!(bool, 0xE23D5873C2394C61, native_parameters!(player));
 
     value
@@ -1638,8 +1638,12 @@ pub fn _0x7148e0f43d11f0d9() -> () {
     value
 }
 
-pub fn _0x70a382adec069dd3(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0x70A382ADEC069DD3, native_parameters!(p0, p1, p2));
+pub fn _0x70a382adec069dd3(coordX: f32, coordY: f32, coordZ: f32) -> () {
+    let value = native!(
+        (),
+        0x70A382ADEC069DD3,
+        native_parameters!(coordX, coordY, coordZ)
+    );
 
     value
 }

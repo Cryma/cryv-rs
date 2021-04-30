@@ -218,7 +218,7 @@ pub fn get_control_group_instructional_button(
     value
 }
 
-pub fn _set_control_group_color(padIndex: i32, red: i32, green: i32, blue: i32) -> () {
+pub fn set_control_light_effect_color(padIndex: i32, red: i32, green: i32, blue: i32) -> () {
     let value = native!(
         (),
         0x8290252FFF36ACB5,

@@ -231,7 +231,7 @@ pub fn clear_weather_type_persist() -> () {
     value
 }
 
-pub fn _0x0cf97f497fe7d048(p0: u32) -> () {
+pub fn _0x0cf97f497fe7d048(p0: f32) -> () {
     let value = native!((), 0x0CF97F497FE7D048, native_parameters!(p0));
 
     value
@@ -275,91 +275,97 @@ pub fn set_override_weather(weatherType: &std::ffi::CString) -> () {
     value
 }
 
+pub fn _0x1178e104409fe58c(p0: u32, p1: u32) -> () {
+    let value = native!((), 0x1178E104409FE58C, native_parameters!(p0, p1));
+
+    value
+}
+
 pub fn clear_override_weather() -> () {
     let value = native!((), 0x338D2E3477711050, native_parameters!());
 
     value
 }
 
-pub fn _0xb8f87ead7533b176(p0: f32) -> () {
-    let value = native!((), 0xB8F87EAD7533B176, native_parameters!(p0));
+pub fn water_override_set_shorewaveamplitude(amplitude: f32) -> () {
+    let value = native!((), 0xB8F87EAD7533B176, native_parameters!(amplitude));
 
     value
 }
 
-pub fn _0xc3ead29ab273ece8(p0: f32) -> () {
-    let value = native!((), 0xC3EAD29AB273ECE8, native_parameters!(p0));
+pub fn water_override_set_shorewaveminamplitude(minAmplitude: f32) -> () {
+    let value = native!((), 0xC3EAD29AB273ECE8, native_parameters!(minAmplitude));
 
     value
 }
 
-pub fn _0xa7a1127490312c36(p0: f32) -> () {
-    let value = native!((), 0xA7A1127490312C36, native_parameters!(p0));
+pub fn water_override_set_shorewavemaxamplitude(maxAmplitude: f32) -> () {
+    let value = native!((), 0xA7A1127490312C36, native_parameters!(maxAmplitude));
 
     value
 }
 
-pub fn _0x31727907b2c43c55(p0: f32) -> () {
-    let value = native!((), 0x31727907B2C43C55, native_parameters!(p0));
+pub fn water_override_set_oceannoiseminamplitude(minAmplitude: f32) -> () {
+    let value = native!((), 0x31727907B2C43C55, native_parameters!(minAmplitude));
 
     value
 }
 
-pub fn _0x405591ec8fd9096d(p0: f32) -> () {
-    let value = native!((), 0x405591EC8FD9096D, native_parameters!(p0));
+pub fn water_override_set_oceanwaveamplitude(amplitude: f32) -> () {
+    let value = native!((), 0x405591EC8FD9096D, native_parameters!(amplitude));
 
     value
 }
 
-pub fn _0xf751b16fb32abc1d(p0: f32) -> () {
-    let value = native!((), 0xF751B16FB32ABC1D, native_parameters!(p0));
+pub fn water_override_set_oceanwaveminamplitude(minAmplitude: f32) -> () {
+    let value = native!((), 0xF751B16FB32ABC1D, native_parameters!(minAmplitude));
 
     value
 }
 
-pub fn _0xb3e6360dde733e82(p0: f32) -> () {
-    let value = native!((), 0xB3E6360DDE733E82, native_parameters!(p0));
+pub fn water_override_set_oceanwavemaxamplitude(maxAmplitude: f32) -> () {
+    let value = native!((), 0xB3E6360DDE733E82, native_parameters!(maxAmplitude));
 
     value
 }
 
-pub fn _0x7c9c0b1eeb1f9072(p0: f32) -> () {
-    let value = native!((), 0x7C9C0B1EEB1F9072, native_parameters!(p0));
+pub fn water_override_set_ripplebumpiness(bumpiness: f32) -> () {
+    let value = native!((), 0x7C9C0B1EEB1F9072, native_parameters!(bumpiness));
 
     value
 }
 
-pub fn _0x6216b116083a7cb4(p0: f32) -> () {
-    let value = native!((), 0x6216B116083A7CB4, native_parameters!(p0));
+pub fn water_override_set_rippleminbumpiness(minBumpiness: f32) -> () {
+    let value = native!((), 0x6216B116083A7CB4, native_parameters!(minBumpiness));
 
     value
 }
 
-pub fn _0x9f5e6bb6b34540da(p0: f32) -> () {
-    let value = native!((), 0x9F5E6BB6B34540DA, native_parameters!(p0));
+pub fn water_override_set_ripplemaxbumpiness(maxBumpiness: f32) -> () {
+    let value = native!((), 0x9F5E6BB6B34540DA, native_parameters!(maxBumpiness));
 
     value
 }
 
-pub fn _0xb9854dfde0d833d6(p0: f32) -> () {
-    let value = native!((), 0xB9854DFDE0D833D6, native_parameters!(p0));
+pub fn water_override_set_rippledisturb(disturb: f32) -> () {
+    let value = native!((), 0xB9854DFDE0D833D6, native_parameters!(disturb));
 
     value
 }
 
-pub fn _0xc54a08c85ae4d410(p0: f32) -> () {
-    let value = native!((), 0xC54A08C85AE4D410, native_parameters!(p0));
+pub fn water_override_set_strength(strength: f32) -> () {
+    let value = native!((), 0xC54A08C85AE4D410, native_parameters!(strength));
 
     value
 }
 
-pub fn _0xa8434f1dff41d6e7(p0: f32) -> () {
+pub fn water_override_fade_in(p0: f32) -> () {
     let value = native!((), 0xA8434F1DFF41D6E7, native_parameters!(p0));
 
     value
 }
 
-pub fn _0xc3c221addde31a11(p0: f32) -> () {
+pub fn water_override_fade_out(p0: f32) -> () {
     let value = native!((), 0xC3C221ADDDE31A11, native_parameters!(p0));
 
     value
@@ -395,8 +401,8 @@ pub fn get_wind_direction() -> NativeVector3 {
     value
 }
 
-pub fn _set_rain_level(level: f32) -> () {
-    let value = native!((), 0x643E26EA6E024D92, native_parameters!(level));
+pub fn _set_rain_level(intensity: f32) -> () {
+    let value = native!((), 0x643E26EA6E024D92, native_parameters!(intensity));
 
     value
 }
@@ -534,13 +540,13 @@ pub fn get_ground_z_for_3d_coord(
     y: f32,
     z: f32,
     groundZ: *mut f32,
-    unk: bool,
+    ignoreWater: bool,
     p5: bool,
 ) -> bool {
     let value = native!(
         bool,
         0xC906A7DAB05C8D2B,
-        native_parameters!(x, y, z, groundZ, unk, p5)
+        native_parameters!(x, y, z, groundZ, ignoreWater, p5)
     );
 
     value
@@ -562,11 +568,18 @@ pub fn get_ground_z_and_normal_for_3d_coord(
     value
 }
 
-pub fn _get_ground_z_for_3d_coord_2(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32) -> u32 {
+pub fn _get_ground_z_for_3d_coord_2(
+    x: f32,
+    y: f32,
+    z: f32,
+    groundZ: *mut f32,
+    p4: bool,
+    p5: bool,
+) -> bool {
     let value = native!(
-        u32,
+        bool,
         0x9E82F0F362881B29,
-        native_parameters!(p0, p1, p2, p3, p4, p5)
+        native_parameters!(x, y, z, groundZ, p4, p5)
     );
 
     value
@@ -698,6 +711,31 @@ pub fn _0xf56dfb7b61be7276(
     value
 }
 
+pub fn _0xa0ad167e4b39d9a2(
+    p0: u32,
+    p1: u32,
+    p2: u32,
+    p3: u32,
+    p4: u32,
+    p5: u32,
+    p6: u32,
+    p7: u32,
+    p8: u32,
+    p9: u32,
+    p10: u32,
+    p11: u32,
+    p12: u32,
+    p13: u32,
+) -> u32 {
+    let value = native!(
+        u32,
+        0xA0AD167E4B39D9A2,
+        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13)
+    );
+
+    value
+}
+
 pub fn set_bit(address: *mut i32, offset: i32) -> () {
     let value = native!((), 0x933D6A9EEC1BACD0, native_parameters!(address, offset));
 
@@ -717,24 +755,24 @@ pub fn get_hash_key(string: &std::ffi::CString) -> u32 {
 }
 
 pub fn slerp_near_quaternion(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
-    p8: f32,
-    p9: *mut f32,
-    p10: *mut f32,
-    p11: *mut f32,
-    p12: *mut f32,
+    t: f32,
+    x: f32,
+    y: f32,
+    z: f32,
+    w: f32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    w1: f32,
+    outX: *mut f32,
+    outY: *mut f32,
+    outZ: *mut f32,
+    outW: *mut f32,
 ) -> () {
     let value = native!(
         (),
         0xF2F6A2FA49278625,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12)
+        native_parameters!(t, x, y, z, w, x1, y1, z1, w1, outX, outY, outZ, outW)
     );
 
     value
@@ -794,17 +832,29 @@ pub fn is_position_occupied(
     z: f32,
     range: f32,
     p4: bool,
-    p5: bool,
-    p6: bool,
+    checkVehicles: bool,
+    checkPeds: bool,
     p7: bool,
     p8: bool,
-    p9: u32,
+    ignoreEntity: i32,
     p10: bool,
 ) -> bool {
     let value = native!(
         bool,
         0xADCDE75E1C60F32D,
-        native_parameters!(x, y, z, range, p4, p5, p6, p7, p8, p9, p10)
+        native_parameters!(
+            x,
+            y,
+            z,
+            range,
+            p4,
+            checkVehicles,
+            checkPeds,
+            p7,
+            p8,
+            ignoreEntity,
+            p10
+        )
     );
 
     value
@@ -847,7 +897,7 @@ pub fn clear_area(
     value
 }
 
-pub fn _clear_area_of_everything(
+pub fn clear_area_leave_vehicle_health(
     x: f32,
     y: f32,
     z: f32,
@@ -888,13 +938,13 @@ pub fn clear_area_of_vehicles(
 }
 
 pub fn clear_angled_area_of_vehicles(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
     p7: bool,
     p8: bool,
     p9: bool,
@@ -905,7 +955,7 @@ pub fn clear_angled_area_of_vehicles(
     let value = native!(
         (),
         0x11DB3500F042A8AA,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12)
+        native_parameters!(x1, y1, z1, x2, y2, z2, width, p7, p8, p9, p10, p11, p12)
     );
 
     value
@@ -1235,8 +1285,8 @@ pub fn _0x72de52178c291cb5() -> u32 {
     value
 }
 
-pub fn _0x44a0bdc559b35f6e() -> u32 {
-    let value = native!(u32, 0x44A0BDC559B35F6E, native_parameters!());
+pub fn _0x44a0bdc559b35f6e() -> bool {
+    let value = native!(bool, 0x44A0BDC559B35F6E, native_parameters!());
 
     value
 }
@@ -1360,6 +1410,7 @@ pub fn shoot_single_bullet_between_coords_ignore_entity_new(
     p17: bool,
     p18: u32,
     p19: u32,
+    p20: u32,
 ) -> () {
     let value = native!(
         (),
@@ -1384,7 +1435,8 @@ pub fn shoot_single_bullet_between_coords_ignore_entity_new(
             p16,
             p17,
             p18,
-            p19
+            p19,
+            p20
         )
     );
 
@@ -1548,69 +1600,79 @@ pub fn is_projectile_type_in_area(
     y2: f32,
     z2: f32,
     type_esc: i32,
-    p7: bool,
+    ownedByPlayer: bool,
 ) -> bool {
     let value = native!(
         bool,
         0x2E0DC353342C4A6D,
-        native_parameters!(x1, y1, z1, x2, y2, z2, type_esc, p7)
+        native_parameters!(x1, y1, z1, x2, y2, z2, type_esc, ownedByPlayer)
     );
 
     value
 }
 
 pub fn is_projectile_type_in_angled_area(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
     p7: u32,
-    p8: bool,
+    ownedByPlayer: bool,
 ) -> bool {
     let value = native!(
         bool,
         0xF0BC12401061DEA0,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8)
+        native_parameters!(x1, y1, z1, x2, y2, z2, width, p7, ownedByPlayer)
     );
 
     value
 }
 
 pub fn is_projectile_type_within_distance(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: u32,
-    p4: f32,
-    p5: bool,
+    x: f32,
+    y: f32,
+    z: f32,
+    projectileHash: u32,
+    radius: f32,
+    ownedByPlayer: bool,
 ) -> bool {
     let value = native!(
         bool,
         0x34318593248C8FB2,
-        native_parameters!(p0, p1, p2, p3, p4, p5)
+        native_parameters!(x, y, z, projectileHash, radius, ownedByPlayer)
     );
 
     value
 }
 
 pub fn get_coords_of_projectile_type_in_area(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
-    p4: u32,
-    p5: u32,
-    p6: u32,
-    p7: u32,
-    p8: u32,
-) -> NativeVector3 {
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    projectileHash: u32,
+    projectilePos: *mut NativeVector3,
+    ownedByPlayer: bool,
+) -> bool {
     let value = native!(
-        NativeVector3,
+        bool,
         0x8D7A43EC6A5FEA45,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8)
+        native_parameters!(
+            x1,
+            y1,
+            z1,
+            x2,
+            y2,
+            z2,
+            projectileHash,
+            projectilePos,
+            ownedByPlayer
+        )
     );
 
     value
@@ -1621,12 +1683,12 @@ pub fn get_coords_of_projectile_type_within_distance(
     weaponHash: u32,
     radius: f32,
     entity: *mut i32,
-    p4: bool,
+    ownedByPlayer: bool,
 ) -> NativeVector3 {
     let value = native!(
         NativeVector3,
         0xDFB4138EEFED7B81,
-        native_parameters!(ped, weaponHash, radius, entity, p4)
+        native_parameters!(ped, weaponHash, radius, entity, ownedByPlayer)
     );
 
     value
@@ -1650,39 +1712,47 @@ pub fn _get_projectile_near_ped(
 }
 
 pub fn is_bullet_in_angled_area(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: bool,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
+    ownedByPlayer: bool,
 ) -> bool {
     let value = native!(
         bool,
         0x1A8B5F3C01E2B477,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7)
+        native_parameters!(x1, y1, z1, x2, y2, z2, width, ownedByPlayer)
     );
 
     value
 }
 
-pub fn is_bullet_in_area(p0: f32, p1: f32, p2: f32, p3: f32, p4: bool) -> bool {
+pub fn is_bullet_in_area(x: f32, y: f32, z: f32, radius: f32, ownedByPlayer: bool) -> bool {
     let value = native!(
         bool,
         0x3F2023999AD51C1F,
-        native_parameters!(p0, p1, p2, p3, p4)
+        native_parameters!(x, y, z, radius, ownedByPlayer)
     );
 
     value
 }
 
-pub fn is_bullet_in_box(p0: f32, p1: f32, p2: f32, p3: f32, p4: f32, p5: f32, p6: bool) -> bool {
+pub fn is_bullet_in_box(
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    ownedByPlayer: bool,
+) -> bool {
     let value = native!(
         bool,
         0xDE0F6D7450D37351,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6)
+        native_parameters!(x1, y1, z1, x2, y2, z2, ownedByPlayer)
     );
 
     value
@@ -1804,30 +1874,30 @@ pub fn get_bits_in_range(var: i32, rangeStart: i32, rangeEnd: i32) -> i32 {
 }
 
 pub fn add_stunt_jump(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
-    p8: f32,
-    p9: f32,
-    p10: f32,
-    p11: f32,
-    p12: f32,
-    p13: f32,
-    p14: f32,
-    p15: u32,
-    p16: u32,
-    p17: u32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    x3: f32,
+    y3: f32,
+    z3: f32,
+    x4: f32,
+    y4: f32,
+    z4: f32,
+    camX: f32,
+    camY: f32,
+    camZ: f32,
+    p15: i32,
+    p16: i32,
+    p17: i32,
 ) -> i32 {
     let value = native!(
         i32,
         0x1A992DA297A4630C,
         native_parameters!(
-            p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17
+            x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, camX, camY, camZ, p15, p16, p17
         )
     );
 
@@ -1835,33 +1905,33 @@ pub fn add_stunt_jump(
 }
 
 pub fn add_stunt_jump_angled(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
-    p8: f32,
-    p9: f32,
-    p10: f32,
-    p11: f32,
-    p12: f32,
-    p13: f32,
-    p14: f32,
-    p15: f32,
-    p16: f32,
-    p17: u32,
-    p18: u32,
-    p19: u32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    radius1: f32,
+    x3: f32,
+    y3: f32,
+    z3: f32,
+    x4: f32,
+    y4: f32,
+    z4: f32,
+    radius2: f32,
+    camX: f32,
+    camY: f32,
+    camZ: f32,
+    p17: i32,
+    p18: i32,
+    p19: i32,
 ) -> i32 {
     let value = native!(
         i32,
         0xBBE5D803A5360CBF,
         native_parameters!(
-            p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18,
-            p19
+            x1, y1, z1, x2, y2, z2, radius1, x3, y3, z3, x4, y4, z4, radius2, camX, camY, camZ,
+            p17, p18, p19
         )
     );
 
@@ -2012,7 +2082,7 @@ pub fn stop_save_data() -> () {
     value
 }
 
-pub fn _0xa09f896ce912481f(p0: bool) -> i32 {
+pub fn get_size_of_save_data(p0: bool) -> i32 {
     let value = native!(i32, 0xA09F896CE912481F, native_parameters!(p0));
 
     value
@@ -2325,19 +2395,19 @@ pub fn _is_pop_multiplier_area_unk(id: i32) -> bool {
 }
 
 pub fn add_pop_multiplier_sphere(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
+    x: f32,
+    y: f32,
+    z: f32,
+    radius: f32,
+    pedMultiplier: f32,
+    vehicleMultiplier: f32,
     p6: bool,
     p7: bool,
 ) -> i32 {
     let value = native!(
         i32,
         0x32C7A7E8C43A1F80,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7)
+        native_parameters!(x, y, z, radius, pedMultiplier, vehicleMultiplier, p6, p7)
     );
 
     value
@@ -2465,25 +2535,25 @@ pub fn set_dispatch_time_between_spawn_attempts_multiplier(p0: u32, p1: f32) -> 
 }
 
 pub fn _add_dispatch_spawn_blocking_angled_area(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
 ) -> u32 {
     let value = native!(
         u32,
         0x918C7B2D2FF3928B,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6)
+        native_parameters!(x1, y1, z1, x2, y2, z2, width)
     );
 
     value
 }
 
-pub fn _add_dispatch_spawn_blocking_area(p0: f32, p1: f32, p2: f32, p3: f32) -> u32 {
-    let value = native!(u32, 0x2D4259F1FEB81DA9, native_parameters!(p0, p1, p2, p3));
+pub fn _add_dispatch_spawn_blocking_area(x1: f32, y1: f32, x2: f32, y2: f32) -> u32 {
+    let value = native!(u32, 0x2D4259F1FEB81DA9, native_parameters!(x1, y1, x2, y2));
 
     value
 }
@@ -2512,8 +2582,8 @@ pub fn _0xe532ec1a63231b4f(p0: i32, p1: i32) -> () {
     value
 }
 
-pub fn _add_tactical_analysis_point(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0xB8721407EE9C3FF6, native_parameters!(p0, p1, p2));
+pub fn _add_tactical_analysis_point(x: f32, y: f32, z: f32) -> () {
+    let value = native!((), 0xB8721407EE9C3FF6, native_parameters!(x, y, z));
 
     value
 }
@@ -2524,8 +2594,8 @@ pub fn _clear_tactical_analysis_points() -> () {
     value
 }
 
-pub fn _0x2587a48bc88dfadf(p0: bool) -> () {
-    let value = native!((), 0x2587A48BC88DFADF, native_parameters!(p0));
+pub fn set_riot_mode_enabled(toggle: bool) -> () {
+    let value = native!((), 0x2587A48BC88DFADF, native_parameters!(toggle));
 
     value
 }
@@ -2613,7 +2683,7 @@ pub fn _cancel_onscreen_keyboard() -> () {
     value
 }
 
-pub fn _0x3ed1438c1f5c6612(p0: i32) -> () {
+pub fn next_onscreen_keyboard_result_will_display_using_these_fonts(p0: i32) -> () {
     let value = native!((), 0x3ED1438C1F5C6612, native_parameters!(p0));
 
     value
@@ -2655,14 +2725,14 @@ pub fn set_super_jump_this_frame(player: i32) -> () {
     value
 }
 
-pub fn _0x438822c279b73b93(p0: u32) -> () {
-    let value = native!((), 0x438822C279B73B93, native_parameters!(p0));
+pub fn _set_beast_mode_active(player: i32) -> () {
+    let value = native!((), 0x438822C279B73B93, native_parameters!(player));
 
     value
 }
 
-pub fn _0xa1183bcfee0f93d1(p0: u32) -> () {
-    let value = native!((), 0xA1183BCFEE0F93D1, native_parameters!(p0));
+pub fn _set_force_player_to_jump(player: i32) -> () {
+    let value = native!((), 0xA1183BCFEE0F93D1, native_parameters!(player));
 
     value
 }

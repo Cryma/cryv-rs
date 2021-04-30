@@ -65,14 +65,3 @@ pub fn on_enter_mp() -> () {
 
     value
 }
-
-pub fn load_cayo_perico(name: &std::ffi::CString, load: bool) -> () {
-    let value = native!(
-        (),
-        0x9A9D1BA639675CF1,
-        native_parameters!(name.as_ptr(), load)
-    );
-    let _ = native!((), 0x5E1460624D194A38, native_parameters!(load));
-
-    value
-}

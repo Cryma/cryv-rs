@@ -49,11 +49,11 @@ pub fn _get_weapon_component_variant_extra_component_model(
     value
 }
 
-pub fn set_current_ped_weapon(ped: i32, weaponHash: u32, equipNow: bool) -> () {
+pub fn set_current_ped_weapon(ped: i32, weaponHash: u32, bForceInHand: bool) -> () {
     let value = native!(
         (),
         0xADF692B254977C0C,
-        native_parameters!(ped, weaponHash, equipNow)
+        native_parameters!(ped, weaponHash, bForceInHand)
     );
 
     value
@@ -107,8 +107,8 @@ pub fn _0x50276ef8172f5f12(ped: i32) -> () {
     value
 }
 
-pub fn is_ped_armed(ped: i32, p1: i32) -> bool {
-    let value = native!(bool, 0x475768A975D5AD17, native_parameters!(ped, p1));
+pub fn is_ped_armed(ped: i32, typeFlags: i32) -> bool {
+    let value = native!(bool, 0x475768A975D5AD17, native_parameters!(ped, typeFlags));
 
     value
 }
@@ -194,22 +194,27 @@ pub fn give_weapon_to_ped(
     weaponHash: u32,
     ammoCount: i32,
     isHidden: bool,
-    equipNow: bool,
+    bForceInHand: bool,
 ) -> () {
     let value = native!(
         (),
         0xBF0FD6E56C964FCB,
-        native_parameters!(ped, weaponHash, ammoCount, isHidden, equipNow)
+        native_parameters!(ped, weaponHash, ammoCount, isHidden, bForceInHand)
     );
 
     value
 }
 
-pub fn give_delayed_weapon_to_ped(ped: i32, weaponHash: u32, ammoCount: i32, equipNow: bool) -> () {
+pub fn give_delayed_weapon_to_ped(
+    ped: i32,
+    weaponHash: u32,
+    ammoCount: i32,
+    bForceInHand: bool,
+) -> () {
     let value = native!(
         (),
         0xB282DC6EBD803C75,
-        native_parameters!(ped, weaponHash, ammoCount, equipNow)
+        native_parameters!(ped, weaponHash, ammoCount, bForceInHand)
     );
 
     value
@@ -396,7 +401,7 @@ pub fn set_ped_ammo_to_drop(ped: i32, p1: i32) -> () {
     value
 }
 
-pub fn _0xe620fd3512a04f18(p0: f32) -> () {
+pub fn set_pickup_ammo_amount_scaler(p0: f32) -> () {
     let value = native!((), 0xE620FD3512A04F18, native_parameters!(p0));
 
     value
@@ -456,8 +461,12 @@ pub fn explode_projectiles(ped: i32, weaponHash: u32, p2: bool) -> () {
     value
 }
 
-pub fn remove_all_projectiles_of_type(weaponHash: u32, p1: bool) -> () {
-    let value = native!((), 0xFC52E0F37E446528, native_parameters!(weaponHash, p1));
+pub fn remove_all_projectiles_of_type(weaponHash: u32, explode: bool) -> () {
+    let value = native!(
+        (),
+        0xFC52E0F37E446528,
+        native_parameters!(weaponHash, explode)
+    );
 
     value
 }
@@ -529,7 +538,7 @@ pub fn is_ped_weapon_component_active(ped: i32, weaponHash: u32, componentHash: 
     value
 }
 
-pub fn _ped_skip_next_reloading(ped: i32) -> bool {
+pub fn refill_ammo_instantly(ped: i32) -> bool {
     let value = native!(bool, 0x8C0D57EA686FAD87, native_parameters!(ped));
 
     value
@@ -570,7 +579,7 @@ pub fn create_weapon_object(
     y: f32,
     z: f32,
     showWorldModel: bool,
-    heading: f32,
+    scale: f32,
     p7: u32,
     p8: u32,
     p9: u32,
@@ -585,7 +594,7 @@ pub fn create_weapon_object(
             y,
             z,
             showWorldModel,
-            heading,
+            scale,
             p7,
             p8,
             p9
@@ -816,11 +825,11 @@ pub fn request_weapon_high_detail_model(weaponObject: i32) -> () {
     value
 }
 
-pub fn _set_weapon_damage_modifier(weaponHash: u32, damageAmount: f32) -> () {
+pub fn _set_weapon_damage_modifier_this_frame(weaponHash: u32, damageMultiplier: f32) -> () {
     let value = native!(
         (),
         0x4757F00BC6323CFE,
-        native_parameters!(weaponHash, damageAmount)
+        native_parameters!(weaponHash, damageMultiplier)
     );
 
     value
@@ -844,8 +853,8 @@ pub fn set_flash_light_fade_distance(distance: f32) -> u32 {
     value
 }
 
-pub fn _0x988db6fe9b3ac000(ped: i32, p1: bool) -> () {
-    let value = native!((), 0x988DB6FE9B3AC000, native_parameters!(ped, p1));
+pub fn _set_flash_light_enabled(ped: i32, toggle: bool) -> () {
+    let value = native!((), 0x988DB6FE9B3AC000, native_parameters!(ped, toggle));
 
     value
 }
@@ -875,9 +884,9 @@ pub fn can_use_weapon_on_parachute(weaponHash: u32) -> bool {
 }
 
 pub fn _create_air_defense_sphere(
-    p0: f32,
-    p1: f32,
-    p2: f32,
+    x: f32,
+    y: f32,
+    z: f32,
     radius: f32,
     p4: f32,
     p5: f32,
@@ -887,7 +896,7 @@ pub fn _create_air_defense_sphere(
     let value = native!(
         i32,
         0x91EF34584710BE99,
-        native_parameters!(p0, p1, p2, radius, p4, p5, p6, weaponHash)
+        native_parameters!(x, y, z, radius, p4, p5, p6, weaponHash)
     );
 
     value

@@ -73,8 +73,8 @@ pub fn network_has_social_club_account() -> bool {
     value
 }
 
-pub fn _0xba9775570db788cf() -> u32 {
-    let value = native!(u32, 0xBA9775570DB788CF, native_parameters!());
+pub fn network_are_social_club_policies_current() -> bool {
+    let value = native!(bool, 0xBA9775570DB788CF, native_parameters!());
 
     value
 }
@@ -103,14 +103,14 @@ pub fn _network_has_age_restricted_profile() -> bool {
     value
 }
 
-pub fn network_have_user_content_privileges(p0: u32) -> bool {
+pub fn network_have_user_content_privileges(p0: i32) -> bool {
     let value = native!(bool, 0x72D918C99BCACC54, native_parameters!(p0));
 
     value
 }
 
-pub fn _0xaeef48cdf5b6ce7c(p0: u32, p1: u32) -> bool {
-    let value = native!(bool, 0xAEEF48CDF5B6CE7C, native_parameters!(p0, p1));
+pub fn network_have_communication_privileges(p0: i32, player: i32) -> bool {
+    let value = native!(bool, 0xAEEF48CDF5B6CE7C, native_parameters!(p0, player));
 
     value
 }
@@ -121,13 +121,13 @@ pub fn _0x78321bea235fd8cd(p0: u32, p1: bool) -> bool {
     value
 }
 
-pub fn _0x595f028698072dd9(p0: u32, p1: u32, p2: bool) -> bool {
+pub fn network_check_user_content_privileges(p0: i32, p1: i32, p2: bool) -> bool {
     let value = native!(bool, 0x595F028698072DD9, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0x83f28ce49fbbffba(p0: u32, p1: u32, p2: bool) -> bool {
+pub fn network_check_communication_privileges(p0: i32, p1: i32, p2: bool) -> bool {
     let value = native!(bool, 0x83F28CE49FBBFFBA, native_parameters!(p0, p1, p2));
 
     value
@@ -151,8 +151,8 @@ pub fn _0x023acab2dc9dc4a4() -> u32 {
     value
 }
 
-pub fn _0x76bf03fadbf154f5() -> u32 {
-    let value = native!(u32, 0x76BF03FADBF154F5, native_parameters!());
+pub fn network_has_social_networking_sharing_priv() -> bool {
+    let value = native!(bool, 0x76BF03FADBF154F5, native_parameters!());
 
     value
 }
@@ -519,7 +519,7 @@ pub fn _network_get_targeting_mode() -> i32 {
     value
 }
 
-pub fn _0xe532d6811b3a4d2a(p0: u32) -> bool {
+pub fn network_find_gamers_in_crew(p0: u32) -> bool {
     let value = native!(bool, 0xE532D6811B3A4D2A, native_parameters!(p0));
 
     value
@@ -884,19 +884,19 @@ pub fn network_is_activity_spectator_from_handle(networkHandle: *mut i32) -> boo
 }
 
 pub fn network_host_transition(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
+    p0: i32,
+    p1: i32,
+    p2: i32,
+    p3: i32,
     p4: u32,
-    p5: u32,
-    p6: u32,
-    p7: u32,
+    p5: bool,
+    p6: bool,
+    p7: i32,
     p8: u32,
-    p9: u32,
-) -> u32 {
+    p9: i32,
+) -> bool {
     let value = native!(
-        u32,
+        bool,
         0xA60BB5CE242BB254,
         native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9)
     );
@@ -1330,7 +1330,7 @@ pub fn _0x4a9fde3a5a6d0437(toggle: bool) -> () {
     value
 }
 
-pub fn _network_send_presence_invite(
+pub fn network_send_invite_via_presence(
     networkHandle: *mut i32,
     p1: *mut u32,
     p2: u32,
@@ -1630,8 +1630,8 @@ pub fn _0x25d990f8e0e3f13c() -> () {
     value
 }
 
-pub fn _0xf1b84178f8674195(p0: u32) -> () {
-    let value = native!((), 0xF1B84178F8674195, native_parameters!(p0));
+pub fn network_seed_random_number_generator(seed: i32) -> () {
+    let value = native!((), 0xF1B84178F8674195, native_parameters!(seed));
 
     value
 }
@@ -1788,7 +1788,7 @@ pub fn network_finish_broadcasting_data() -> () {
     value
 }
 
-pub fn _0x5d10b3795f3fc886() -> bool {
+pub fn network_has_received_host_broadcast_data() -> bool {
     let value = native!(bool, 0x5D10B3795F3FC886, native_parameters!());
 
     value
@@ -1891,6 +1891,16 @@ pub fn network_is_script_active(
     value
 }
 
+pub fn network_is_script_active_by_hash(scriptHash: u32, p1: i32, p2: bool, p3: i32) -> bool {
+    let value = native!(
+        bool,
+        0xDA7DE67F5FE5EE13,
+        native_parameters!(scriptHash, p1, p2, p3)
+    );
+
+    value
+}
+
 pub fn _0x560b423d73015e77(p0: u32) -> u32 {
     let value = native!(u32, 0x560B423D73015E77, native_parameters!(p0));
 
@@ -1909,8 +1919,16 @@ pub fn _0x638a3a81733086db() -> u32 {
     value
 }
 
-pub fn network_is_player_a_participant_on_script(p0: i32, p1: *mut u32, p2: u32) -> bool {
-    let value = native!(bool, 0x1AD5B71586B94820, native_parameters!(p0, p1, p2));
+pub fn network_is_player_a_participant_on_script(
+    player1: i32,
+    script: &std::ffi::CString,
+    player2: i32,
+) -> bool {
+    let value = native!(
+        bool,
+        0x1AD5B71586B94820,
+        native_parameters!(player1, script.as_ptr(), player2)
+    );
 
     value
 }
@@ -2029,7 +2047,7 @@ pub fn network_set_local_player_sync_look_at(toggle: bool) -> () {
     value
 }
 
-pub fn _0xb07d3185e11657a5(entity: i32) -> bool {
+pub fn network_has_entity_been_registered_with_this_thread(entity: i32) -> bool {
     let value = native!(bool, 0xB07D3185E11657A5, native_parameters!(entity));
 
     value
@@ -2288,8 +2306,8 @@ pub fn _0xd66c9e72b3cc4982(p0: *mut u32, p1: u32) -> i32 {
     value
 }
 
-pub fn _0x58cc181719256197(p0: u32, p1: u32, p2: u32) -> u32 {
-    let value = native!(u32, 0x58CC181719256197, native_parameters!(p0, p1, p2));
+pub fn network_get_displaynames_from_handles(p0: u32, p1: u32, p2: u32) -> i32 {
+    let value = native!(i32, 0x58CC181719256197, native_parameters!(p0, p1, p2));
 
     value
 }
@@ -2379,8 +2397,8 @@ pub fn _network_get_entity_net_script_id(entity: i32) -> i32 {
     value
 }
 
-pub fn _0x37d5f739fd494675(p0: u32) -> u32 {
-    let value = native!(u32, 0x37D5F739FD494675, native_parameters!(p0));
+pub fn _0x37d5f739fd494675(p0: u32) -> i32 {
+    let value = native!(i32, 0x37D5F739FD494675, native_parameters!(p0));
 
     value
 }
@@ -3121,12 +3139,18 @@ pub fn set_network_id_exists_on_all_machines(netId: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _set_network_id_sync_to_player(netId: i32, player: i32, toggle: bool) -> () {
+pub fn set_network_id_always_exists_for_player(netId: i32, player: i32, toggle: bool) -> () {
     let value = native!(
         (),
         0xA8A024587329F36A,
         native_parameters!(netId, player, toggle)
     );
+
+    value
+}
+
+pub fn _0x9d724b400a7e8ffc(p0: u32, p1: u32) -> () {
+    let value = native!((), 0x9D724B400A7E8FFC, native_parameters!(p0, p1));
 
     value
 }
@@ -3157,6 +3181,12 @@ pub fn set_network_id_visible_in_cutscene(netId: i32, p1: bool, p2: bool) -> () 
 
 pub fn _0x32ebd154cb6b8b99(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0x32EBD154CB6B8B99, native_parameters!(p0, p1, p2));
+
+    value
+}
+
+pub fn _0x76b3f29d3f967692(p0: u32, p1: u32) -> () {
+    let value = native!((), 0x76B3F29D3F967692, native_parameters!(p0, p1));
 
     value
 }
@@ -3329,20 +3359,20 @@ pub fn reserve_network_mission_vehicles(amount: i32) -> () {
     value
 }
 
-pub fn _reserve_network_local_objects(p0: u32) -> () {
-    let value = native!((), 0x797F9C5E661D920E, native_parameters!(p0));
+pub fn _reserve_network_local_objects(amount: i32) -> () {
+    let value = native!((), 0x797F9C5E661D920E, native_parameters!(amount));
 
     value
 }
 
-pub fn _reserve_network_local_peds(p0: u32) -> () {
-    let value = native!((), 0x2C8DF5D129595281, native_parameters!(p0));
+pub fn _reserve_network_local_peds(amount: i32) -> () {
+    let value = native!((), 0x2C8DF5D129595281, native_parameters!(amount));
 
     value
 }
 
-pub fn _reserve_network_local_vehicles(p0: u32) -> () {
-    let value = native!((), 0x42613035157E4208, native_parameters!(p0));
+pub fn _reserve_network_local_vehicles(amount: i32) -> () {
+    let value = native!((), 0x42613035157E4208, native_parameters!(amount));
 
     value
 }
@@ -3468,6 +3498,12 @@ pub fn _0xba7f0b77d80a4eb7(p0: u32, p1: u32) -> () {
     value
 }
 
+pub fn _0x0f1a4b45b7693b95(p0: u32, p1: u32) -> () {
+    let value = native!((), 0x0F1A4B45B7693B95, native_parameters!(p0, p1));
+
+    value
+}
+
 pub fn get_network_time() -> i32 {
     let value = native!(i32, 0x7A5487FE9FAA6B48, native_parameters!());
 
@@ -3523,9 +3559,10 @@ pub fn get_time_as_string(time: i32) -> String {
     value
 }
 
-pub fn _0xf12e6cd06c73d69e() -> u32 {
-    let value = native!(u32, 0xF12E6CD06C73D69E, native_parameters!());
-
+pub fn _get_cloud_time_as_string() -> String {
+    let value = native!(*const i8, 0xF12E6CD06C73D69E, native_parameters!());
+    let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
+    let value = cstr.to_str().unwrap().to_string();
     value
 }
 
@@ -3535,11 +3572,11 @@ pub fn get_cloud_time_as_int() -> i32 {
     value
 }
 
-pub fn _get_date_and_time_from_unix_epoch(unixEpoch: i32, timeStructure: *mut u32) -> () {
+pub fn convert_posix_time(posixTime: i32, timeStructure: *mut u32) -> () {
     let value = native!(
         (),
         0xAC97AF97FA68E5D5,
-        native_parameters!(unixEpoch, timeStructure)
+        native_parameters!(posixTime, timeStructure)
     );
 
     value
@@ -3571,7 +3608,7 @@ pub fn network_set_in_free_cam_mode(toggle: bool) -> () {
     value
 }
 
-pub fn _0x5c707a667df8b9fa(toggle: bool, player: i32) -> () {
+pub fn network_set_choice_migrate_options(toggle: bool, player: i32) -> () {
     let value = native!((), 0x5C707A667DF8B9FA, native_parameters!(toggle, player));
 
     value
@@ -3635,13 +3672,13 @@ pub fn _0x838da0936a24ed4d(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn use_player_colour_instead_of_team_colour(toggle: bool, p1: bool) -> () {
+pub fn _set_local_player_as_ghost(toggle: bool, p1: bool) -> () {
     let value = native!((), 0x5FFE9B4144F9712F, native_parameters!(toggle, p1));
 
     value
 }
 
-pub fn _0x21d04d7bc538c146(entity: i32) -> bool {
+pub fn _is_entity_ghosted_to_local_player(entity: i32) -> bool {
     let value = native!(bool, 0x21D04D7BC538C146, native_parameters!(entity));
 
     value
@@ -3653,26 +3690,26 @@ pub fn _0x13f1fcb111b820b0(p0: bool) -> () {
     value
 }
 
-pub fn _0xa7c511fa1c5bda38(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xA7C511FA1C5BDA38, native_parameters!(p0, p1));
+pub fn _set_relationship_to_player(player: i32, p1: bool) -> () {
+    let value = native!((), 0xA7C511FA1C5BDA38, native_parameters!(player, p1));
 
     value
 }
 
-pub fn _0x658500ae6d723a7e(p0: u32) -> () {
-    let value = native!((), 0x658500AE6D723A7E, native_parameters!(p0));
+pub fn _set_ghosted_entity_alpha(alpha: i32) -> () {
+    let value = native!((), 0x658500AE6D723A7E, native_parameters!(alpha));
 
     value
 }
 
-pub fn _0x17330ebf2f2124a8() -> () {
+pub fn _reset_ghosted_entity_alpha() -> () {
     let value = native!((), 0x17330EBF2F2124A8, native_parameters!());
 
     value
 }
 
-pub fn _0x4ba166079d658ed4(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x4BA166079D658ED4, native_parameters!(p0, p1));
+pub fn _network_set_entity_ghosted_with_owner(entity: i32, p1: bool) -> () {
+    let value = native!((), 0x4BA166079D658ED4, native_parameters!(entity, p1));
 
     value
 }
@@ -3689,8 +3726,8 @@ pub fn _0x7ef7649b64d7ff10(entity: i32) -> bool {
     value
 }
 
-pub fn _0x77758139ec9b66c7(p0: bool) -> () {
-    let value = native!((), 0x77758139EC9B66C7, native_parameters!(p0));
+pub fn use_player_colour_instead_of_team_colour(toggle: bool) -> () {
+    let value = native!((), 0x77758139EC9B66C7, native_parameters!(toggle));
 
     value
 }
@@ -3702,17 +3739,30 @@ pub fn network_create_synchronised_scene(
     xRot: f32,
     yRot: f32,
     zRot: f32,
-    p6: i32,
-    p7: bool,
-    p8: bool,
+    rotationOrder: i32,
+    useOcclusionPortal: bool,
+    looped: bool,
     p9: f32,
-    p10: f32,
+    animTime: f32,
     p11: f32,
 ) -> i32 {
     let value = native!(
         i32,
         0x7CD6BC4C2BBDD526,
-        native_parameters!(x, y, z, xRot, yRot, zRot, p6, p7, p8, p9, p10, p11)
+        native_parameters!(
+            x,
+            y,
+            z,
+            xRot,
+            yRot,
+            zRot,
+            rotationOrder,
+            useOcclusionPortal,
+            looped,
+            p9,
+            animTime,
+            p11
+        )
     );
 
     value
@@ -3880,10 +3930,10 @@ pub fn _0xfb1f9381e80fa13f(p0: i32, p1: u32) -> u32 {
 
 pub fn network_start_respawn_search_for_player(
     player: i32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
+    x: f32,
+    y: f32,
+    z: f32,
+    radius: f32,
     p5: f32,
     p6: f32,
     p7: f32,
@@ -3892,7 +3942,7 @@ pub fn network_start_respawn_search_for_player(
     let value = native!(
         bool,
         0x5A6FFA2433E2F14C,
-        native_parameters!(player, p1, p2, p3, p4, p5, p6, p7, flags)
+        native_parameters!(player, x, y, z, radius, p5, p6, p7, flags)
     );
 
     value
@@ -3900,13 +3950,13 @@ pub fn network_start_respawn_search_for_player(
 
 pub fn network_start_respawn_search_in_angled_area_for_player(
     player: i32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
     p8: f32,
     p9: f32,
     p10: f32,
@@ -3915,7 +3965,7 @@ pub fn network_start_respawn_search_in_angled_area_for_player(
     let value = native!(
         bool,
         0x4BA92A18502BCA61,
-        native_parameters!(player, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, flags)
+        native_parameters!(player, x1, y1, z1, x2, y2, z2, width, p8, p9, p10, flags)
     );
 
     value
@@ -4029,12 +4079,18 @@ pub fn _network_is_entity_concealed(entity: i32) -> bool {
     value
 }
 
-pub fn network_override_clock_time(Hours: i32, Minutes: i32, Seconds: i32) -> () {
+pub fn network_override_clock_time(hours: i32, minutes: i32, seconds: i32) -> () {
     let value = native!(
         (),
         0xE679E3E06E363892,
-        native_parameters!(Hours, Minutes, Seconds)
+        native_parameters!(hours, minutes, seconds)
     );
+
+    value
+}
+
+pub fn _network_override_clock_milliseconds_per_game_minute(ms: i32) -> () {
+    let value = native!((), 0x42BF1D2E723B6D7E, native_parameters!(ms));
 
     value
 }
@@ -4062,18 +4118,18 @@ pub fn network_add_entity_area(p0: f32, p1: f32, p2: f32, p3: f32, p4: f32, p5: 
 }
 
 pub fn network_add_entity_angled_area(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
 ) -> u32 {
     let value = native!(
         u32,
         0x376C6375BA60293A,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6)
+        native_parameters!(x1, y1, z1, x2, y2, z2, width)
     );
 
     value
@@ -4112,8 +4168,8 @@ pub fn network_remove_entity_area(p0: u32) -> bool {
     value
 }
 
-pub fn network_entity_area_does_exist(p0: u32) -> bool {
-    let value = native!(bool, 0xE64A3CA08DFA37A9, native_parameters!(p0));
+pub fn network_entity_area_does_exist(areaHandle: i32) -> bool {
+    let value = native!(bool, 0xE64A3CA08DFA37A9, native_parameters!(areaHandle));
 
     value
 }
@@ -4124,8 +4180,8 @@ pub fn _0x4df7cfff471a7fb1(p0: u32) -> bool {
     value
 }
 
-pub fn network_entity_area_is_occupied(p0: u32) -> bool {
-    let value = native!(bool, 0x4A2D4E8BF4265B0F, native_parameters!(p0));
+pub fn network_entity_area_is_occupied(areaHandle: i32) -> bool {
+    let value = native!(bool, 0x4A2D4E8BF4265B0F, native_parameters!(areaHandle));
 
     value
 }
@@ -4154,7 +4210,7 @@ pub fn network_request_cloud_background_scripts() -> bool {
     value
 }
 
-pub fn _network_is_cloud_background_scripts_request_pending() -> bool {
+pub fn network_is_cloud_background_script_request_pending() -> bool {
     let value = native!(bool, 0x8132C0EB8B2B3293, native_parameters!());
 
     value
@@ -4378,8 +4434,8 @@ pub fn _0x0ede326d47cd0f3e(ped: i32, player: i32) -> bool {
     value
 }
 
-pub fn _network_set_vehicle_wheels_destructible(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x890E2C5ABED7236D, native_parameters!(p0, p1));
+pub fn _network_set_vehicle_wheels_destructible(entity: i32, toggle: bool) -> () {
+    let value = native!((), 0x890E2C5ABED7236D, native_parameters!(entity, toggle));
 
     value
 }
@@ -4418,11 +4474,17 @@ pub fn _0xcd71a4ecab22709e(entity: i32) -> () {
     value
 }
 
-pub fn network_override_coords_and_heading(ped: i32, x: f32, y: f32, z: f32, heading: f32) -> () {
+pub fn network_override_coords_and_heading(
+    entity: i32,
+    x: f32,
+    y: f32,
+    z: f32,
+    heading: f32,
+) -> () {
     let value = native!(
         (),
         0xA7E30DE9272B6D49,
-        native_parameters!(ped, x, y, z, heading)
+        native_parameters!(entity, x, y, z, heading)
     );
 
     value
@@ -4633,14 +4695,14 @@ pub fn cloud_delete_member_file(p0: &std::ffi::CString) -> i32 {
     value
 }
 
-pub fn cloud_has_request_completed(id: i32) -> bool {
-    let value = native!(bool, 0x4C61B39930D045DA, native_parameters!(id));
+pub fn cloud_has_request_completed(handle: i32) -> bool {
+    let value = native!(bool, 0x4C61B39930D045DA, native_parameters!(handle));
 
     value
 }
 
-pub fn cloud_did_request_succeed(id: i32) -> bool {
-    let value = native!(bool, 0x3A3D5568AF297CD5, native_parameters!(id));
+pub fn cloud_did_request_succeed(handle: i32) -> bool {
+    let value = native!(bool, 0x3A3D5568AF297CD5, native_parameters!(handle));
 
     value
 }
@@ -4894,7 +4956,7 @@ pub fn ugc_has_get_finished() -> bool {
     value
 }
 
-pub fn _0x941e5306bcd7c2c7() -> u32 {
+pub fn ugc_did_get_succeed() -> u32 {
     let value = native!(u32, 0x941E5306BCD7C2C7, native_parameters!());
 
     value
@@ -5252,7 +5314,7 @@ pub fn ugc_clear_offline_query() -> () {
     value
 }
 
-pub fn _0xf98dde0a8ed09323(p0: bool) -> () {
+pub fn ugc_set_query_data_from_offline(p0: bool) -> () {
     let value = native!((), 0xF98DDE0A8ED09323, native_parameters!(p0));
 
     value
@@ -5379,7 +5441,7 @@ pub fn texture_download_get_name(p0: i32) -> String {
     value
 }
 
-pub fn _get_status_of_texture_download(p0: i32) -> i32 {
+pub fn get_status_of_texture_download(p0: i32) -> i32 {
     let value = native!(i32, 0x8BD6C6DEA20E82C6, native_parameters!(p0));
 
     value
@@ -5447,13 +5509,13 @@ pub fn network_has_ros_privilege(index: i32) -> bool {
 
 pub fn network_has_ros_privilege_end_date(
     privilege: i32,
-    type_esc: *mut i32,
-    endData: *mut u32,
+    banType: *mut i32,
+    timeData: *mut u32,
 ) -> bool {
     let value = native!(
         bool,
         0xC22912B1D85F26B1,
-        native_parameters!(privilege, type_esc, endData)
+        native_parameters!(privilege, banType, timeData)
     );
 
     value
@@ -5477,8 +5539,8 @@ pub fn _0x36391f397731595d(p0: u32) -> u32 {
     value
 }
 
-pub fn _0xdeb2b99a1af1a2a6(p0: u32) -> u32 {
-    let value = native!(u32, 0xDEB2B99A1AF1A2A6, native_parameters!(p0));
+pub fn network_start_user_content_permissions_check(netHandle: *mut u32) -> i32 {
+    let value = native!(i32, 0xDEB2B99A1AF1A2A6, native_parameters!(netHandle));
 
     value
 }
@@ -5507,14 +5569,14 @@ pub fn _network_update_player_scars() -> () {
     value
 }
 
-pub fn _0xc505036a35afd01b(toggle: bool) -> () {
+pub fn network_disable_leave_remote_ped_behind(toggle: bool) -> () {
     let value = native!((), 0xC505036A35AFD01B, native_parameters!(toggle));
 
     value
 }
 
-pub fn _0x267c78c60e806b9a(p0: u32, p1: bool) -> () {
-    let value = native!((), 0x267C78C60E806B9A, native_parameters!(p0, p1));
+pub fn _network_allow_local_entity_attachment(entity: i32, toggle: bool) -> () {
+    let value = native!((), 0x267C78C60E806B9A, native_parameters!(entity, toggle));
 
     value
 }
@@ -5573,7 +5635,7 @@ pub fn _network_get_num_unacked_for_player(player: i32) -> i32 {
     value
 }
 
-pub fn _0x3765c3a3e8192e10(player: i32) -> i32 {
+pub fn _network_get_unreliable_resend_count_for_player(player: i32) -> i32 {
     let value = native!(i32, 0x3765C3A3E8192E10, native_parameters!(player));
 
     value

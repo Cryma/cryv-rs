@@ -210,15 +210,15 @@ pub fn _draw_sprite_poly(
     alpha: i32,
     textureDict: &std::ffi::CString,
     textureName: &std::ffi::CString,
-    p15: f32,
-    p16: f32,
-    p17: f32,
-    p18: f32,
-    p19: f32,
-    p20: f32,
-    p21: f32,
-    p22: f32,
-    p23: f32,
+    u1: f32,
+    v1: f32,
+    w1: f32,
+    u2: f32,
+    v2: f32,
+    w2: f32,
+    u3: f32,
+    v3: f32,
+    w3: f32,
 ) -> () {
     let value = native!(
         (),
@@ -239,15 +239,15 @@ pub fn _draw_sprite_poly(
             alpha,
             textureDict.as_ptr(),
             textureName.as_ptr(),
-            p15,
-            p16,
-            p17,
-            p18,
-            p19,
-            p20,
-            p21,
-            p22,
-            p23
+            u1,
+            v1,
+            w1,
+            u2,
+            v2,
+            w2,
+            u3,
+            v3,
+            w3
         )
     );
 
@@ -278,15 +278,15 @@ pub fn _draw_sprite_poly_2(
     alpha3: i32,
     textureDict: &std::ffi::CString,
     textureName: &std::ffi::CString,
-    p23: f32,
-    p24: f32,
-    p25: f32,
-    p26: f32,
-    p27: f32,
-    p28: f32,
-    p29: f32,
-    p30: f32,
-    p31: f32,
+    u1: f32,
+    v1: f32,
+    w1: f32,
+    u2: f32,
+    v2: f32,
+    w2: f32,
+    u3: f32,
+    v3: f32,
+    w3: f32,
 ) -> () {
     let value = native!(
         (),
@@ -315,15 +315,15 @@ pub fn _draw_sprite_poly_2(
             alpha3,
             textureDict.as_ptr(),
             textureName.as_ptr(),
-            p23,
-            p24,
-            p25,
-            p26,
-            p27,
-            p28,
-            p29,
-            p30,
-            p31
+            u1,
+            v1,
+            w1,
+            u2,
+            v2,
+            w2,
+            u3,
+            v3,
+            w3
         )
     );
 
@@ -363,31 +363,31 @@ pub fn _0xc5c8f970d4edff71(p0: u32) -> () {
     value
 }
 
-pub fn _0x1dd2139a9a20dce8() -> u32 {
+pub fn begin_take_mission_creator_photo() -> u32 {
     let value = native!(u32, 0x1DD2139A9A20DCE8, native_parameters!());
 
     value
 }
 
-pub fn _0x90a78ecaa4e78453() -> u32 {
+pub fn get_status_of_take_mission_creator_photo() -> u32 {
     let value = native!(u32, 0x90A78ECAA4E78453, native_parameters!());
 
     value
 }
 
-pub fn _0x0a46af8a78dc5e0a() -> () {
+pub fn free_memory_for_mission_creator_photo() -> () {
     let value = native!((), 0x0A46AF8A78DC5E0A, native_parameters!());
 
     value
 }
 
-pub fn _0x4862437a486f91b0(p0: *mut u32, p1: u32, p2: u32, p3: u32) -> bool {
+pub fn load_mission_creator_photo(p0: *mut u32, p1: u32, p2: u32, p3: u32) -> bool {
     let value = native!(bool, 0x4862437A486F91B0, native_parameters!(p0, p1, p2, p3));
 
     value
 }
 
-pub fn _0x1670f8d05056f257(p0: *mut u32) -> i32 {
+pub fn get_status_of_load_mission_creator_photo(p0: *mut u32) -> i32 {
     let value = native!(i32, 0x1670F8D05056F257, native_parameters!(p0));
 
     value
@@ -423,7 +423,7 @@ pub fn get_status_of_take_high_quality_photo() -> i32 {
     value
 }
 
-pub fn _0xd801cc02177fa3f1() -> () {
+pub fn free_memory_for_high_quality_photo() -> () {
     let value = native!((), 0xD801CC02177FA3F1, native_parameters!());
 
     value
@@ -437,6 +437,12 @@ pub fn _0x1bbc135a4d25edde(p0: bool) -> () {
 
 pub fn _0xf3f776ada161e47d(p0: u32, p1: u32) -> () {
     let value = native!((), 0xF3F776ADA161E47D, native_parameters!(p0, p1));
+
+    value
+}
+
+pub fn _0xadd6627c4d325458(p0: u32) -> () {
+    let value = native!((), 0xADD6627C4D325458, native_parameters!(p0));
 
     value
 }
@@ -465,13 +471,13 @@ pub fn _0xcb82a0bf0e3e3265(p0: u32) -> u32 {
     value
 }
 
-pub fn _0x6a12d88881435dca() -> () {
+pub fn free_memory_for_low_quality_photo() -> () {
     let value = native!((), 0x6A12D88881435DCA, native_parameters!());
 
     value
 }
 
-pub fn _0x1072f115dab0717e(p0: bool, p1: bool) -> () {
+pub fn draw_low_quality_photo_to_phone(p0: bool, p1: bool) -> () {
     let value = native!((), 0x1072F115DAB0717E, native_parameters!(p0, p1));
 
     value
@@ -489,7 +495,7 @@ pub fn get_maximum_number_of_cloud_photos() -> i32 {
     value
 }
 
-pub fn _get_current_number_of_photos() -> i32 {
+pub fn get_current_number_of_cloud_photos() -> i32 {
     let value = native!(i32, 0x473151EBC762C6DA, native_parameters!());
 
     value
@@ -501,7 +507,7 @@ pub fn _0x2a893980e96b659a(p0: u32) -> u32 {
     value
 }
 
-pub fn _0xf5bed327cea362b1(p0: u32) -> u32 {
+pub fn get_status_of_sorted_list_operation(p0: u32) -> u32 {
     let value = native!(u32, 0xF5BED327CEA362B1, native_parameters!(p0));
 
     value
@@ -712,39 +718,63 @@ pub fn draw_marker(
 }
 
 pub fn _draw_marker_2(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
-    p4: u32,
-    p5: u32,
-    p6: u32,
-    p7: u32,
-    p8: u32,
-    p9: u32,
-    p10: u32,
-    p11: u32,
-    p12: u32,
-    p13: u32,
-    p14: u32,
-    p15: u32,
-    p16: u32,
-    p17: u32,
-    p18: u32,
+    type_esc: i32,
+    posX: f32,
+    posY: f32,
+    posZ: f32,
+    dirX: f32,
+    dirY: f32,
+    dirZ: f32,
+    rotX: f32,
+    rotY: f32,
+    rotZ: f32,
+    scaleX: f32,
+    scaleY: f32,
+    scaleZ: f32,
+    red: i32,
+    green: i32,
+    blue: i32,
+    alpha: i32,
+    bobUpAndDown: bool,
+    faceCamera: bool,
     p19: u32,
-    p20: u32,
-    p21: u32,
-    p22: u32,
-    p23: u32,
-    p24: u32,
-    p25: u32,
+    rotate: bool,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
+    drawOnEnts: bool,
+    p24: bool,
+    p25: bool,
 ) -> () {
     let value = native!(
         (),
         0xE82728F0DE75D13A,
         native_parameters!(
-            p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18,
-            p19, p20, p21, p22, p23, p24, p25
+            type_esc,
+            posX,
+            posY,
+            posZ,
+            dirX,
+            dirY,
+            dirZ,
+            rotX,
+            rotY,
+            rotZ,
+            scaleX,
+            scaleY,
+            scaleZ,
+            red,
+            green,
+            blue,
+            alpha,
+            bobUpAndDown,
+            faceCamera,
+            p19,
+            rotate,
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
+            drawOnEnts,
+            p24,
+            p25
         )
     );
 
@@ -778,7 +808,7 @@ pub fn create_checkpoint(
     posX2: f32,
     posY2: f32,
     posZ2: f32,
-    radius: f32,
+    diameter: f32,
     red: i32,
     green: i32,
     blue: i32,
@@ -789,7 +819,7 @@ pub fn create_checkpoint(
         i32,
         0x0134F0835AB6BFCB,
         native_parameters!(
-            type_esc, posX1, posY1, posZ1, posX2, posY2, posZ2, radius, red, green, blue, alpha,
+            type_esc, posX1, posY1, posZ1, posX2, posY2, posZ2, diameter, red, green, blue, alpha,
             reserved
         )
     );
@@ -803,8 +833,12 @@ pub fn _set_checkpoint_scale(checkpoint: i32, p0: f32) -> () {
     value
 }
 
-pub fn _0x44621483ff966526(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x44621483FF966526, native_parameters!(p0, p1));
+pub fn _set_checkpoint_icon_scale(checkpoint: i32, scale: f32) -> () {
+    let value = native!(
+        (),
+        0x44621483FF966526,
+        native_parameters!(checkpoint, scale)
+    );
 
     value
 }
@@ -834,13 +868,7 @@ pub fn set_checkpoint_rgba(checkpoint: i32, red: i32, green: i32, blue: i32, alp
     value
 }
 
-pub fn _set_checkpoint_icon_rgba(
-    checkpoint: i32,
-    red: i32,
-    green: i32,
-    blue: i32,
-    alpha: i32,
-) -> () {
+pub fn set_checkpoint_rgba2(checkpoint: i32, red: i32, green: i32, blue: i32, alpha: i32) -> () {
     let value = native!(
         (),
         0xB9EA40907C680580,
@@ -898,13 +926,13 @@ pub fn delete_checkpoint(checkpoint: i32) -> () {
     value
 }
 
-pub fn _0x22a249a53034450a(p0: bool) -> () {
+pub fn dont_render_in_game_ui(p0: bool) -> () {
     let value = native!((), 0x22A249A53034450A, native_parameters!(p0));
 
     value
 }
 
-pub fn _0xdc459cfa0cce245b(toggle: bool) -> () {
+pub fn force_render_in_game_ui(toggle: bool) -> () {
     let value = native!((), 0xDC459CFA0CCE245B, native_parameters!(toggle));
 
     value
@@ -1052,71 +1080,112 @@ pub fn draw_sprite(
 }
 
 pub fn _0x2d3b147afad49de0(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
-    p4: u32,
-    p5: u32,
-    p6: u32,
-    p7: u32,
-    p8: u32,
-    p9: u32,
-    p10: u32,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
+    x: f32,
+    y: f32,
+    width: f32,
+    height: f32,
+    p6: f32,
+    red: i32,
+    green: i32,
+    blue: i32,
+    alpha: i32,
     p11: u32,
 ) -> () {
     let value = native!(
         (),
         0x2D3B147AFAD49DE0,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
+        native_parameters!(
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
+            x,
+            y,
+            width,
+            height,
+            p6,
+            red,
+            green,
+            blue,
+            alpha,
+            p11
+        )
     );
 
     value
 }
 
 pub fn _draw_interactive_sprite(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
-    p4: u32,
-    p5: u32,
-    p6: u32,
-    p7: u32,
-    p8: u32,
-    p9: u32,
-    p10: u32,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
+    screenX: f32,
+    screenY: f32,
+    width: f32,
+    height: f32,
+    heading: f32,
+    red: i32,
+    green: i32,
+    blue: i32,
+    alpha: i32,
 ) -> () {
     let value = native!(
         (),
         0x2BC54A8188768488,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
+        native_parameters!(
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
+            screenX,
+            screenY,
+            width,
+            height,
+            heading,
+            red,
+            green,
+            blue,
+            alpha
+        )
     );
 
     value
 }
 
-pub fn _0x95812f9b26074726(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
-    p4: u32,
-    p5: u32,
-    p6: u32,
-    p7: u32,
-    p8: u32,
-    p9: u32,
-    p10: u32,
-    p11: u32,
-    p12: u32,
-    p13: u32,
-    p14: u32,
+pub fn _draw_sprite_uv(
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
+    x: f32,
+    y: f32,
+    width: f32,
+    height: f32,
+    u1: f32,
+    v1: f32,
+    u2: f32,
+    v2: f32,
+    heading: f32,
+    red: i32,
+    green: i32,
+    blue: i32,
+    alpha: i32,
 ) -> () {
     let value = native!(
         (),
         0x95812F9B26074726,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14)
+        native_parameters!(
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
+            x,
+            y,
+            width,
+            height,
+            u1,
+            v1,
+            u2,
+            v2,
+            heading,
+            red,
+            green,
+            blue,
+            alpha
+        )
     );
 
     value
@@ -1221,7 +1290,7 @@ pub fn _get_bink_movie_time(binkMovie: i32) -> f32 {
     value
 }
 
-pub fn _set_bink_movie_unk(binkMovie: i32, value: f32) -> () {
+pub fn _set_bink_movie_volume(binkMovie: i32, value: f32) -> () {
     let value = native!((), 0xAFF33B1178172223, native_parameters!(binkMovie, value));
 
     value
@@ -1271,7 +1340,7 @@ pub fn release_movie_mesh_set(movieMeshSet: i32) -> () {
     value
 }
 
-pub fn _0x9b6e70c5ceef4eeb(p0: u32) -> u32 {
+pub fn query_movie_mesh_set_state(p0: u32) -> u32 {
     let value = native!(u32, 0x9B6E70C5CEEF4EEB, native_parameters!(p0));
 
     value
@@ -1396,8 +1465,16 @@ pub fn get_texture_resolution(
     value
 }
 
-pub fn _0x95eb5e34f821babe(p0: u32, p1: u32, p2: u32) -> u32 {
-    let value = native!(u32, 0x95EB5E34F821BABE, native_parameters!(p0, p1, p2));
+pub fn _override_ped_badge_texture(
+    ped: i32,
+    txd: &std::ffi::CString,
+    txn: &std::ffi::CString,
+) -> bool {
+    let value = native!(
+        bool,
+        0x95EB5E34F821BABE,
+        native_parameters!(ped, txd.as_ptr(), txn.as_ptr())
+    );
 
     value
 }
@@ -1430,7 +1507,7 @@ pub fn set_artificial_lights_state(state: bool) -> () {
     value
 }
 
-pub fn _0xe2b187c0939b3d32(toggle: bool) -> () {
+pub fn _set_artificial_lights_state_affects_vehicles(toggle: bool) -> () {
     let value = native!((), 0xE2B187C0939B3D32, native_parameters!(toggle));
 
     value
@@ -1548,18 +1625,18 @@ pub fn _0xaae9be70ec7c69ab(
 }
 
 pub fn _grass_lod_shrink_script_areas(
-    p0: u32,
-    p1: u32,
-    p2: u32,
-    p3: u32,
-    p4: u32,
-    p5: u32,
-    p6: u32,
+    x: f32,
+    y: f32,
+    z: f32,
+    radius: f32,
+    p4: f32,
+    p5: f32,
+    p6: f32,
 ) -> () {
     let value = native!(
         (),
         0x6D955F6A9E0295B1,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6)
+        native_parameters!(x, y, z, radius, p4, p5, p6)
     );
 
     value
@@ -1571,13 +1648,13 @@ pub fn _grass_lod_reset_script_areas() -> () {
     value
 }
 
-pub fn _0x03fc694ae06c5a20() -> () {
+pub fn cascade_shadows_init_session() -> () {
     let value = native!((), 0x03FC694AE06C5A20, native_parameters!());
 
     value
 }
 
-pub fn _0xd2936cab8b58fcbd(
+pub fn cascade_shadows_set_cascade_bounds(
     p0: u32,
     p1: bool,
     p2: f32,
@@ -1596,13 +1673,13 @@ pub fn _0xd2936cab8b58fcbd(
     value
 }
 
-pub fn _0x5f0f3f56635809ef(p0: f32) -> () {
+pub fn cascade_shadows_set_cascade_bounds_scale(p0: f32) -> () {
     let value = native!((), 0x5F0F3F56635809EF, native_parameters!(p0));
 
     value
 }
 
-pub fn _0x5e9daf5a20f15908(p0: f32) -> () {
+pub fn cascade_shadows_set_entity_tracker_scale(p0: f32) -> () {
     let value = native!((), 0x5E9DAF5A20F15908, native_parameters!(p0));
 
     value
@@ -1620,7 +1697,7 @@ pub fn _0x259ba6d4e6f808f1(p0: u32) -> () {
     value
 }
 
-pub fn _set_far_shadows_suppressed(toggle: bool) -> () {
+pub fn cascade_shadows_enable_entity_tracker(toggle: bool) -> () {
     let value = native!((), 0x80ECBC0C856D3B0B, native_parameters!(toggle));
 
     value
@@ -1632,7 +1709,7 @@ pub fn _0x25fc3e33a31ad0c9(p0: bool) -> () {
     value
 }
 
-pub fn _cascadeshadows_set_type(type_esc: &std::ffi::CString) -> () {
+pub fn cascade_shadows_set_shadow_sample_type(type_esc: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xB11D94BC55F41932,
@@ -1642,25 +1719,25 @@ pub fn _cascadeshadows_set_type(type_esc: &std::ffi::CString) -> () {
     value
 }
 
-pub fn _cascadeshadows_reset_type() -> () {
+pub fn _cascade_shadows_clear_shadow_sample_type() -> () {
     let value = native!((), 0x27CB772218215325, native_parameters!());
 
     value
 }
 
-pub fn _0x6ddbf9dffc4ac080(p0: bool) -> () {
+pub fn cascade_shadows_set_aircraft_mode(p0: bool) -> () {
     let value = native!((), 0x6DDBF9DFFC4AC080, native_parameters!(p0));
 
     value
 }
 
-pub fn _0xd39d13c9febf0511(p0: bool) -> () {
+pub fn cascade_shadows_set_dynamic_depth_mode(p0: bool) -> () {
     let value = native!((), 0xD39D13C9FEBF0511, native_parameters!(p0));
 
     value
 }
 
-pub fn _0x02ac28f3a01fa04a(p0: f32) -> () {
+pub fn cascade_shadows_set_dynamic_depth_value(p0: f32) -> () {
     let value = native!((), 0x02AC28F3A01FA04A, native_parameters!(p0));
 
     value
@@ -1955,11 +2032,18 @@ pub fn _0x851cd923176eba7c() -> () {
     value
 }
 
-pub fn _set_hidof_env_blur_params(p0: bool, p1: bool, p2: f32, p3: f32, p4: f32, p5: f32) -> () {
+pub fn _set_hidof_env_blur_params(
+    p0: bool,
+    p1: bool,
+    nearplaneOut: f32,
+    nearplaneIn: f32,
+    farplaneOut: f32,
+    farplaneIn: f32,
+) -> () {
     let value = native!(
         (),
         0xBA3D65906822BED5,
-        native_parameters!(p0, p1, p2, p3, p4, p5)
+        native_parameters!(p0, p1, nearplaneOut, nearplaneIn, farplaneOut, farplaneIn)
     );
 
     value
@@ -2201,6 +2285,44 @@ pub fn start_networked_particle_fx_non_looped_on_entity(
             rotX,
             rotY,
             rotZ,
+            scale,
+            axisX,
+            axisY,
+            axisZ
+        )
+    );
+
+    value
+}
+
+pub fn _start_networked_particle_fx_non_looped_on_entity_bone(
+    effectName: &std::ffi::CString,
+    entity: i32,
+    offsetX: f32,
+    offsetY: f32,
+    offsetZ: f32,
+    rotX: f32,
+    rotY: f32,
+    rotZ: f32,
+    boneIndex: i32,
+    scale: f32,
+    axisX: bool,
+    axisY: bool,
+    axisZ: bool,
+) -> bool {
+    let value = native!(
+        bool,
+        0x02B1F2A72E0F5325,
+        native_parameters!(
+            effectName.as_ptr(),
+            entity,
+            offsetX,
+            offsetY,
+            offsetZ,
+            rotX,
+            rotY,
+            rotZ,
+            boneIndex,
             scale,
             axisX,
             axisY,
@@ -2867,7 +2989,7 @@ pub fn _0x27cfb1b1e078cb2d() -> () {
     value
 }
 
-pub fn _0x4b5cfc83122df602() -> () {
+pub fn set_disable_decal_rendering_this_frame() -> () {
     let value = native!((), 0x4B5CFC83122DF602, native_parameters!());
 
     value
@@ -2883,7 +3005,7 @@ pub fn get_is_petrol_decal_in_range(xCoord: f32, yCoord: f32, zCoord: f32, radiu
     value
 }
 
-pub fn _override_decal_texture(
+pub fn patch_decal_diffuse_map(
     decalType: i32,
     textureDict: &std::ffi::CString,
     textureName: &std::ffi::CString,
@@ -2897,7 +3019,7 @@ pub fn _override_decal_texture(
     value
 }
 
-pub fn _undo_decal_texture_override(decalType: i32) -> () {
+pub fn unpatch_decal_diffuse_map(decalType: i32) -> () {
     let value = native!((), 0xB7ED70C49521A61D, native_parameters!(decalType));
 
     value
@@ -3156,7 +3278,7 @@ pub fn add_tcmodifier_override(
     value
 }
 
-pub fn _0x15e33297c3e8dc60(p0: &std::ffi::CString) -> () {
+pub fn remove_tcmodifier_override(p0: &std::ffi::CString) -> () {
     let value = native!((), 0x15E33297C3E8DC60, native_parameters!(p0.as_ptr()));
 
     value
@@ -3246,14 +3368,14 @@ pub fn has_scaleform_movie_loaded(scaleformHandle: i32) -> bool {
     value
 }
 
-pub fn _0x2fcb133ca50a49eb(p0: u32) -> u32 {
-    let value = native!(u32, 0x2FCB133CA50A49EB, native_parameters!(p0));
+pub fn _0x2fcb133ca50a49eb(val: i32) -> bool {
+    let value = native!(bool, 0x2FCB133CA50A49EB, native_parameters!(val));
 
     value
 }
 
-pub fn _0x86255b1fc929e33e(p0: u32) -> u32 {
-    let value = native!(u32, 0x86255B1FC929E33E, native_parameters!(p0));
+pub fn _0x86255b1fc929e33e(val: i32) -> bool {
+    let value = native!(bool, 0x86255B1FC929E33E, native_parameters!(val));
 
     value
 }
@@ -3300,8 +3422,12 @@ pub fn _0x32f34ff7f617643b(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _0xe6a9f00d4240b519(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xE6A9F00D4240B519, native_parameters!(p0, p1));
+pub fn _set_scaleform_fit_rendertarget(scaleformHandle: i32, toggle: bool) -> () {
+    let value = native!(
+        (),
+        0xE6A9F00D4240B519,
+        native_parameters!(scaleformHandle, toggle)
+    );
 
     value
 }
@@ -3579,37 +3705,29 @@ pub fn end_scaleform_movie_method_return_value() -> u32 {
     value
 }
 
-pub fn is_scaleform_movie_method_return_value_ready(returnValueData: u32) -> bool {
-    let value = native!(
-        bool,
-        0x768FF8961BA904D6,
-        native_parameters!(returnValueData)
-    );
+pub fn is_scaleform_movie_method_return_value_ready(methodReturn: i32) -> bool {
+    let value = native!(bool, 0x768FF8961BA904D6, native_parameters!(methodReturn));
 
     value
 }
 
-pub fn get_scaleform_movie_method_return_value_int(returnValueData: u32) -> i32 {
-    let value = native!(i32, 0x2DE7EFA66B906036, native_parameters!(returnValueData));
+pub fn get_scaleform_movie_method_return_value_int(methodReturn: i32) -> i32 {
+    let value = native!(i32, 0x2DE7EFA66B906036, native_parameters!(methodReturn));
 
     value
 }
 
-pub fn _get_scaleform_movie_method_return_value_bool(returnValueData: u32) -> bool {
-    let value = native!(
-        bool,
-        0xD80A80346A45D761,
-        native_parameters!(returnValueData)
-    );
+pub fn _get_scaleform_movie_method_return_value_bool(methodReturn: i32) -> bool {
+    let value = native!(bool, 0xD80A80346A45D761, native_parameters!(methodReturn));
 
     value
 }
 
-pub fn get_scaleform_movie_method_return_value_string(returnValueData: u32) -> String {
+pub fn get_scaleform_movie_method_return_value_string(methodReturn: i32) -> String {
     let value = native!(
         *const i8,
         0xE1E258829A885245,
-        native_parameters!(returnValueData)
+        native_parameters!(methodReturn)
     );
     let cstr = unsafe { std::ffi::CStr::from_ptr(value) };
     let value = cstr.to_str().unwrap().to_string();

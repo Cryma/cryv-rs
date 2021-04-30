@@ -239,6 +239,24 @@ pub fn datafile_is_save_pending() -> bool {
     value
 }
 
+pub fn _0xa6eef01087181edd(p0: u32, p1: u32) -> u32 {
+    let value = native!(u32, 0xA6EEF01087181EDD, native_parameters!(p0, p1));
+
+    value
+}
+
+pub fn _0x6ad0bd5e087866cb(p0: u32) -> () {
+    let value = native!((), 0x6AD0BD5E087866CB, native_parameters!(p0));
+
+    value
+}
+
+pub fn _0xdbf860cf1db8e599(p0: u32) -> u32 {
+    let value = native!(u32, 0xDBF860CF1DB8E599, native_parameters!(p0));
+
+    value
+}
+
 pub fn datadict_set_bool(objectData: *mut u32, key: &std::ffi::CString, value: bool) -> () {
     let value = native!(
         (),

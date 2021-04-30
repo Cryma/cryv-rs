@@ -495,8 +495,8 @@ pub fn set_ped_path_can_drop_from_height(ped: i32, Toggle: bool) -> () {
     value
 }
 
-pub fn _0x88e32db8c1a4aa4b(ped: i32, p1: f32) -> () {
-    let value = native!((), 0x88E32DB8C1A4AA4B, native_parameters!(ped, p1));
+pub fn set_ped_path_climb_cost_modifier(ped: i32, modifier: f32) -> () {
+    let value = native!((), 0x88E32DB8C1A4AA4B, native_parameters!(ped, modifier));
 
     value
 }
@@ -529,8 +529,16 @@ pub fn set_global_min_bird_flight_height(height: f32) -> () {
     value
 }
 
-pub fn get_navmesh_route_distance_remaining(ped: i32, p1: *mut u32, p2: *mut u32) -> u32 {
-    let value = native!(u32, 0xC6F5C0BCDC74D62D, native_parameters!(ped, p1, p2));
+pub fn get_navmesh_route_distance_remaining(
+    ped: i32,
+    distanceRemaining: *mut f32,
+    isPathReady: *mut bool,
+) -> i32 {
+    let value = native!(
+        i32,
+        0xC6F5C0BCDC74D62D,
+        native_parameters!(ped, distanceRemaining, isPathReady)
+    );
 
     value
 }
@@ -649,8 +657,8 @@ pub fn task_play_anim(
     ped: i32,
     animDictionary: &std::ffi::CString,
     animationName: &std::ffi::CString,
-    speed: f32,
-    speedMultiplier: f32,
+    blendInSpeed: f32,
+    blendOutSpeed: f32,
     duration: i32,
     flag: i32,
     playbackRate: f32,
@@ -665,8 +673,8 @@ pub fn task_play_anim(
             ped,
             animDictionary.as_ptr(),
             animationName.as_ptr(),
-            speed,
-            speedMultiplier,
+            blendInSpeed,
+            blendOutSpeed,
             duration,
             flag,
             playbackRate,
@@ -689,8 +697,8 @@ pub fn task_play_anim_advanced(
     rotX: f32,
     rotY: f32,
     rotZ: f32,
-    speed: f32,
-    speedMultiplier: f32,
+    animEnterSpeed: f32,
+    animExitSpeed: f32,
     duration: i32,
     flag: u32,
     animTime: f32,
@@ -710,8 +718,8 @@ pub fn task_play_anim_advanced(
             rotX,
             rotY,
             rotZ,
-            speed,
-            speedMultiplier,
+            animEnterSpeed,
+            animExitSpeed,
             duration,
             flag,
             animTime,
@@ -854,13 +862,13 @@ pub fn get_phone_gesture_anim_total_time(ped: i32) -> f32 {
 
 pub fn task_vehicle_play_anim(
     vehicle: i32,
-    animation_set: &std::ffi::CString,
-    animation_name: &std::ffi::CString,
+    animationSet: &std::ffi::CString,
+    animationName: &std::ffi::CString,
 ) -> () {
     let value = native!(
         (),
         0x69F5C3BD0F3EBD89,
-        native_parameters!(vehicle, animation_set.as_ptr(), animation_name.as_ptr())
+        native_parameters!(vehicle, animationSet.as_ptr(), animationName.as_ptr())
     );
 
     value
@@ -871,7 +879,7 @@ pub fn task_look_at_coord(
     x: f32,
     y: f32,
     z: f32,
-    duration: f32,
+    duration: i32,
     p5: u32,
     p6: u32,
 ) -> () {
@@ -978,8 +986,8 @@ pub fn get_active_vehicle_mission_type(vehicle: i32) -> i32 {
     value
 }
 
-pub fn task_leave_any_vehicle(ped: i32, p1: i32, p2: i32) -> () {
-    let value = native!((), 0x504D54DF3F6F2247, native_parameters!(ped, p1, p2));
+pub fn task_leave_any_vehicle(ped: i32, p1: i32, flags: i32) -> () {
+    let value = native!((), 0x504D54DF3F6F2247, native_parameters!(ped, p1, flags));
 
     value
 }
@@ -1419,7 +1427,13 @@ pub fn task_plane_land(
     value
 }
 
-pub fn _0xdbbc7a2432524127(vehicle: i32) -> () {
+pub fn _0x6100b3cefd43452e(p0: u32) -> () {
+    let value = native!((), 0x6100B3CEFD43452E, native_parameters!(p0));
+
+    value
+}
+
+pub fn _clear_vehicle_tasks(vehicle: i32) -> () {
     let value = native!((), 0xDBBC7A2432524127, native_parameters!(vehicle));
 
     value
@@ -1432,8 +1446,8 @@ pub fn _0x53ddc75bc3ac0a90(vehicle: i32) -> () {
 }
 
 pub fn task_plane_goto_precise_vtol(
-    p0: u32,
-    p1: u32,
+    ped: i32,
+    vehicle: i32,
     p2: u32,
     p3: u32,
     p4: u32,
@@ -1446,7 +1460,24 @@ pub fn task_plane_goto_precise_vtol(
     let value = native!(
         (),
         0xF7F9DCCA89E7505B,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9)
+        native_parameters!(ped, vehicle, p2, p3, p4, p5, p6, p7, p8, p9)
+    );
+
+    value
+}
+
+pub fn task_submarine_goto_and_stop(
+    p0: u32,
+    submarine: i32,
+    x: f32,
+    y: f32,
+    z: f32,
+    p5: u32,
+) -> () {
+    let value = native!(
+        (),
+        0xC22B40579A498CA4,
+        native_parameters!(p0, submarine, x, y, z, p5)
     );
 
     value
@@ -2435,7 +2466,7 @@ pub fn is_ped_active_in_scenario(ped: i32) -> bool {
     value
 }
 
-pub fn _0x621c6e4729388e41(ped: i32) -> bool {
+pub fn is_ped_playing_base_clip_in_scenario(ped: i32) -> bool {
     let value = native!(bool, 0x621C6E4729388E41, native_parameters!(ped));
 
     value
@@ -2958,12 +2989,16 @@ pub fn waypoint_playback_use_default_speed(p0: u32) -> () {
 }
 
 pub fn use_waypoint_recording_as_assisted_movement_route(
-    p0: *mut u32,
+    name: &std::ffi::CString,
     p1: bool,
     p2: f32,
     p3: f32,
 ) -> () {
-    let value = native!((), 0x5A353B8E6B1095B5, native_parameters!(p0, p1, p2, p3));
+    let value = native!(
+        (),
+        0x5A353B8E6B1095B5,
+        native_parameters!(name.as_ptr(), p1, p2, p3)
+    );
 
     value
 }

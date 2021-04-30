@@ -522,8 +522,8 @@ pub fn _0xe4f6e8d07a2f0f51(p0: u32) -> u32 {
     value
 }
 
-pub fn _0x8a4416c0db05fa66(p0: u32) -> u32 {
-    let value = native!(u32, 0x8A4416C0DB05FA66, native_parameters!(p0));
+pub fn _0x8a4416c0db05fa66(p0: u32) -> bool {
+    let value = native!(bool, 0x8A4416C0DB05FA66, native_parameters!(p0));
 
     value
 }

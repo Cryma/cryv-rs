@@ -367,43 +367,43 @@ pub fn network_earn_from_ambient_job(p0: i32, p1: &std::ffi::CString, p2: *mut u
     value
 }
 
-pub fn _0xd20d79671a598594(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0xD20D79671A598594, native_parameters!(p0, p1, p2));
-
-    value
-}
-
 pub fn network_earn_from_job_bonus(p0: u32, p1: *mut u32, p2: *mut u32) -> () {
     let value = native!((), 0x6816FB4416760775, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0x9d4fdbb035229669(p0: u32, p1: u32, p2: u32) -> () {
+pub fn _network_earn_from_criminal_mastermind_bonus(p0: u32, p1: u32, p2: u32) -> () {
+    let value = native!((), 0xFA009A62990671D4, native_parameters!(p0, p1, p2));
+
+    value
+}
+
+pub fn _network_earn_job_bonus_heist_award(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0x9D4FDBB035229669, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0x11b0a20c493f7e36(p0: u32, p1: u32, p2: u32) -> () {
+pub fn _network_earn_job_bonus_first_time_bonus(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0x11B0A20C493F7E36, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0xcda1c62be2777802(p0: u32, p1: u32, p2: u32) -> () {
+pub fn _network_earn_goon(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0xCDA1C62BE2777802, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0x08b0ca7a6ab3ac32(p0: u32, p1: u32, p2: u32) -> () {
+pub fn _network_earn_boss(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0x08B0CA7A6AB3AC32, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0x0cb1be0633c024a8(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn _network_earn_boss_agency(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0x0CB1BE0633C024A8, native_parameters!(p0, p1, p2, p3));
 
     value
@@ -421,7 +421,7 @@ pub fn _network_earn_from_contraband(amount: i32, p1: u32) -> () {
     value
 }
 
-pub fn _0x84c0116d012e8fc2(p0: u32) -> () {
+pub fn _network_earn_from_destroying_contraband(p0: u32) -> () {
     let value = native!((), 0x84C0116D012E8FC2, native_parameters!(p0));
 
     value
@@ -475,43 +475,43 @@ pub fn _network_earn_from_smuggling(amount: i32, p1: u32, p2: u32, p3: u32) -> (
     value
 }
 
-pub fn _0xf6b170f9a02e9e87(p0: u32) -> () {
+pub fn _network_earn_bounty_hunter_reward(p0: u32) -> () {
     let value = native!((), 0xF6B170F9A02E9E87, native_parameters!(p0));
 
     value
 }
 
-pub fn _0x42fce14f50f27291(p0: u32) -> () {
+pub fn _network_earn_from_business_battle(p0: u32) -> () {
     let value = native!((), 0x42FCE14F50F27291, native_parameters!(p0));
 
     value
 }
 
-pub fn _0xa75eac69f59e96e7(p0: u32) -> () {
+pub fn _network_earn_from_club_management_participation(p0: u32) -> () {
     let value = native!((), 0xA75EAC69F59E96E7, native_parameters!(p0));
 
     value
 }
 
-pub fn _0xc5156361f26e2212(p0: u32) -> () {
+pub fn _network_earn_from_fmbb_phonecall_mission(p0: u32) -> () {
     let value = native!((), 0xC5156361F26E2212, native_parameters!(p0));
 
     value
 }
 
-pub fn _0x0b39cf0d53f1c883(p0: u32, p1: u32, p2: u32) -> () {
+pub fn _network_earn_from_business_hub_sell(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0x0B39CF0D53F1C883, native_parameters!(p0, p1, p2));
 
     value
 }
 
-pub fn _0x1fda0aa679c9919b(p0: u32) -> () {
+pub fn _network_earn_from_fmbb_boss_work(p0: u32) -> () {
     let value = native!((), 0x1FDA0AA679C9919B, native_parameters!(p0));
 
     value
 }
 
-pub fn _0xfffba1b1f7c0b6f4(p0: u32) -> () {
+pub fn _network_earn_fmbb_wage_bonus(p0: u32) -> () {
     let value = native!((), 0xFFFBA1B1F7C0B6F4, native_parameters!(p0));
 
     value
@@ -852,6 +852,12 @@ pub fn process_cash_gift(p0: *mut i32, p1: *mut i32, p2: &std::ffi::CString) -> 
     value
 }
 
+pub fn _0xcd4d66b43b1dd28d(p0: u32, p1: u32, p2: u32) -> () {
+    let value = native!((), 0xCD4D66B43B1DD28D, native_parameters!(p0, p1, p2));
+
+    value
+}
+
 pub fn network_spent_player_healthcare(p0: i32, p1: i32, p2: bool, p3: bool) -> () {
     let value = native!((), 0x7C99101F7FCE2EE5, native_parameters!(p0, p1, p2, p3));
 
@@ -920,7 +926,7 @@ pub fn _network_spent_pay_goon(p0: i32, p1: i32, amount: i32) -> () {
     value
 }
 
-pub fn _0xdbc966a01c02bca7(p0: u32, p1: u32, p2: u32) -> () {
+pub fn _network_spent_pay_boss(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0xDBC966A01C02BCA7, native_parameters!(p0, p1, p2));
 
     value
@@ -932,7 +938,7 @@ pub fn _network_spent_move_yacht(amount: i32, p1: bool, p2: bool) -> () {
     value
 }
 
-pub fn _0xfc4ee00a7b3bfb76(p0: u32, p1: u32, p2: u32) -> () {
+pub fn _network_spent_rename_organization(p0: u32, p1: u32, p2: u32) -> () {
     let value = native!((), 0xFC4EE00A7B3BFB76, native_parameters!(p0, p1, p2));
 
     value
@@ -972,7 +978,7 @@ pub fn _0x0d30eb83668e63c5(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     value
 }
 
-pub fn _0xb49eca122467d05f(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn _network_spent_pa_service_dancer(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0xB49ECA122467D05F, native_parameters!(p0, p1, p2, p3));
 
     value
@@ -984,7 +990,7 @@ pub fn _0xe23adc6fcb1f29ae(p0: u32, p1: u32, p2: u32) -> () {
     value
 }
 
-pub fn _0x0fe8e1fcd2b86b33(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn _network_spent_pa_service_heli_pickup(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0x0FE8E1FCD2B86B33, native_parameters!(p0, p1, p2, p3));
 
     value
@@ -1036,19 +1042,19 @@ pub fn _0x2fab6614ce22e196(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     value
 }
 
-pub fn _0x05f04155a226fbbf(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn _network_spent_order_warehouse_vehicle(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0x05F04155A226FBBF, native_parameters!(p0, p1, p2, p3));
 
     value
 }
 
-pub fn _0xe8b0b270b6e7c76e(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn _network_spent_order_bodyguard_vehicle(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0xE8B0B270B6E7C76E, native_parameters!(p0, p1, p2, p3));
 
     value
 }
 
-pub fn _0x5bcde0f640c773d2(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn _network_spent_jukebox(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0x5BCDE0F640C773D2, native_parameters!(p0, p1, p2, p3));
 
     value
@@ -1084,7 +1090,7 @@ pub fn _0xa51b086b0b2c0f7a(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     value
 }
 
-pub fn _0xd7cccba28c4ecaf0(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn _network_spent_ba_service(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     let value = native!(
         (),
         0xD7CCCBA28C4ECAF0,
@@ -1094,7 +1100,7 @@ pub fn _0xd7cccba28c4ecaf0(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     value
 }
 
-pub fn _0x0035bb914316f1e3(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+pub fn _network_spent_business(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     let value = native!((), 0x0035BB914316F1E3, native_parameters!(p0, p1, p2, p3));
 
     value
@@ -1106,7 +1112,7 @@ pub fn _0x5f456788b05faeac(p0: u32, p1: u32, p2: u32) -> () {
     value
 }
 
-pub fn _0xa75ccf58a60a5fd1(
+pub fn _network_spent_vehicle_export_mods(
     p0: u32,
     p1: u32,
     p2: u32,
@@ -1723,7 +1729,7 @@ pub fn _0x5574637681911fda(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
     value
 }
 
-pub fn _0xd30e8392f407c328(
+pub fn _network_spent_casino_heist(
     p0: u32,
     p1: u32,
     p2: u32,
@@ -1755,7 +1761,7 @@ pub fn _0xb5b58e24868cb09e(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     value
 }
 
-pub fn _0xead3d81f2c3a1458(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn _network_spent_arcade_game(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     let value = native!(
         (),
         0xEAD3D81F2C3A1458,
@@ -1765,7 +1771,7 @@ pub fn _0xead3d81f2c3a1458(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     value
 }
 
-pub fn _0x43aa7fac4e6d6687(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn _network_spent_arcade_generic(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     let value = native!(
         (),
         0x43AA7FAC4E6D6687,
@@ -1775,7 +1781,15 @@ pub fn _0x43aa7fac4e6d6687(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     value
 }
 
-pub fn _0x72e7c7b9615fa3c3(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32, p6: u32) -> () {
+pub fn _network_earn_casino_heist(
+    p0: u32,
+    p1: u32,
+    p2: u32,
+    p3: u32,
+    p4: u32,
+    p5: u32,
+    p6: u32,
+) -> () {
     let value = native!(
         (),
         0x72E7C7B9615FA3C3,
@@ -1813,7 +1827,7 @@ pub fn _0x0dd362f14f18942a(amount: i32, p1: u32, p2: u32) -> () {
     value
 }
 
-pub fn _0x3ec7471e6909798a(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn _network_earn_casino_heist_bonus(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
     let value = native!(
         (),
         0x3EC7471E6909798A,
@@ -1829,7 +1843,7 @@ pub fn _network_earn_from_collection_item(amount: i32, p1: u32) -> () {
     value
 }
 
-pub fn _0x5c9b198af5a54fa6(amount: i32, p1: u32) -> () {
+pub fn _network_earn_collectable_completed_collection(amount: i32, p1: u32) -> () {
     let value = native!((), 0x5C9B198AF5A54FA6, native_parameters!(amount, p1));
 
     value
@@ -1843,6 +1857,82 @@ pub fn _0xde68e30d89f97132(amount: i32, p1: u32) -> () {
 
 pub fn _0xe2e244ab823b4483(amount: i32, p1: u32) -> () {
     let value = native!((), 0xE2E244AB823B4483, native_parameters!(amount, p1));
+
+    value
+}
+
+pub fn _network_spent_beach_party_generic(p0: u32) -> () {
+    let value = native!((), 0x54ABA22FA6371249, native_parameters!(p0));
+
+    value
+}
+
+pub fn _network_spent_submarine(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32) -> () {
+    let value = native!(
+        (),
+        0x6C8BC1488527AAAB,
+        native_parameters!(p0, p1, p2, p3, p4, p5)
+    );
+
+    value
+}
+
+pub fn _network_spent_casino_club_generic(
+    p0: u32,
+    p1: u32,
+    p2: u32,
+    p3: u32,
+    p4: u32,
+    p5: u32,
+    p6: u32,
+    p7: u32,
+    p8: u32,
+) -> () {
+    let value = native!(
+        (),
+        0xC991C255AA6D90B2,
+        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8)
+    );
+
+    value
+}
+
+pub fn _0x90cd7c6871fbf1b4(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+    let value = native!((), 0x90CD7C6871FBF1B4, native_parameters!(p0, p1, p2, p3));
+
+    value
+}
+
+pub fn _0x89049a84065ce68e(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+    let value = native!((), 0x89049A84065CE68E, native_parameters!(p0, p1, p2, p3));
+
+    value
+}
+
+pub fn _network_spent_island_heist(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
+    let value = native!((), 0xE86689E5F82DE429, native_parameters!(p0, p1, p2, p3));
+
+    value
+}
+
+pub fn _network_earn_island_heist(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32) -> () {
+    let value = native!(
+        (),
+        0xD21D111C46BA9F15,
+        native_parameters!(p0, p1, p2, p3, p4, p5)
+    );
+
+    value
+}
+
+pub fn _0xa51338e0dccd4065(p0: u32, p1: u32, p2: u32) -> () {
+    let value = native!((), 0xA51338E0DCCD4065, native_parameters!(p0, p1, p2));
+
+    value
+}
+
+pub fn _0xe2bb399d90942091(p0: u32, p1: u32) -> () {
+    let value = native!((), 0xE2BB399D90942091, native_parameters!(p0, p1));
 
     value
 }

@@ -222,12 +222,12 @@ pub fn is_explosion_in_angled_area(
     x2: f32,
     y2: f32,
     z2: f32,
-    angle: f32,
+    width: f32,
 ) -> bool {
     let value = native!(
         bool,
         0xA079A6C51525DC4B,
-        native_parameters!(explosionType, x1, y1, z1, x2, y2, z2, angle)
+        native_parameters!(explosionType, x1, y1, z1, x2, y2, z2, width)
     );
 
     value

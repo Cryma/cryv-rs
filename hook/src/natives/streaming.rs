@@ -228,6 +228,18 @@ pub fn set_streaming(toggle: bool) -> () {
     value
 }
 
+pub fn _load_global_water_type(waterType: i32) -> () {
+    let value = native!((), 0x7E3F55ED251B76D3, native_parameters!(waterType));
+
+    value
+}
+
+pub fn _get_global_water_type() -> i32 {
+    let value = native!(i32, 0xF741BD853611592D, native_parameters!());
+
+    value
+}
+
 pub fn set_game_pauses_for_streaming(toggle: bool) -> () {
     let value = native!((), 0x717CD6E6FAEBBEDC, native_parameters!(toggle));
 
@@ -432,19 +444,19 @@ pub fn _0xbc9823ab80a3dcac() -> u32 {
 }
 
 pub fn new_load_scene_start(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: u32,
+    posX: f32,
+    posY: f32,
+    posZ: f32,
+    offsetX: f32,
+    offsetY: f32,
+    offsetZ: f32,
+    radius: f32,
+    p7: i32,
 ) -> bool {
     let value = native!(
         bool,
         0x212A8D0D2BABFAC2,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7)
+        native_parameters!(posX, posY, posZ, offsetX, offsetY, offsetZ, radius, p7)
     );
 
     value
@@ -547,20 +559,30 @@ pub fn get_player_switch_jump_cut_index() -> i32 {
 }
 
 pub fn set_player_switch_outro(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
-    p8: u32,
+    cameraCoordX: f32,
+    cameraCoordY: f32,
+    cameraCoordZ: f32,
+    camRotationX: f32,
+    camRotationY: f32,
+    camRotationZ: f32,
+    camFov: f32,
+    camFarClip: f32,
+    rotationOrder: i32,
 ) -> () {
     let value = native!(
         (),
         0xC208B673CE446B61,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8)
+        native_parameters!(
+            cameraCoordX,
+            cameraCoordY,
+            cameraCoordZ,
+            camRotationX,
+            camRotationY,
+            camRotationZ,
+            camFov,
+            camFarClip,
+            rotationOrder
+        )
     );
 
     value
@@ -572,25 +594,25 @@ pub fn set_player_switch_establishing_shot(name: &std::ffi::CString) -> () {
     value
 }
 
-pub fn _0x43d1680c6d19a8e9() -> () {
+pub fn allow_player_switch_pan() -> () {
     let value = native!((), 0x43D1680C6D19A8E9, native_parameters!());
 
     value
 }
 
-pub fn _0x74de2e8739086740() -> () {
+pub fn allow_player_switch_outro() -> () {
     let value = native!((), 0x74DE2E8739086740, native_parameters!());
 
     value
 }
 
-pub fn _0x8e2a065abdae6994() -> () {
+pub fn allow_player_switch_ascent() -> () {
     let value = native!((), 0x8E2A065ABDAE6994, native_parameters!());
 
     value
 }
 
-pub fn _0xad5fdf34b81bfe79() -> () {
+pub fn allow_player_switch_descent() -> () {
     let value = native!((), 0xAD5FDF34B81BFE79, native_parameters!());
 
     value
@@ -614,11 +636,11 @@ pub fn disable_switch_outro_fx() -> () {
     value
 }
 
-pub fn _switch_out_player(ped: i32, flags: i32, unknown: i32) -> () {
+pub fn _switch_out_player(ped: i32, flags: i32, switchType: i32) -> () {
     let value = native!(
         (),
         0xAAB3200ED59016BC,
-        native_parameters!(ped, flags, unknown)
+        native_parameters!(ped, flags, switchType)
     );
 
     value
@@ -660,14 +682,14 @@ pub fn _0x1e9057a74fd73e23() -> () {
     value
 }
 
-pub fn _0x0c15b0e443b2349d() -> f32 {
+pub fn get_lodscale() -> f32 {
     let value = native!(f32, 0x0C15B0E443B2349D, native_parameters!());
 
     value
 }
 
-pub fn _0xa76359fc80b2438e(p0: f32) -> () {
-    let value = native!((), 0xA76359FC80B2438E, native_parameters!(p0));
+pub fn override_lodscale_this_frame(scaling: f32) -> () {
+    let value = native!((), 0xA76359FC80B2438E, native_parameters!(scaling));
 
     value
 }
@@ -826,6 +848,16 @@ pub fn remove_model_from_creator_budget(modelHash: u32) -> () {
 
 pub fn _get_used_creator_model_memory_percentage() -> f32 {
     let value = native!(f32, 0x3D3D8B3BE5A83D35, native_parameters!());
+
+    value
+}
+
+pub fn _set_island_hopper_enabled(name: &std::ffi::CString, toggle: bool) -> () {
+    let value = native!(
+        (),
+        0x9A9D1BA639675CF1,
+        native_parameters!(name.as_ptr(), toggle)
+    );
 
     value
 }

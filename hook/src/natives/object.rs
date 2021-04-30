@@ -1,18 +1,18 @@
 use crate::types::NativeVector3;
 
 pub fn create_object(
-    modelHash: i32,
+    modelHash: u32,
     x: f32,
     y: f32,
     z: f32,
     isNetwork: bool,
-    netMissionEntity: bool,
+    bScriptHostObj: bool,
     dynamic: bool,
 ) -> i32 {
     let value = native!(
         i32,
         0x509D5878EB39E842,
-        native_parameters!(modelHash, x, y, z, isNetwork, netMissionEntity, dynamic)
+        native_parameters!(modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic)
     );
 
     value
@@ -24,13 +24,13 @@ pub fn create_object_no_offset(
     y: f32,
     z: f32,
     isNetwork: bool,
-    netMissionEntity: bool,
+    bScriptHostObj: bool,
     dynamic: bool,
 ) -> i32 {
     let value = native!(
         i32,
         0x9A294B2138ABB884,
-        native_parameters!(modelHash, x, y, z, isNetwork, netMissionEntity, dynamic)
+        native_parameters!(modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic)
     );
 
     value
@@ -142,17 +142,17 @@ pub fn has_closest_object_of_type_been_broken(
 }
 
 pub fn has_closest_object_of_type_been_completely_destroyed(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
+    x: f32,
+    y: f32,
+    z: f32,
+    radius: f32,
     modelHash: u32,
     p5: bool,
 ) -> bool {
     let value = native!(
         bool,
         0x46494A2475701343,
-        native_parameters!(p0, p1, p2, p3, modelHash, p5)
+        native_parameters!(x, y, z, radius, modelHash, p5)
     );
 
     value
@@ -183,19 +183,28 @@ pub fn _get_object_offset_from_coords(
 }
 
 pub fn get_coords_and_rotation_of_closest_object_of_type(
-    object: i32,
-    radius: f32,
-    modelHash: u32,
     x: f32,
     y: f32,
     z: f32,
-    p6: *mut NativeVector3,
-    p7: i32,
+    radius: f32,
+    modelHash: u32,
+    outPosition: *mut NativeVector3,
+    outRotation: *mut NativeVector3,
+    rotationOrder: i32,
 ) -> u32 {
     let value = native!(
         u32,
         0x163F8B586BC95F2A,
-        native_parameters!(object, radius, modelHash, x, y, z, p6, p7)
+        native_parameters!(
+            x,
+            y,
+            z,
+            radius,
+            modelHash,
+            outPosition,
+            outRotation,
+            rotationOrder
+        )
     );
 
     value
@@ -237,7 +246,7 @@ pub fn get_state_of_closest_door_of_type(
 }
 
 pub fn _door_control(
-    doorHash: u32,
+    modelHash: u32,
     x: f32,
     y: f32,
     z: f32,
@@ -249,7 +258,7 @@ pub fn _door_control(
     let value = native!(
         (),
         0x9B12F9A24FABEDB0,
-        native_parameters!(doorHash, x, y, z, locked, xRotMult, yRotMult, zRotMult)
+        native_parameters!(modelHash, x, y, z, locked, xRotMult, yRotMult, zRotMult)
     );
 
     value
@@ -268,13 +277,13 @@ pub fn add_door_to_system(
     y: f32,
     z: f32,
     p5: bool,
-    p6: bool,
-    p7: bool,
+    scriptDoor: bool,
+    isLocal: bool,
 ) -> () {
     let value = native!(
         (),
         0x6F8838D03D1DC226,
-        native_parameters!(doorHash, modelHash, x, y, z, p5, p6, p7)
+        native_parameters!(doorHash, modelHash, x, y, z, p5, scriptDoor, isLocal)
     );
 
     value
@@ -286,11 +295,16 @@ pub fn remove_door_from_system(doorHash: u32) -> () {
     value
 }
 
-pub fn door_system_set_door_state(doorHash: u32, limit: i32, p2: bool, p3: bool) -> () {
+pub fn door_system_set_door_state(
+    doorHash: u32,
+    state: i32,
+    requestDoor: bool,
+    forceUpdate: bool,
+) -> () {
     let value = native!(
         (),
         0x6BAB9442830C7F53,
-        native_parameters!(doorHash, limit, p2, p3)
+        native_parameters!(doorHash, state, requestDoor, forceUpdate)
     );
 
     value
@@ -308,31 +322,46 @@ pub fn door_system_get_door_pending_state(doorHash: u32) -> i32 {
     value
 }
 
-pub fn door_system_set_automatic_rate(doorHash: u32, p1: f32, p2: bool, p3: bool) -> () {
+pub fn door_system_set_automatic_rate(
+    doorHash: u32,
+    rate: f32,
+    requestDoor: bool,
+    forceUpdate: bool,
+) -> () {
     let value = native!(
         (),
         0x03C27E13B42A0E82,
-        native_parameters!(doorHash, p1, p2, p3)
+        native_parameters!(doorHash, rate, requestDoor, forceUpdate)
     );
 
     value
 }
 
-pub fn door_system_set_automatic_distance(doorHash: u32, heading: f32, p2: bool, p3: bool) -> () {
+pub fn door_system_set_automatic_distance(
+    doorHash: u32,
+    distance: f32,
+    requestDoor: bool,
+    forceUpdate: bool,
+) -> () {
     let value = native!(
         (),
         0x9BA001CB45CBF627,
-        native_parameters!(doorHash, heading, p2, p3)
+        native_parameters!(doorHash, distance, requestDoor, forceUpdate)
     );
 
     value
 }
 
-pub fn door_system_set_open_ratio(doorHash: u32, ajar: f32, p2: bool, p3: bool) -> () {
+pub fn door_system_set_open_ratio(
+    doorHash: u32,
+    ajar: f32,
+    requestDoor: bool,
+    forceUpdate: bool,
+) -> () {
     let value = native!(
         (),
         0xB6E6FBA95C7324AC,
-        native_parameters!(doorHash, ajar, p2, p3)
+        native_parameters!(doorHash, ajar, requestDoor, forceUpdate)
     );
 
     value
@@ -350,11 +379,16 @@ pub fn door_system_get_open_ratio(doorHash: u32) -> f32 {
     value
 }
 
-pub fn door_system_set_spring_removed(doorHash: u32, p1: bool, p2: bool, p3: bool) -> () {
+pub fn door_system_set_spring_removed(
+    doorHash: u32,
+    removed: bool,
+    requestDoor: bool,
+    forceUpdate: bool,
+) -> () {
     let value = native!(
         (),
         0xC485E07E4F0B7958,
-        native_parameters!(doorHash, p1, p2, p3)
+        native_parameters!(doorHash, removed, requestDoor, forceUpdate)
     );
 
     value
@@ -526,8 +560,8 @@ pub fn _0x190428512b240692(
     value
 }
 
-pub fn _0x659f9d71f52843f8(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x659F9D71F52843F8, native_parameters!(p0, p1));
+pub fn _0x659f9d71f52843f8(id: i32, toggle: bool) -> () {
+    let value = native!((), 0x659F9D71F52843F8, native_parameters!(id, toggle));
 
     value
 }
@@ -566,29 +600,29 @@ pub fn does_object_of_type_exist_at_coords(
 }
 
 pub fn is_point_in_angled_area(
-    p0: f32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
-    p8: f32,
-    p9: f32,
-    p10: bool,
-    p11: bool,
+    xPos: f32,
+    yPos: f32,
+    zPos: f32,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
+    debug: bool,
+    includeZ: bool,
 ) -> bool {
     let value = native!(
         bool,
         0x2A70BAE8883E4C81,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
+        native_parameters!(xPos, yPos, zPos, x1, y1, z1, x2, y2, z2, width, debug, includeZ)
     );
 
     value
 }
 
-pub fn _set_object_can_climb_on(object: i32, toggle: bool) -> () {
+pub fn set_object_allow_low_lod_buoyancy(object: i32, toggle: bool) -> () {
     let value = native!((), 0x4D89D607CB3DD1D2, native_parameters!(object, toggle));
 
     value
@@ -655,7 +689,7 @@ pub fn remove_object_high_detail_model(object: i32) -> () {
     value
 }
 
-pub fn _0xe7e4c198b0185900(p0: i32, p1: u32, p2: bool) -> () {
+pub fn break_object_fragment_child(p0: i32, p1: u32, p2: bool) -> () {
     let value = native!((), 0xE7E4C198B0185900, native_parameters!(p0, p1, p2));
 
     value
@@ -703,8 +737,8 @@ pub fn _set_unk_global_bool_related_to_damage(value: bool) -> () {
     value
 }
 
-pub fn _set_create_weapon_object_light_source(p0: u32, p1: bool) -> () {
-    let value = native!((), 0xBCE595371A5FBAAF, native_parameters!(p0, p1));
+pub fn _set_create_weapon_object_light_source(object: i32, toggle: bool) -> () {
+    let value = native!((), 0xBCE595371A5FBAAF, native_parameters!(object, toggle));
 
     value
 }
@@ -891,13 +925,13 @@ pub fn _hide_pickup(pickupObject: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0x0bf3b3bd47d79c08(modelHash: u32, p1: i32) -> () {
+pub fn set_max_num_portable_pickups_carried_by_player(modelHash: u32, p1: i32) -> () {
     let value = native!((), 0x0BF3B3BD47D79C08, native_parameters!(modelHash, p1));
 
     value
 }
 
-pub fn _0x78857fc65cadb909(p0: bool) -> () {
+pub fn set_local_player_can_collect_portable_pickups(p0: bool) -> () {
     let value = native!((), 0x78857FC65CADB909, native_parameters!(p0));
 
     value
@@ -1027,7 +1061,7 @@ pub fn force_pickup_regenerate(p0: u32) -> () {
     value
 }
 
-pub fn _0x616093ec6b139dd9(player: i32, pickupHash: u32, toggle: bool) -> () {
+pub fn _toggle_use_pickups_for_player(player: i32, pickupHash: u32, toggle: bool) -> () {
     let value = native!(
         (),
         0x616093EC6B139DD9,
@@ -1059,7 +1093,7 @@ pub fn set_team_pickup_object(object: i32, p1: u32, p2: bool) -> () {
     value
 }
 
-pub fn _0x92aefb5f6e294023(object: i32, p1: bool, p2: bool) -> () {
+pub fn prevent_collection_of_portable_pickup(object: i32, p1: bool, p2: bool) -> () {
     let value = native!((), 0x92AEFB5F6E294023, native_parameters!(object, p1, p2));
 
     value
@@ -1155,14 +1189,14 @@ pub fn _0x641f272b52e2f0f8(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _0x4c134b4df76025d0(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x4C134B4DF76025D0, native_parameters!(p0, p1));
+pub fn _0x4c134b4df76025d0(pickup: i32, toggle: bool) -> () {
+    let value = native!((), 0x4C134B4DF76025D0, native_parameters!(pickup, toggle));
 
     value
 }
 
-pub fn _0xaa059c615de9dd03(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xAA059C615DE9DD03, native_parameters!(p0, p1));
+pub fn _0xaa059c615de9dd03(pickup: i32, toggle: bool) -> () {
+    let value = native!((), 0xAA059C615DE9DD03, native_parameters!(pickup, toggle));
 
     value
 }
@@ -1185,7 +1219,7 @@ pub fn _0x762db2d380b48d04(p0: u32) -> () {
     value
 }
 
-pub fn _highlight_placement_coords(x: f32, y: f32, z: f32, colorIndex: i32) -> () {
+pub fn render_fake_pickup_glow(x: f32, y: f32, z: f32, colorIndex: i32) -> () {
     let value = native!(
         (),
         0x3430676B11CDF21D,
@@ -1201,14 +1235,14 @@ pub fn _0x7813e8b8c4ae4799(pickup: i32) -> () {
     value
 }
 
-pub fn _0xbffe53ae7e67fcdc(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xBFFE53AE7E67FCDC, native_parameters!(p0, p1));
+pub fn _0xbffe53ae7e67fcdc(pickup: i32, toggle: bool) -> () {
+    let value = native!((), 0xBFFE53AE7E67FCDC, native_parameters!(pickup, toggle));
 
     value
 }
 
-pub fn _0xd05a3241b9a86f19(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xD05A3241B9A86F19, native_parameters!(p0, p1));
+pub fn _0xd05a3241b9a86f19(entity: i32, toggle: bool) -> () {
+    let value = native!((), 0xD05A3241B9A86F19, native_parameters!(entity, toggle));
 
     value
 }
@@ -1225,8 +1259,8 @@ pub fn get_weapon_type_from_pickup_type(pickupHash: u32) -> u32 {
     value
 }
 
-pub fn _0xd6429a016084f1a5(p0: u32) -> u32 {
-    let value = native!(u32, 0xD6429A016084F1A5, native_parameters!(p0));
+pub fn _get_pickup_hash_from_weapon(weaponHash: u32) -> u32 {
+    let value = native!(u32, 0xD6429A016084F1A5, native_parameters!(weaponHash));
 
     value
 }
@@ -1253,12 +1287,25 @@ pub fn _set_object_texture_variation(object: i32, textureVariation: i32) -> () {
     value
 }
 
-pub fn _0xf12e33034d887f66(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32) -> u32 {
+pub fn _set_texture_variation_of_closest_object_of_type(
+    x: f32,
+    y: f32,
+    z: f32,
+    radius: f32,
+    modelHash: u32,
+    textureVariation: i32,
+) -> bool {
     let value = native!(
-        u32,
+        bool,
         0xF12E33034D887F66,
-        native_parameters!(p0, p1, p2, p3, p4, p5)
+        native_parameters!(x, y, z, radius, modelHash, textureVariation)
     );
+
+    value
+}
+
+pub fn _0x31574b1b41268673(p0: u32, p1: u32) -> () {
+    let value = native!((), 0x31574B1B41268673, native_parameters!(p0, p1));
 
     value
 }
@@ -1273,8 +1320,8 @@ pub fn _set_object_light_color(object: i32, p1: bool, r: i32, g: i32, b: i32) ->
     value
 }
 
-pub fn _0xadf084fb8f075d06(p0: u32) -> u32 {
-    let value = native!(u32, 0xADF084FB8F075D06, native_parameters!(p0));
+pub fn _0xadf084fb8f075d06(object: i32) -> bool {
+    let value = native!(bool, 0xADF084FB8F075D06, native_parameters!(object));
 
     value
 }
@@ -1285,14 +1332,14 @@ pub fn _0x3b2fd68db5f8331c(object: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _set_object_stunt_prop_speedup(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x96EE0EBA0163DF80, native_parameters!(p0, p1));
+pub fn _set_object_stunt_prop_speedup(object: i32, p1: u32) -> () {
+    let value = native!((), 0x96EE0EBA0163DF80, native_parameters!(object, p1));
 
     value
 }
 
-pub fn _set_object_stunt_prop_duration(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xDF6CA0330F2E737B, native_parameters!(p0, p1));
+pub fn _set_object_stunt_prop_duration(object: i32, duration: f32) -> () {
+    let value = native!((), 0xDF6CA0330F2E737B, native_parameters!(object, duration));
 
     value
 }
@@ -1327,32 +1374,40 @@ pub fn _0x63ecf581bc70e363(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _set_enable_arena_prop_physics(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0x911024442F4898F0, native_parameters!(p0, p1, p2));
+pub fn _set_enable_arena_prop_physics(object: i32, toggle: bool, p2: i32) -> () {
+    let value = native!(
+        (),
+        0x911024442F4898F0,
+        native_parameters!(object, toggle, p2)
+    );
 
     value
 }
 
-pub fn _set_enable_arena_prop_physics_on_ped(p0: u32, p1: u32, p2: u32, p3: u32) -> () {
-    let value = native!((), 0xB20834A7DD3D8896, native_parameters!(p0, p1, p2, p3));
+pub fn _set_enable_arena_prop_physics_on_ped(object: i32, toggle: bool, p2: i32, ped: i32) -> () {
+    let value = native!(
+        (),
+        0xB20834A7DD3D8896,
+        native_parameters!(object, toggle, p2, ped)
+    );
 
     value
 }
 
-pub fn _0x734e1714d077da9a(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x734E1714D077DA9A, native_parameters!(p0, p1));
+pub fn _0x734e1714d077da9a(object: i32, toggle: bool) -> () {
+    let value = native!((), 0x734E1714D077DA9A, native_parameters!(object, toggle));
 
     value
 }
 
-pub fn _0x1a6cbb06e2d0d79d(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x1A6CBB06E2D0D79D, native_parameters!(p0, p1));
+pub fn _0x1a6cbb06e2d0d79d(object: i32, p1: bool) -> () {
+    let value = native!((), 0x1A6CBB06E2D0D79D, native_parameters!(object, p1));
 
     value
 }
 
-pub fn _get_is_arena_prop_physics_disabled(p0: u32, p1: u32) -> u32 {
-    let value = native!(u32, 0x43C677F1E1158005, native_parameters!(p0, p1));
+pub fn _get_is_arena_prop_physics_disabled(object: i32, p1: u32) -> bool {
+    let value = native!(bool, 0x43C677F1E1158005, native_parameters!(object, p1));
 
     value
 }
@@ -1363,14 +1418,14 @@ pub fn _0x3bd770d281982db5(p0: u32, p1: u32) -> u32 {
     value
 }
 
-pub fn _0x1c57c94a6446492a(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x1C57C94A6446492A, native_parameters!(p0, p1));
+pub fn _0x1c57c94a6446492a(object: i32, toggle: bool) -> () {
+    let value = native!((), 0x1C57C94A6446492A, native_parameters!(object, toggle));
 
     value
 }
 
-pub fn _0xb5b7742424bd4445(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xB5B7742424BD4445, native_parameters!(p0, p1));
+pub fn _0xb5b7742424bd4445(object: i32, toggle: bool) -> () {
+    let value = native!((), 0xB5B7742424BD4445, native_parameters!(object, toggle));
 
     value
 }

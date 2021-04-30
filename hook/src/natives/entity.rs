@@ -77,8 +77,12 @@ pub fn has_entity_clear_los_to_entity(entity1: i32, entity2: i32, traceType: i32
     value
 }
 
-pub fn _0x394bde2a7bba031e(p0: u32, p1: u32, p2: u32) -> u32 {
-    let value = native!(u32, 0x394BDE2A7BBA031E, native_parameters!(p0, p1, p2));
+pub fn _has_entity_clear_los_to_entity_2(entity1: i32, entity2: i32, traceType: i32) -> u32 {
+    let value = native!(
+        u32,
+        0x394BDE2A7BBA031E,
+        native_parameters!(entity1, entity2, traceType)
+    );
 
     value
 }
@@ -252,15 +256,15 @@ pub fn get_entity_height_above_ground(entity: i32) -> f32 {
 
 pub fn get_entity_matrix(
     entity: i32,
-    rightVector: *mut NativeVector3,
     forwardVector: *mut NativeVector3,
+    rightVector: *mut NativeVector3,
     upVector: *mut NativeVector3,
     position: *mut NativeVector3,
 ) -> () {
     let value = native!(
         (),
         0xECB2FC7235A7D137,
-        native_parameters!(entity, rightVector, forwardVector, upVector, position)
+        native_parameters!(entity, forwardVector, rightVector, upVector, position)
     );
 
     value
@@ -559,23 +563,21 @@ pub fn is_entity_in_air(entity: i32) -> bool {
 
 pub fn is_entity_in_angled_area(
     entity: i32,
-    originX: f32,
-    originY: f32,
-    originZ: f32,
-    edgeX: f32,
-    edgeY: f32,
-    edgeZ: f32,
-    angle: f32,
-    p8: bool,
-    p9: bool,
+    x1: f32,
+    y1: f32,
+    z1: f32,
+    x2: f32,
+    y2: f32,
+    z2: f32,
+    width: f32,
+    debug: bool,
+    includeZ: bool,
     p10: u32,
 ) -> bool {
     let value = native!(
         bool,
         0x51210CED3DA1C78A,
-        native_parameters!(
-            entity, originX, originY, originZ, edgeX, edgeY, edgeZ, angle, p8, p9, p10
-        )
+        native_parameters!(entity, x1, y1, z1, x2, y2, z2, width, debug, includeZ, p10)
     );
 
     value
@@ -930,11 +932,11 @@ pub fn delete_entity(entity: *mut i32) -> () {
     value
 }
 
-pub fn detach_entity(entity: i32, p1: bool, collision: bool) -> () {
+pub fn detach_entity(entity: i32, dynamic: bool, collision: bool) -> () {
     let value = native!(
         (),
         0x961AC54BF0613F5D,
-        native_parameters!(entity, p1, collision)
+        native_parameters!(entity, dynamic, collision)
     );
 
     value
@@ -946,7 +948,7 @@ pub fn freeze_entity_position(entity: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _set_entity_something(entity: i32, toggle: bool) -> () {
+pub fn _set_entity_cleanup_by_engine(entity: i32, toggle: bool) -> () {
     let value = native!((), 0x3910051CCECDB00C, native_parameters!(entity, toggle));
 
     value
@@ -1251,20 +1253,29 @@ pub fn set_entity_coords(
     value
 }
 
-pub fn _set_entity_coords_2(
+pub fn set_entity_coords_without_plants_reset(
     entity: i32,
     xPos: f32,
     yPos: f32,
     zPos: f32,
-    xAxis: bool,
-    yAxis: bool,
-    zAxis: bool,
+    alive: bool,
+    deadFlag: bool,
+    ragdollFlag: bool,
     clearArea: bool,
 ) -> () {
     let value = native!(
         (),
         0x621873ECE1178967,
-        native_parameters!(entity, xPos, yPos, zPos, xAxis, yAxis, zAxis, clearArea)
+        native_parameters!(
+            entity,
+            xPos,
+            yPos,
+            zPos,
+            alive,
+            deadFlag,
+            ragdollFlag,
+            clearArea
+        )
     );
 
     value
@@ -1399,7 +1410,7 @@ pub fn _get_entity_proofs(
     explosionProof: *mut bool,
     collisionProof: *mut bool,
     meleeProof: *mut bool,
-    p6: *mut bool,
+    steamProof: *mut bool,
     p7: *mut bool,
     drownProof: *mut bool,
 ) -> bool {
@@ -1413,7 +1424,7 @@ pub fn _get_entity_proofs(
             explosionProof,
             collisionProof,
             meleeProof,
-            p6,
+            steamProof,
             p7,
             drownProof
         )
@@ -1601,11 +1612,11 @@ pub fn remove_model_swap(
     value
 }
 
-pub fn create_model_hide(x: f32, y: f32, z: f32, radius: f32, model: u32, p5: bool) -> () {
+pub fn create_model_hide(x: f32, y: f32, z: f32, radius: f32, modelHash: u32, p5: bool) -> () {
     let value = native!(
         (),
         0x8A97BCA30A0CE478,
-        native_parameters!(x, y, z, radius, model, p5)
+        native_parameters!(x, y, z, radius, modelHash, p5)
     );
 
     value
@@ -1616,23 +1627,23 @@ pub fn create_model_hide_excluding_script_objects(
     y: f32,
     z: f32,
     radius: f32,
-    model: u32,
+    modelHash: u32,
     p5: bool,
 ) -> () {
     let value = native!(
         (),
         0x3A52AE588830BF7F,
-        native_parameters!(x, y, z, radius, model, p5)
+        native_parameters!(x, y, z, radius, modelHash, p5)
     );
 
     value
 }
 
-pub fn remove_model_hide(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32) -> () {
+pub fn remove_model_hide(x: f32, y: f32, z: f32, radius: f32, modelHash: u32, p5: bool) -> () {
     let value = native!(
         (),
         0xD9E3006FB3CBD765,
-        native_parameters!(p0, p1, p2, p3, p4, p5)
+        native_parameters!(x, y, z, radius, modelHash, p5)
     );
 
     value
@@ -1692,7 +1703,7 @@ pub fn _0xdc6f8601faf2e893(entity: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _0x2c2e3dc128f44309(entity: i32, p1: bool) -> () {
+pub fn _set_entity_decals_disabled(entity: i32, p1: bool) -> () {
     let value = native!((), 0x2C2E3DC128F44309, native_parameters!(entity, p1));
 
     value
@@ -1714,7 +1725,7 @@ pub fn _get_entity_bone_rotation(entity: i32, boneIndex: i32) -> NativeVector3 {
     value
 }
 
-pub fn _get_entity_bone_coords(entity: i32, boneIndex: i32) -> NativeVector3 {
+pub fn _get_entity_bone_position_2(entity: i32, boneIndex: i32) -> NativeVector3 {
     let value = native!(
         NativeVector3,
         0x46F8696933A63C9B,
@@ -1734,8 +1745,8 @@ pub fn _get_entity_bone_rotation_local(entity: i32, boneIndex: i32) -> NativeVec
     value
 }
 
-pub fn _0xb328dcc3a3aa401b(p0: u32) -> u32 {
-    let value = native!(u32, 0xB328DCC3A3AA401B, native_parameters!(p0));
+pub fn _get_entity_bone_count(entity: i32) -> i32 {
+    let value = native!(i32, 0xB328DCC3A3AA401B, native_parameters!(entity));
 
     value
 }
@@ -1752,8 +1763,8 @@ pub fn _0xb17bc6453f6cf5ac(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _0x68b562e124cc0aef(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x68B562E124CC0AEF, native_parameters!(p0, p1));
+pub fn _0x68b562e124cc0aef(pickup: i32, pickup2: i32) -> () {
+    let value = native!((), 0x68B562E124CC0AEF, native_parameters!(pickup, pickup2));
 
     value
 }
@@ -1774,8 +1785,8 @@ pub fn _get_entity_pickup(entity: i32, modelHash: u32) -> i32 {
     value
 }
 
-pub fn _0xd7b80e7c3befc396(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xD7B80E7C3BEFC396, native_parameters!(p0, p1));
+pub fn _0xd7b80e7c3befc396(pickup: i32, toggle: bool) -> () {
+    let value = native!((), 0xD7B80E7C3BEFC396, native_parameters!(pickup, toggle));
 
     value
 }

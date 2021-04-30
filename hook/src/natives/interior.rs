@@ -89,6 +89,12 @@ pub fn _0x82ebb79e258fa2b7(entity: i32, interior: i32) -> () {
     value
 }
 
+pub fn _clear_interior_for_entity(entity: i32) -> () {
+    let value = native!((), 0x85D5422B2039A70D, native_parameters!(entity));
+
+    value
+}
+
 pub fn _0x38c1cb1cb119a016(p0: u32, p1: u32) -> () {
     let value = native!((), 0x38C1CB1CB119A016, native_parameters!(p0, p1));
 
@@ -133,8 +139,8 @@ pub fn clear_room_for_game_viewport() -> () {
     value
 }
 
-pub fn _0xe7d267ec6ca966c3() -> u32 {
-    let value = native!(u32, 0xE7D267EC6CA966C3, native_parameters!());
+pub fn _get_interior_from_gameplay_cam() -> i32 {
+    let value = native!(i32, 0xE7D267EC6CA966C3, native_parameters!());
 
     value
 }
@@ -284,8 +290,8 @@ pub fn enable_exterior_cull_model_this_frame(mapObjectHash: u32) -> () {
     value
 }
 
-pub fn _enable_script_cull_model_this_frame(p0: u32) -> () {
-    let value = native!((), 0x50C375537449F369, native_parameters!(p0));
+pub fn _enable_script_cull_model_this_frame(mapObjectHash: u32) -> () {
+    let value = native!((), 0x50C375537449F369, native_parameters!(mapObjectHash));
 
     value
 }

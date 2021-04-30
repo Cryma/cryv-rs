@@ -155,23 +155,28 @@ pub fn get_event_at_index(eventGroup: i32, eventIndex: i32) -> i32 {
 pub fn get_event_data(
     eventGroup: i32,
     eventIndex: i32,
-    argStruct: *mut i32,
-    argStructSize: i32,
+    eventData: *mut u32,
+    eventDataSize: i32,
 ) -> bool {
     let value = native!(
         bool,
         0x2902843FCD2B2D79,
-        native_parameters!(eventGroup, eventIndex, argStruct, argStructSize)
+        native_parameters!(eventGroup, eventIndex, eventData, eventDataSize)
     );
 
     value
 }
 
-pub fn trigger_script_event(eventGroup: i32, args: *mut i32, argCount: i32, bit: i32) -> () {
+pub fn trigger_script_event(
+    eventGroup: i32,
+    eventData: *mut u32,
+    eventDataSize: i32,
+    playerBits: i32,
+) -> () {
     let value = native!(
         (),
         0x5AE99C571D5BBE5D,
-        native_parameters!(eventGroup, args, argCount, bit)
+        native_parameters!(eventGroup, eventData, eventDataSize, playerBits)
     );
 
     value
@@ -271,11 +276,16 @@ pub fn _0x829cd22e043a2577(p0: u32) -> i32 {
     value
 }
 
-pub fn _trigger_script_event_2(eventGroup: i32, args: *mut i32, argCount: i32, bit: i32) -> () {
+pub fn _trigger_script_event_2(
+    eventGroup: i32,
+    eventData: *mut u32,
+    eventDataSize: i32,
+    playerBits: i32,
+) -> () {
     let value = native!(
         (),
         0xA40CC53DF8E50837,
-        native_parameters!(eventGroup, args, argCount, bit)
+        native_parameters!(eventGroup, eventData, eventDataSize, playerBits)
     );
 
     value

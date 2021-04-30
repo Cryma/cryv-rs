@@ -8,7 +8,7 @@ pub fn create_ped(
     z: f32,
     heading: f32,
     isNetwork: bool,
-    netMissionEntity: bool,
+    bScriptHostPed: bool,
 ) -> i32 {
     let value = native!(
         i32,
@@ -21,7 +21,7 @@ pub fn create_ped(
             z,
             heading,
             isNetwork,
-            netMissionEntity
+            bScriptHostPed
         )
     );
 
@@ -34,11 +34,11 @@ pub fn delete_ped(ped: *mut i32) -> () {
     value
 }
 
-pub fn clone_ped(ped: i32, heading: f32, isNetwork: bool, netMissionEntity: bool) -> i32 {
+pub fn clone_ped(ped: i32, heading: f32, isNetwork: bool, bScriptHostPed: bool) -> i32 {
     let value = native!(
         i32,
         0xEF29A16337FACADB,
-        native_parameters!(ped, heading, isNetwork, netMissionEntity)
+        native_parameters!(ped, heading, isNetwork, bScriptHostPed)
     );
 
     value
@@ -48,13 +48,13 @@ pub fn _clone_ped_ex(
     ped: i32,
     heading: f32,
     isNetwork: bool,
-    netMissionEntity: bool,
+    bScriptHostPed: bool,
     p4: u32,
 ) -> i32 {
     let value = native!(
         i32,
         0x668FD40BCBA5DE48,
-        native_parameters!(ped, heading, isNetwork, netMissionEntity, p4)
+        native_parameters!(ped, heading, isNetwork, bScriptHostPed, p4)
     );
 
     value
@@ -162,19 +162,12 @@ pub fn create_ped_inside_vehicle(
     modelHash: u32,
     seat: i32,
     isNetwork: bool,
-    netMissionEntity: bool,
+    bScriptHostPed: bool,
 ) -> i32 {
     let value = native!(
         i32,
         0x7DD959874C1FD534,
-        native_parameters!(
-            vehicle,
-            pedType,
-            modelHash,
-            seat,
-            isNetwork,
-            netMissionEntity
-        )
+        native_parameters!(vehicle, pedType, modelHash, seat, isNetwork, bScriptHostPed)
     );
 
     value
@@ -447,7 +440,7 @@ pub fn clear_ped_non_creation_area() -> () {
     value
 }
 
-pub fn _0x4759cc730f947c81() -> () {
+pub fn instantly_fill_ped_population() -> () {
     let value = native!((), 0x4759CC730F947C81, native_parameters!());
 
     value
@@ -495,7 +488,7 @@ pub fn _0xff4803bc019852d9(p0: f32, p1: u32) -> () {
     value
 }
 
-pub fn _0x6b0e6172c9a4d902(p0: bool) -> () {
+pub fn set_ambient_peds_drop_money(p0: bool) -> () {
     let value = native!((), 0x6B0E6172C9A4D902, native_parameters!(p0));
 
     value
@@ -805,7 +798,7 @@ pub fn set_ped_reserve_parachute_tint_index(ped: i32, p1: u32) -> () {
     value
 }
 
-pub fn _create_parachute_object(ped: i32, p1: bool, p2: bool) -> i32 {
+pub fn create_parachute_bag_object(ped: i32, p1: bool, p2: bool) -> i32 {
     let value = native!(i32, 0x8C4F3BF23B6237DB, native_parameters!(ped, p1, p2));
 
     value
@@ -1189,8 +1182,8 @@ pub fn remove_relationship_group(groupHash: u32) -> () {
     value
 }
 
-pub fn _does_relationship_group_exist(p0: u32) -> u32 {
-    let value = native!(u32, 0xCC6E3B6BB69501F1, native_parameters!(p0));
+pub fn _does_relationship_group_exist(groupHash: u32) -> bool {
+    let value = native!(bool, 0xCC6E3B6BB69501F1, native_parameters!(groupHash));
 
     value
 }
@@ -1219,17 +1212,17 @@ pub fn get_relationship_between_groups(group1: u32, group2: u32) -> i32 {
     value
 }
 
-pub fn _0x5615e0c5eb2bc6e2(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x5615E0C5EB2BC6E2, native_parameters!(p0, p1));
+pub fn _set_relationship_group_dont_affect_wanted_level(group: u32, p1: bool) -> () {
+    let value = native!((), 0x5615E0C5EB2BC6E2, native_parameters!(group, p1));
 
     value
 }
 
-pub fn _0xad27d957598e49e9(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32, p5: u32) -> () {
+pub fn _0xad27d957598e49e9(ped: i32, p1: u32, p2: f32, hash: u32, p4: u32, p5: u32) -> () {
     let value = native!(
         (),
         0xAD27D957598E49E9,
-        native_parameters!(p0, p1, p2, p3, p4, p5)
+        native_parameters!(ped, p1, p2, hash, p4, p5)
     );
 
     value
@@ -1253,6 +1246,16 @@ pub fn set_ped_to_inform_respected_friends(ped: i32, radius: f32, maxFriends: i3
 
 pub fn is_ped_responding_to_event(ped: i32, event: u32) -> bool {
     let value = native!(bool, 0x625B774D75C87068, native_parameters!(ped, event));
+
+    value
+}
+
+pub fn _get_ped_event_data(ped: i32, eventType: i32, outData: *mut u32) -> bool {
+    let value = native!(
+        bool,
+        0xBA656A3BB01BDEA3,
+        native_parameters!(ped, eventType, outData)
+    );
 
     value
 }
@@ -1433,11 +1436,17 @@ pub fn _0x2735233a786b1bef(ped: i32, p1: f32) -> () {
     value
 }
 
-pub fn set_ped_vehicle_forced_seat_usage(ped: i32, vehicle: i32, seatIndex: i32, flags: i32) -> () {
+pub fn set_ped_vehicle_forced_seat_usage(
+    ped: i32,
+    vehicle: i32,
+    seatIndex: i32,
+    flags: i32,
+    p4: u32,
+) -> () {
     let value = native!(
         (),
         0x952F06BEECD775CC,
-        native_parameters!(ped, vehicle, seatIndex, flags)
+        native_parameters!(ped, vehicle, seatIndex, flags, p4)
     );
 
     value
@@ -2072,8 +2081,8 @@ pub fn _set_ped_eye_color(ped: i32, index: i32) -> () {
     value
 }
 
-pub fn _0x76bba2cee66d47e9(p0: u32) -> u32 {
-    let value = native!(u32, 0x76BBA2CEE66D47E9, native_parameters!(p0));
+pub fn _get_ped_eye_color(ped: i32) -> i32 {
+    let value = native!(i32, 0x76BBA2CEE66D47E9, native_parameters!(ped));
 
     value
 }
@@ -2138,20 +2147,38 @@ pub fn _get_num_makeup_colors() -> i32 {
     value
 }
 
-pub fn _get_ped_hair_rgb_color(p0: i32, r: *mut i32, g: *mut i32, b: *mut i32) -> () {
-    let value = native!((), 0x4852FC386E2E1BB5, native_parameters!(p0, r, g, b));
+pub fn _get_ped_hair_rgb_color(
+    hairColorIndex: i32,
+    outR: *mut i32,
+    outG: *mut i32,
+    outB: *mut i32,
+) -> () {
+    let value = native!(
+        (),
+        0x4852FC386E2E1BB5,
+        native_parameters!(hairColorIndex, outR, outG, outB)
+    );
 
     value
 }
 
-pub fn _get_ped_makeup_rgb_color(p0: i32, r: *mut i32, g: *mut i32, b: *mut i32) -> () {
-    let value = native!((), 0x013E5CFC38CD5387, native_parameters!(p0, r, g, b));
+pub fn _get_ped_makeup_rgb_color(
+    makeupColorIndex: i32,
+    outR: *mut i32,
+    outG: *mut i32,
+    outB: *mut i32,
+) -> () {
+    let value = native!(
+        (),
+        0x013E5CFC38CD5387,
+        native_parameters!(makeupColorIndex, outR, outG, outB)
+    );
 
     value
 }
 
-pub fn _is_ped_hair_color_valid_2(p0: u32) -> bool {
-    let value = native!(bool, 0xED6D8E27A43B8CDE, native_parameters!(p0));
+pub fn _is_ped_hair_color_valid_2(colorId: i32) -> bool {
+    let value = native!(bool, 0xED6D8E27A43B8CDE, native_parameters!(colorId));
 
     value
 }
@@ -2162,14 +2189,14 @@ pub fn _0xea9960d07dadcf10(p0: u32) -> i32 {
     value
 }
 
-pub fn _is_ped_lipstick_color_valid_2(p0: u32) -> bool {
-    let value = native!(bool, 0x3E802F11FBE27674, native_parameters!(p0));
+pub fn _is_ped_lipstick_color_valid_2(colorId: i32) -> bool {
+    let value = native!(bool, 0x3E802F11FBE27674, native_parameters!(colorId));
 
     value
 }
 
-pub fn _is_ped_blush_color_valid_2(p0: u32) -> bool {
-    let value = native!(bool, 0xF41B5D290C99A3D6, native_parameters!(p0));
+pub fn _is_ped_blush_color_valid_2(colorId: i32) -> bool {
+    let value = native!(bool, 0xF41B5D290C99A3D6, native_parameters!(colorId));
 
     value
 }
@@ -2198,8 +2225,8 @@ pub fn _is_ped_blush_color_valid(colorID: i32) -> bool {
     value
 }
 
-pub fn _0x09e7eca981d9b210(p0: u32) -> u32 {
-    let value = native!(u32, 0x09E7ECA981D9B210, native_parameters!(p0));
+pub fn _is_ped_body_blemish_valid(colorId: i32) -> bool {
+    let value = native!(bool, 0x09E7ECA981D9B210, native_parameters!(colorId));
 
     value
 }
@@ -2230,14 +2257,14 @@ pub fn has_ped_head_blend_finished(ped: i32) -> bool {
     value
 }
 
-pub fn _0x4668d80430d6c299(ped: i32) -> () {
+pub fn finalize_head_blend(ped: i32) -> () {
     let value = native!((), 0x4668D80430D6C299, native_parameters!(ped));
 
     value
 }
 
-pub fn set_head_blend_palette_color(ped: i32, r: i32, g: i32, b: i32, p4: i32) -> () {
-    let value = native!((), 0xCC9682B8951C5229, native_parameters!(ped, r, g, b, p4));
+pub fn set_head_blend_palette_color(ped: i32, r: i32, g: i32, b: i32, id: i32) -> () {
+    let value = native!((), 0xCC9682B8951C5229, native_parameters!(ped, r, g, b, id));
 
     value
 }
@@ -2373,14 +2400,14 @@ pub fn get_ped_prop_texture_index(ped: i32, componentId: i32) -> i32 {
     value
 }
 
-pub fn clear_ped_parachute_pack_variation(p0: u32) -> () {
-    let value = native!((), 0x1280804F7CFD2D6C, native_parameters!(p0));
+pub fn clear_ped_parachute_pack_variation(ped: i32) -> () {
+    let value = native!((), 0x1280804F7CFD2D6C, native_parameters!(ped));
 
     value
 }
 
-pub fn _0x36c6984c3ed0c911(p0: u32) -> () {
-    let value = native!((), 0x36C6984C3ED0C911, native_parameters!(p0));
+pub fn _set_ped_scuba_gear_variation(ped: i32) -> () {
+    let value = native!((), 0x36C6984C3ED0C911, native_parameters!(ped));
 
     value
 }
@@ -3193,20 +3220,20 @@ pub fn _0xec6935ebe0847b90(p0: u32, p1: u32, p2: u32, p3: u32) -> u32 {
     value
 }
 
-pub fn _0xa3a9299c4f2adb98(p0: u32) -> () {
-    let value = native!((), 0xA3A9299C4F2ADB98, native_parameters!(p0));
+pub fn set_ped_should_play_normal_scenario_exit(ped: i32) -> () {
+    let value = native!((), 0xA3A9299C4F2ADB98, native_parameters!(ped));
 
     value
 }
 
-pub fn _0xf1c03a5352243a30(p0: u32) -> () {
-    let value = native!((), 0xF1C03A5352243A30, native_parameters!(p0));
+pub fn set_ped_should_play_immediate_scenario_exit(ped: i32) -> () {
+    let value = native!((), 0xF1C03A5352243A30, native_parameters!(ped));
 
     value
 }
 
-pub fn _0xeeed8fafec331a70(p0: u32, p1: u32, p2: u32, p3: u32) -> u32 {
-    let value = native!(u32, 0xEEED8FAFEC331A70, native_parameters!(p0, p1, p2, p3));
+pub fn set_ped_should_play_flee_scenario_exit(ped: i32, p1: u32, p2: u32, p3: u32) -> u32 {
+    let value = native!(u32, 0xEEED8FAFEC331A70, native_parameters!(ped, p1, p2, p3));
 
     value
 }
@@ -3249,7 +3276,7 @@ pub fn play_facial_anim(
     value
 }
 
-pub fn _0x5687c7f05b39e401(ped: i32, animDict: &std::ffi::CString) -> () {
+pub fn _set_facial_clipset_override(ped: i32, animDict: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0x5687C7F05B39E401,
@@ -3489,8 +3516,8 @@ pub fn set_ped_generates_dead_body_events(ped: i32, toggle: bool) -> () {
     value
 }
 
-pub fn _block_ped_dead_body_shocking_events(ped: i32, p1: bool) -> () {
-    let value = native!((), 0xE43A13C9E4CCCBCF, native_parameters!(ped, p1));
+pub fn _block_ped_dead_body_shocking_events(ped: i32, toggle: bool) -> () {
+    let value = native!((), 0xE43A13C9E4CCCBCF, native_parameters!(ped, toggle));
 
     value
 }
@@ -3523,7 +3550,7 @@ pub fn remove_ped_helmet(ped: i32, instantly: bool) -> () {
     value
 }
 
-pub fn _0x14590ddbedb1ec85(ped: i32) -> bool {
+pub fn is_ped_taking_off_helmet(ped: i32) -> bool {
     let value = native!(bool, 0x14590DDBEDB1EC85, native_parameters!(ped));
 
     value
@@ -3583,20 +3610,20 @@ pub fn is_ped_wearing_helmet(ped: i32) -> bool {
     value
 }
 
-pub fn _0x687c0b594907d2e8(ped: i32) -> () {
+pub fn clear_ped_stored_hat_prop(ped: i32) -> () {
     let value = native!((), 0x687C0B594907D2E8, native_parameters!(ped));
 
     value
 }
 
-pub fn _0x451294e859ecc018(p0: u32) -> u32 {
-    let value = native!(u32, 0x451294E859ECC018, native_parameters!(p0));
+pub fn get_ped_helmet_stored_hat_prop_index(ped: i32) -> u32 {
+    let value = native!(u32, 0x451294E859ECC018, native_parameters!(ped));
 
     value
 }
 
-pub fn _0x9d728c1e12bf5518(p0: u32) -> u32 {
-    let value = native!(u32, 0x9D728C1E12BF5518, native_parameters!(p0));
+pub fn get_ped_helmet_stored_hat_tex_index(ped: i32) -> u32 {
+    let value = native!(u32, 0x9D728C1E12BF5518, native_parameters!(ped));
 
     value
 }
@@ -3849,7 +3876,7 @@ pub fn is_any_ped_near_point(x: f32, y: f32, z: f32, radius: f32) -> bool {
     value
 }
 
-pub fn _0x2208438012482a1a(ped: i32, p1: bool, p2: bool) -> () {
+pub fn force_ped_ai_and_animation_update(ped: i32, p1: bool, p2: bool) -> () {
     let value = native!((), 0x2208438012482A1A, native_parameters!(ped, p1, p2));
 
     value
@@ -4003,8 +4030,8 @@ pub fn _0x1216e0bfa72cc703(p0: u32, p1: u32) -> () {
     value
 }
 
-pub fn _0x2b5aa717a181fb4c(p0: u32, p1: bool) -> () {
-    let value = native!((), 0x2B5AA717A181FB4C, native_parameters!(p0, p1));
+pub fn set_ped_ao_blob_rendering(ped: i32, toggle: bool) -> () {
+    let value = native!((), 0x2B5AA717A181FB4C, native_parameters!(ped, toggle));
 
     value
 }
@@ -4148,8 +4175,12 @@ pub fn force_ped_motion_state(ped: i32, motionStateHash: u32, p2: bool, p3: i32,
     value
 }
 
-pub fn _0xf60165e1d2c5370b(ped: i32, p1: *mut u32, p2: *mut u32) -> bool {
-    let value = native!(bool, 0xF60165E1D2C5370B, native_parameters!(ped, p1, p2));
+pub fn _get_ped_current_movement_speed(ped: i32, speedX: *mut f32, speedY: *mut f32) -> bool {
+    let value = native!(
+        bool,
+        0xF60165E1D2C5370B,
+        native_parameters!(ped, speedX, speedY)
+    );
 
     value
 }
@@ -4204,7 +4235,7 @@ pub fn get_ped_nearby_peds(ped: i32, sizeAndPeds: *mut i32, ignore: i32) -> i32 
     value
 }
 
-pub fn _has_streamed_ped_assets_loaded(ped: i32) -> bool {
+pub fn have_all_streaming_requests_completed(ped: i32) -> bool {
     let value = native!(bool, 0x7350823473013C02, native_parameters!(ped));
 
     value
@@ -4321,13 +4352,13 @@ pub fn set_ped_heatscale_override(ped: i32, heatScale: f32) -> () {
     value
 }
 
-pub fn disable_ped_heatscale_override(p0: u32) -> () {
-    let value = native!((), 0x600048C60D5C2C51, native_parameters!(p0));
+pub fn disable_ped_heatscale_override(ped: i32) -> () {
+    let value = native!((), 0x600048C60D5C2C51, native_parameters!(ped));
 
     value
 }
 
-pub fn _0x2df9038c90ad5264(
+pub fn spawnpoints_start_search(
     p0: f32,
     p1: f32,
     p2: f32,
@@ -4346,7 +4377,7 @@ pub fn _0x2df9038c90ad5264(
     value
 }
 
-pub fn _0xb2aff10216defa2f(
+pub fn spawnpoints_start_search_in_angled_area(
     x: f32,
     y: f32,
     z: f32,
@@ -4367,43 +4398,47 @@ pub fn _0xb2aff10216defa2f(
     value
 }
 
-pub fn _0xfee4a5459472a9f8() -> () {
+pub fn spawnpoints_cancel_search() -> () {
     let value = native!((), 0xFEE4A5459472A9F8, native_parameters!());
 
     value
 }
 
-pub fn _0x3c67506996001f5e() -> u32 {
-    let value = native!(u32, 0x3C67506996001F5E, native_parameters!());
+pub fn spawnpoints_is_search_active() -> bool {
+    let value = native!(bool, 0x3C67506996001F5E, native_parameters!());
 
     value
 }
 
-pub fn _0xa586fbeb32a53dbb() -> u32 {
-    let value = native!(u32, 0xA586FBEB32A53DBB, native_parameters!());
+pub fn spawnpoints_is_search_complete() -> bool {
+    let value = native!(bool, 0xA586FBEB32A53DBB, native_parameters!());
 
     value
 }
 
-pub fn _0xf445de8da80a1792() -> u32 {
-    let value = native!(u32, 0xF445DE8DA80A1792, native_parameters!());
+pub fn spawnpoints_is_search_failed() -> bool {
+    let value = native!(bool, 0xF445DE8DA80A1792, native_parameters!());
 
     value
 }
 
-pub fn _0xa635c11b8c44afc2() -> u32 {
-    let value = native!(u32, 0xA635C11B8C44AFC2, native_parameters!());
+pub fn spawnpoints_get_num_search_results() -> i32 {
+    let value = native!(i32, 0xA635C11B8C44AFC2, native_parameters!());
 
     value
 }
 
-pub fn _0x280c7e3ac7f56e90(p0: u32, p1: *mut u32, p2: *mut u32, p3: *mut u32) -> () {
-    let value = native!((), 0x280C7E3AC7F56E90, native_parameters!(p0, p1, p2, p3));
+pub fn spawnpoints_get_search_result(randomInt: i32, x: *mut f32, y: *mut f32, z: *mut f32) -> () {
+    let value = native!(
+        (),
+        0x280C7E3AC7F56E90,
+        native_parameters!(randomInt, x, y, z)
+    );
 
     value
 }
 
-pub fn _0xb782f8238512bad5(p0: u32, p1: *mut u32) -> () {
+pub fn spawnpoints_get_search_result_flags(p0: u32, p1: *mut u32) -> () {
     let value = native!((), 0xB782F8238512BAD5, native_parameters!(p0, p1));
 
     value
@@ -4537,11 +4572,11 @@ pub fn _0x06087579e7aa85a9(p0: u32, p1: u32, p2: f32, p3: f32, p4: f32, p5: f32)
     value
 }
 
-pub fn set_pop_control_sphere_this_frame(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn set_pop_control_sphere_this_frame(x: f32, y: f32, z: f32, min: f32, max: f32) -> () {
     let value = native!(
         (),
         0xD8C3BE3EE94CAF2D,
-        native_parameters!(p0, p1, p2, p3, p4)
+        native_parameters!(x, y, z, min, max)
     );
 
     value
@@ -4571,7 +4606,7 @@ pub fn _0x288df530c92dad6f(p0: u32, p1: f32) -> () {
     value
 }
 
-pub fn _0x3795688a307e1eb6(Ped: i32) -> bool {
+pub fn _is_ped_swapping_weapon(Ped: i32) -> bool {
     let value = native!(bool, 0x3795688A307E1EB6, native_parameters!(Ped));
 
     value
@@ -4583,8 +4618,8 @@ pub fn _0x0f62619393661d6e(p0: u32, p1: u32, p2: u32) -> () {
     value
 }
 
-pub fn _0xdfe68c4b787e1bfb(p0: u32) -> () {
-    let value = native!((), 0xDFE68C4B787E1BFB, native_parameters!(p0));
+pub fn _0xdfe68c4b787e1bfb(ped: i32) -> () {
+    let value = native!((), 0xDFE68C4B787E1BFB, native_parameters!(ped));
 
     value
 }
@@ -4601,8 +4636,8 @@ pub fn _is_scuba_gear_light_enabled(ped: i32) -> bool {
     value
 }
 
-pub fn _0x637822dc2afeebf8(p0: u32) -> () {
-    let value = native!((), 0x637822DC2AFEEBF8, native_parameters!(p0));
+pub fn _clear_facial_clipset_override(ped: i32) -> () {
+    let value = native!((), 0x637822DC2AFEEBF8, native_parameters!(ped));
 
     value
 }

@@ -366,7 +366,7 @@ pub fn _0x5edef0cf8c1dab3c() -> u32 {
     value
 }
 
-pub fn _0x41faa8fb2ece8720(p0: bool) -> () {
+pub fn set_cutscene_can_be_skipped(p0: bool) -> () {
     let value = native!((), 0x41FAA8FB2ECE8720, native_parameters!(p0));
 
     value
@@ -434,7 +434,7 @@ pub fn set_cutscene_ped_prop_variation(
     value
 }
 
-pub fn _0x708bdd8cd795b043() -> bool {
+pub fn _has_cutscene_cut_this_frame() -> bool {
     let value = native!(bool, 0x708BDD8CD795B043, native_parameters!());
 
     value

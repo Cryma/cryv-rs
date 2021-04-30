@@ -1,16 +1,30 @@
 use crate::types::NativeVector3;
 
-pub fn _get_num_decorations(character: i32) -> i32 {
+pub fn get_num_tattoo_shop_dlc_items(character: i32) -> i32 {
     let value = native!(i32, 0x278F76C3B0A8F109, native_parameters!(character));
 
     value
 }
 
-pub fn _get_tattoo_collection_data(character: i32, index: i32, outComponent: *mut u32) -> bool {
+pub fn get_tattoo_shop_dlc_item_data(
+    characterType: i32,
+    decorationIndex: i32,
+    outComponent: *mut u32,
+) -> bool {
     let value = native!(
         bool,
         0xFF56381874F82086,
-        native_parameters!(character, index, outComponent)
+        native_parameters!(characterType, decorationIndex, outComponent)
+    );
+
+    value
+}
+
+pub fn _0x10144267dd22866c(overlayHash: u32, p1: u32, character: i32) -> i32 {
+    let value = native!(
+        i32,
+        0x10144267DD22866C,
+        native_parameters!(overlayHash, p1, character)
     );
 
     value
@@ -28,13 +42,13 @@ pub fn init_shop_ped_prop(outProp: *mut u32) -> () {
     value
 }
 
-pub fn _0x50f457823ce6eb5f(p0: i32, p1: i32, p2: i32, p3: i32) -> i32 {
+pub fn setup_shop_ped_apparel_query(p0: i32, p1: i32, p2: i32, p3: i32) -> i32 {
     let value = native!(i32, 0x50F457823CE6EB5F, native_parameters!(p0, p1, p2, p3));
 
     value
 }
 
-pub fn _get_num_props_from_outfit(
+pub fn setup_shop_ped_apparel_query_tu(
     character: i32,
     p1: i32,
     p2: i32,
@@ -51,12 +65,18 @@ pub fn _get_num_props_from_outfit(
     value
 }
 
-pub fn get_shop_ped_query_component(componentId: i32, outComponent: *mut i32) -> () {
+pub fn get_shop_ped_query_component(componentId: i32, outComponent: *mut u32) -> () {
     let value = native!(
         (),
         0x249E310B2D920699,
         native_parameters!(componentId, outComponent)
     );
+
+    value
+}
+
+pub fn _0x96e2929292a4db77(componentHash: u32) -> i32 {
+    let value = native!(i32, 0x96E2929292A4DB77, native_parameters!(componentHash));
 
     value
 }
@@ -71,8 +91,18 @@ pub fn get_shop_ped_component(componentHash: u32, outComponent: *mut u32) -> () 
     value
 }
 
-pub fn get_shop_ped_query_prop(p0: u32, p1: *mut u32) -> () {
-    let value = native!((), 0xDE44A00999B2837D, native_parameters!(p0, p1));
+pub fn get_shop_ped_query_prop(componentId: i32, outProp: *mut u32) -> () {
+    let value = native!(
+        (),
+        0xDE44A00999B2837D,
+        native_parameters!(componentId, outProp)
+    );
+
+    value
+}
+
+pub fn _0x6cebe002e58dee97(componentHash: u32) -> i32 {
+    let value = native!(i32, 0x6CEBE002E58DEE97, native_parameters!(componentHash));
 
     value
 }
@@ -243,14 +273,18 @@ pub fn does_shop_ped_apparel_have_restriction_tag(
     value
 }
 
-pub fn _0xf3fbe2d50a6a8c28(character: i32, p1: bool) -> i32 {
+pub fn setup_shop_ped_outfit_query(character: i32, p1: bool) -> i32 {
     let value = native!(i32, 0xF3FBE2D50A6A8C28, native_parameters!(character, p1));
 
     value
 }
 
-pub fn get_shop_ped_query_outfit(p0: u32, outfit: *mut u32) -> () {
-    let value = native!((), 0x6D793F03A631FE56, native_parameters!(p0, outfit));
+pub fn get_shop_ped_query_outfit(outfitIndex: i32, outfit: *mut u32) -> () {
+    let value = native!(
+        (),
+        0x6D793F03A631FE56,
+        native_parameters!(outfitIndex, outfit)
+    );
 
     value
 }
@@ -267,21 +301,29 @@ pub fn get_shop_ped_outfit_locate(p0: u32) -> i32 {
     value
 }
 
-pub fn get_shop_ped_outfit_prop_variant(outfit: u32, slot: i32, item: *mut u32) -> bool {
+pub fn get_shop_ped_outfit_prop_variant(
+    outfitHash: u32,
+    variantIndex: i32,
+    outPropVariant: *mut u32,
+) -> bool {
     let value = native!(
         bool,
         0xA9F9C2E0FDE11CBB,
-        native_parameters!(outfit, slot, item)
+        native_parameters!(outfitHash, variantIndex, outPropVariant)
     );
 
     value
 }
 
-pub fn get_shop_ped_outfit_component_variant(outfit: u32, slot: i32, item: *mut u32) -> bool {
+pub fn get_shop_ped_outfit_component_variant(
+    outfitHash: u32,
+    variantIndex: i32,
+    outComponentVariant: *mut u32,
+) -> bool {
     let value = native!(
         bool,
         0x19F2A026EDF0013F,
-        native_parameters!(outfit, slot, item)
+        native_parameters!(outfitHash, variantIndex, outComponentVariant)
     );
 
     value

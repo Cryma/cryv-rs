@@ -184,7 +184,7 @@ pub fn to_float(value: i32) -> f32 {
     value
 }
 
-pub fn _set_thread_priority(priority: i32) -> () {
+pub fn set_thread_priority(priority: i32) -> () {
     let value = native!((), 0x42B65DEEF2EDF2A1, native_parameters!(priority));
 
     value

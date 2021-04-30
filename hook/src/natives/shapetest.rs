@@ -20,7 +20,7 @@ pub fn start_shape_test_los_probe(
     value
 }
 
-pub fn _start_shape_test_ray(
+pub fn start_expensive_synchronous_shape_test_los_probe(
     x1: f32,
     y1: f32,
     z1: f32,
@@ -61,14 +61,14 @@ pub fn start_shape_test_box(
     rotY: f32,
     rotZ: f32,
     p9: u32,
-    p10: u32,
-    entity: u32,
+    flags: i32,
+    entity: i32,
     p12: u32,
 ) -> i32 {
     let value = native!(
         i32,
         0xFE466162C4401D18,
-        native_parameters!(x, y, z, x1, y2, z2, rotX, rotY, rotZ, p9, p10, entity, p12)
+        native_parameters!(x, y, z, x1, y2, z2, rotX, rotY, rotZ, p9, flags, entity, p12)
     );
 
     value
@@ -143,7 +143,7 @@ pub fn _start_shape_test_surrounding_coords(
 }
 
 pub fn get_shape_test_result(
-    rayHandle: i32,
+    shapeTestHandle: i32,
     hit: *mut bool,
     endCoords: *mut NativeVector3,
     surfaceNormal: *mut NativeVector3,
@@ -152,14 +152,14 @@ pub fn get_shape_test_result(
     let value = native!(
         i32,
         0x3D87450E15D98694,
-        native_parameters!(rayHandle, hit, endCoords, surfaceNormal, entityHit)
+        native_parameters!(shapeTestHandle, hit, endCoords, surfaceNormal, entityHit)
     );
 
     value
 }
 
 pub fn get_shape_test_result_including_material(
-    rayHandle: i32,
+    shapeTestHandle: i32,
     hit: *mut bool,
     endCoords: *mut NativeVector3,
     surfaceNormal: *mut NativeVector3,
@@ -170,7 +170,7 @@ pub fn get_shape_test_result_including_material(
         i32,
         0x65287525D951F6BE,
         native_parameters!(
-            rayHandle,
+            shapeTestHandle,
             hit,
             endCoords,
             surfaceNormal,
@@ -182,7 +182,7 @@ pub fn get_shape_test_result_including_material(
     value
 }
 
-pub fn _shape_test_result_entity(entityHit: i32) -> () {
+pub fn release_script_guid_from_entity(entityHit: i32) -> () {
     let value = native!((), 0x2B3334BCA57CD799, native_parameters!(entityHit));
 
     value

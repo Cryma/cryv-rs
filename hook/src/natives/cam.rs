@@ -17,7 +17,7 @@ pub fn render_script_cams(
     value
 }
 
-pub fn _render_first_person_cam(render: bool, p1: f32, p2: i32, p3: u32) -> () {
+pub fn stop_rendering_script_cams_using_catch_up(render: bool, p1: f32, p2: i32, p3: u32) -> () {
     let value = native!(
         (),
         0xC819F3CBB62BF692,
@@ -96,18 +96,18 @@ pub fn create_camera_with_params(
     value
 }
 
-pub fn destroy_cam(cam: i32, netMissionEntity: bool) -> () {
+pub fn destroy_cam(cam: i32, bScriptHostCam: bool) -> () {
     let value = native!(
         (),
         0x865908C81A2C22E9,
-        native_parameters!(cam, netMissionEntity)
+        native_parameters!(cam, bScriptHostCam)
     );
 
     value
 }
 
-pub fn destroy_all_cams(netMissionEntity: bool) -> () {
-    let value = native!((), 0x8E5FB15663F79120, native_parameters!(netMissionEntity));
+pub fn destroy_all_cams(bScriptHostCam: bool) -> () {
+    let value = native!((), 0x8E5FB15663F79120, native_parameters!(bScriptHostCam));
 
     value
 }
@@ -256,6 +256,12 @@ pub fn set_cam_far_clip(cam: i32, farClip: f32) -> () {
     value
 }
 
+pub fn _0xaabd62873ffb1a33(p0: u32, p1: u32) -> () {
+    let value = native!((), 0xAABD62873FFB1A33, native_parameters!(p0, p1));
+
+    value
+}
+
 pub fn set_cam_motion_blur_strength(cam: i32, strength: f32) -> () {
     let value = native!((), 0x6F0F77FBA9A8F2E6, native_parameters!(cam, strength));
 
@@ -320,8 +326,12 @@ pub fn _set_cam_dof_fnumber_of_lens(camera: i32, p1: f32) -> () {
     value
 }
 
-pub fn _set_cam_dof_focal_length_multiplier(p0: u32, p1: u32) -> () {
-    let value = native!((), 0x47B595D60664CFFA, native_parameters!(p0, p1));
+pub fn _set_cam_dof_focal_length_multiplier(camera: i32, multiplier: f32) -> () {
+    let value = native!(
+        (),
+        0x47B595D60664CFFA,
+        native_parameters!(camera, multiplier)
+    );
 
     value
 }
@@ -400,23 +410,55 @@ pub fn _attach_cam_to_ped_bone_2(
     value
 }
 
+pub fn _0x202a5ed9ce01d6e7(
+    p0: u32,
+    p1: u32,
+    p2: u32,
+    p3: u32,
+    p4: u32,
+    p5: u32,
+    p6: u32,
+    p7: u32,
+    p8: u32,
+) -> () {
+    let value = native!(
+        (),
+        0x202A5ED9CE01D6E7,
+        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8)
+    );
+
+    value
+}
+
 pub fn _attach_cam_to_vehicle_bone(
     cam: i32,
     vehicle: i32,
     boneIndex: i32,
-    p3: bool,
-    p4: f32,
-    p5: f32,
-    p6: f32,
-    p7: f32,
-    p8: f32,
-    p9: f32,
-    p10: bool,
+    relativeRotation: bool,
+    rotX: f32,
+    rotY: f32,
+    rotZ: f32,
+    offsetX: f32,
+    offsetY: f32,
+    offsetZ: f32,
+    fixedDirection: bool,
 ) -> () {
     let value = native!(
         (),
         0x8DB3F12A02CAEF72,
-        native_parameters!(cam, vehicle, boneIndex, p3, p4, p5, p6, p7, p8, p9, p10)
+        native_parameters!(
+            cam,
+            vehicle,
+            boneIndex,
+            relativeRotation,
+            rotX,
+            rotY,
+            rotZ,
+            offsetX,
+            offsetY,
+            offsetZ,
+            fixedDirection
+        )
     );
 
     value
@@ -951,14 +993,18 @@ pub fn get_gameplay_cam_relative_pitch() -> f32 {
     value
 }
 
-pub fn set_gameplay_cam_relative_pitch(x: f32, Value2: f32) -> () {
-    let value = native!((), 0x6D0858B8EDFD2B7D, native_parameters!(x, Value2));
+pub fn set_gameplay_cam_relative_pitch(angle: f32, scalingFactor: f32) -> () {
+    let value = native!(
+        (),
+        0x6D0858B8EDFD2B7D,
+        native_parameters!(angle, scalingFactor)
+    );
 
     value
 }
 
-pub fn _set_gameplay_cam_relative_rotation(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0x48608C3464F58AB4, native_parameters!(p0, p1, p2));
+pub fn _set_gameplay_cam_relative_rotation(roll: f32, pitch: f32, yaw: f32) -> () {
+    let value = native!((), 0x48608C3464F58AB4, native_parameters!(roll, pitch, yaw));
 
     value
 }
@@ -969,8 +1015,8 @@ pub fn _0x28b022a17b068a3a(p0: f32, p1: f32) -> () {
     value
 }
 
-pub fn _set_gameplay_cam_raw_yaw(yaw: f32, p1: u32) -> () {
-    let value = native!((), 0x103991D4A307D472, native_parameters!(yaw, p1));
+pub fn _set_gameplay_cam_raw_yaw(yaw: f32) -> () {
+    let value = native!((), 0x103991D4A307D472, native_parameters!(yaw));
 
     value
 }
@@ -1015,8 +1061,8 @@ pub fn stop_gameplay_cam_shaking(p0: bool) -> () {
     value
 }
 
-pub fn _0x8bbacbf51da047a8(p0: u32) -> () {
-    let value = native!((), 0x8BBACBF51DA047A8, native_parameters!(p0));
+pub fn set_gameplay_cam_follow_ped_this_update(ped: i32) -> () {
+    let value = native!((), 0x8BBACBF51DA047A8, native_parameters!(ped));
 
     value
 }
@@ -1057,14 +1103,20 @@ pub fn is_gameplay_cam_looking_behind() -> bool {
     value
 }
 
-pub fn _0x2aed6301f67007d5(entity: i32) -> () {
+pub fn _disable_cam_collision_for_entity(entity: i32) -> () {
     let value = native!((), 0x2AED6301F67007D5, native_parameters!(entity));
 
     value
 }
 
-pub fn _0x49482f9fcd825aaa(entity: i32) -> () {
+pub fn disable_cam_collision_for_object(entity: i32) -> () {
     let value = native!((), 0x49482F9FCD825AAA, native_parameters!(entity));
+
+    value
+}
+
+pub fn _0xa7092afe81944852() -> () {
+    let value = native!((), 0xA7092AFE81944852, native_parameters!());
 
     value
 }
@@ -1143,7 +1195,7 @@ pub fn _animate_gameplay_cam_zoom(p0: f32, distance: f32) -> () {
     value
 }
 
-pub fn _0xe9ea16d6e54cdca4(p0: i32, p1: i32) -> () {
+pub fn set_in_vehicle_cam_state_this_update(p0: i32, p1: i32) -> () {
     let value = native!((), 0xE9EA16D6E54CDCA4, native_parameters!(p0, p1));
 
     value
@@ -1257,7 +1309,7 @@ pub fn _use_stunt_camera_this_frame() -> () {
     value
 }
 
-pub fn _0x425a920fdb9a0dda(camName: &std::ffi::CString) -> () {
+pub fn _set_gameplay_cam_hash(camName: &std::ffi::CString) -> () {
     let value = native!((), 0x425A920FDB9A0DDA, native_parameters!(camName.as_ptr()));
 
     value
@@ -1269,8 +1321,8 @@ pub fn _0x0aa27680a0bd43fa() -> () {
     value
 }
 
-pub fn _0x5c90cab09951a12f(p0: u32) -> () {
-    let value = native!((), 0x5C90CAB09951A12F, native_parameters!(p0));
+pub fn _set_follow_turret_seat_cam(seatIndex: i32) -> () {
+    let value = native!((), 0x5C90CAB09951A12F, native_parameters!(seatIndex));
 
     value
 }
@@ -1305,8 +1357,8 @@ pub fn get_first_person_aim_cam_zoom_factor() -> f32 {
     value
 }
 
-pub fn set_first_person_aim_cam_zoom_factor(p0: f32) -> () {
-    let value = native!((), 0x70894BD0915C5BCA, native_parameters!(p0));
+pub fn set_first_person_aim_cam_zoom_factor(zoomFactor: f32) -> () {
+    let value = native!((), 0x70894BD0915C5BCA, native_parameters!(zoomFactor));
 
     value
 }
@@ -1329,13 +1381,13 @@ pub fn _set_first_person_cam_pitch_range(p0: f32, p1: f32) -> () {
     value
 }
 
-pub fn _set_first_person_cam_near_clip(p0: f32) -> () {
+pub fn set_first_person_aim_cam_near_clip_this_update(p0: f32) -> () {
     let value = native!((), 0x0AF7B437918103B3, native_parameters!(p0));
 
     value
 }
 
-pub fn _set_third_person_aim_cam_near_clip(p0: f32) -> () {
+pub fn set_third_person_aim_cam_near_clip_this_update(p0: f32) -> () {
     let value = native!((), 0x42156508606DE65E, native_parameters!(p0));
 
     value
@@ -1369,11 +1421,11 @@ pub fn get_final_rendered_cam_rot(rotationOrder: i32) -> NativeVector3 {
     value
 }
 
-pub fn get_final_rendered_in_when_friendly_rot(p0: u32, p1: u32) -> NativeVector3 {
+pub fn get_final_rendered_in_when_friendly_rot(player: i32, rotationOrder: i32) -> NativeVector3 {
     let value = native!(
         NativeVector3,
         0x26903D9CD1175F2C,
-        native_parameters!(p0, p1)
+        native_parameters!(player, rotationOrder)
     );
 
     value
@@ -1385,8 +1437,8 @@ pub fn get_final_rendered_cam_fov() -> f32 {
     value
 }
 
-pub fn get_final_rendered_in_when_friendly_fov(p0: u32) -> f32 {
-    let value = native!(f32, 0x5F35F6732C3FBBA0, native_parameters!(p0));
+pub fn get_final_rendered_in_when_friendly_fov(player: i32) -> f32 {
+    let value = native!(f32, 0x5F35F6732C3FBBA0, native_parameters!(player));
 
     value
 }
@@ -1459,19 +1511,28 @@ pub fn set_gameplay_ped_hint(
 }
 
 pub fn set_gameplay_vehicle_hint(
-    p0: u32,
-    p1: f32,
-    p2: f32,
-    p3: f32,
+    vehicle: i32,
+    offsetX: f32,
+    offsetY: f32,
+    offsetZ: f32,
     p4: bool,
-    p5: u32,
-    p6: u32,
-    p7: u32,
+    time: i32,
+    easeInTime: i32,
+    easeOutTime: i32,
 ) -> () {
     let value = native!(
         (),
         0xA2297E18F3E71C2E,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7)
+        native_parameters!(
+            vehicle,
+            offsetX,
+            offsetY,
+            offsetZ,
+            p4,
+            time,
+            easeInTime,
+            easeOutTime
+        )
     );
 
     value
@@ -1552,32 +1613,32 @@ pub fn set_gameplay_hint_fov(FOV: f32) -> () {
     value
 }
 
-pub fn _set_gameplay_hint_anim_offsetz(p0: f32) -> () {
-    let value = native!((), 0xF8BDBF3D573049A1, native_parameters!(p0));
+pub fn set_gameplay_hint_follow_distance_scalar(value: f32) -> () {
+    let value = native!((), 0xF8BDBF3D573049A1, native_parameters!(value));
 
     value
 }
 
-pub fn _set_gameplay_hint_angle(p0: f32) -> () {
-    let value = native!((), 0xD1F8363DFAD03848, native_parameters!(p0));
+pub fn set_gameplay_hint_base_orbit_pitch_offset(value: f32) -> () {
+    let value = native!((), 0xD1F8363DFAD03848, native_parameters!(value));
 
     value
 }
 
-pub fn _set_gameplay_hint_anim_offsetx(p0: f32) -> () {
-    let value = native!((), 0x5D7B620DAE436138, native_parameters!(p0));
+pub fn _set_gameplay_hint_anim_offsetx(xOffset: f32) -> () {
+    let value = native!((), 0x5D7B620DAE436138, native_parameters!(xOffset));
 
     value
 }
 
-pub fn _set_gameplay_hint_anim_offsety(p0: f32) -> () {
-    let value = native!((), 0xC92717EF615B6704, native_parameters!(p0));
+pub fn _set_gameplay_hint_anim_offsety(yOffset: f32) -> () {
+    let value = native!((), 0xC92717EF615B6704, native_parameters!(yOffset));
 
     value
 }
 
-pub fn _set_gameplay_hint_anim_closeup(p0: bool) -> () {
-    let value = native!((), 0xE3433EADAAF7EE40, native_parameters!(p0));
+pub fn _set_gameplay_hint_anim_closeup(toggle: bool) -> () {
+    let value = native!((), 0xE3433EADAAF7EE40, native_parameters!(toggle));
 
     value
 }
@@ -1630,7 +1691,7 @@ pub fn _0x62ecfcfdee7885d6() -> () {
     value
 }
 
-pub fn _0x9e4cfff989258472() -> () {
+pub fn _invalidate_vehicle_idle_cam() -> () {
     let value = native!((), 0x9E4CFFF989258472, native_parameters!());
 
     value
@@ -1642,7 +1703,7 @@ pub fn invalidate_idle_cam() -> () {
     value
 }
 
-pub fn _0xca9d2aa3e326d720() -> bool {
+pub fn is_cinematic_idle_cam_rendering() -> bool {
     let value = native!(bool, 0xCA9D2AA3E326D720, native_parameters!());
 
     value
@@ -1676,7 +1737,7 @@ pub fn stop_cinematic_shot(p0: u32) -> () {
     value
 }
 
-pub fn _0xa41bcd7213805aac(p0: bool) -> () {
+pub fn force_cinematic_rendering_this_update(p0: bool) -> () {
     let value = native!((), 0xA41BCD7213805AAC, native_parameters!(p0));
 
     value
@@ -1712,7 +1773,7 @@ pub fn _0xd7360051c885628b() -> u32 {
     value
 }
 
-pub fn _0xf5f1e89a970b7796() -> bool {
+pub fn _is_cinematic_cam_active() -> bool {
     let value = native!(bool, 0xF5F1E89A970B7796, native_parameters!());
 
     value
@@ -1790,8 +1851,8 @@ pub fn _set_gameplay_cam_vehicle_camera(vehicleName: &std::ffi::CString) -> () {
     value
 }
 
-pub fn _set_gameplay_cam_vehicle_camera_name(p0: u32) -> () {
-    let value = native!((), 0x11FA5D3479C7DD47, native_parameters!(p0));
+pub fn _set_gameplay_cam_vehicle_camera_name(vehicleModel: u32) -> () {
+    let value = native!((), 0x11FA5D3479C7DD47, native_parameters!(vehicleModel));
 
     value
 }

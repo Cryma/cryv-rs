@@ -54,8 +54,8 @@ pub fn _set_mouse_cursor_sprite(spriteId: i32) -> () {
     value
 }
 
-pub fn _0x98215325a695e78a(p0: bool) -> () {
-    let value = native!((), 0x98215325A695E78A, native_parameters!(p0));
+pub fn _set_mouse_cursor_visible_in_menus(toggle: bool) -> () {
+    let value = native!((), 0x98215325A695E78A, native_parameters!(toggle));
 
     value
 }
@@ -88,7 +88,7 @@ pub fn thefeed_set_scripted_menu_height(pos: f32) -> () {
     value
 }
 
-pub fn _thefeed_disable() -> () {
+pub fn _thefeed_disable_loading_screen_tips() -> () {
     let value = native!((), 0x32888337579A5970, native_parameters!());
 
     value
@@ -100,7 +100,7 @@ pub fn thefeed_hide_this_frame() -> () {
     value
 }
 
-pub fn _0x15cfa549788d35ef() -> () {
+pub fn _thefeed_display_loading_screen_tips() -> () {
     let value = native!((), 0x15CFA549788D35EF, native_parameters!());
 
     value
@@ -243,25 +243,25 @@ pub fn begin_text_command_thefeed_post(text: &std::ffi::CString) -> () {
 }
 
 pub fn end_text_command_thefeed_post_stats(
-    txdName: &std::ffi::CString,
-    textureName: &std::ffi::CString,
-    flash: bool,
-    iconType: i32,
-    p4: bool,
-    sender: &std::ffi::CString,
-    subject: &std::ffi::CString,
+    statTitle: &std::ffi::CString,
+    iconEnum: i32,
+    stepVal: bool,
+    barValue: i32,
+    isImportant: bool,
+    pictureTextureDict: &std::ffi::CString,
+    pictureTextureName: &std::ffi::CString,
 ) -> i32 {
     let value = native!(
         i32,
         0x2B7E9A4EAAA93C89,
         native_parameters!(
-            txdName.as_ptr(),
-            textureName.as_ptr(),
-            flash,
-            iconType,
-            p4,
-            sender.as_ptr(),
-            subject.as_ptr()
+            statTitle.as_ptr(),
+            iconEnum,
+            stepVal,
+            barValue,
+            isImportant,
+            pictureTextureDict.as_ptr(),
+            pictureTextureName.as_ptr()
         )
     );
 
@@ -269,8 +269,8 @@ pub fn end_text_command_thefeed_post_stats(
 }
 
 pub fn end_text_command_thefeed_post_messagetext(
-    picName1: &std::ffi::CString,
-    picName2: &std::ffi::CString,
+    txdName: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     flash: bool,
     iconType: i32,
     sender: &std::ffi::CString,
@@ -280,8 +280,8 @@ pub fn end_text_command_thefeed_post_messagetext(
         i32,
         0x1CCD9A37359072CF,
         native_parameters!(
-            picName1.as_ptr(),
-            picName2.as_ptr(),
+            txdName.as_ptr(),
+            textureName.as_ptr(),
             flash,
             iconType,
             sender.as_ptr(),
@@ -293,8 +293,8 @@ pub fn end_text_command_thefeed_post_messagetext(
 }
 
 pub fn _end_text_command_thefeed_post_messagetext_gxt_entry(
-    picName1: &std::ffi::CString,
-    picName2: &std::ffi::CString,
+    txdName: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     flash: bool,
     iconType: i32,
     sender: &std::ffi::CString,
@@ -304,8 +304,8 @@ pub fn _end_text_command_thefeed_post_messagetext_gxt_entry(
         i32,
         0xC6F580E4C94926AC,
         native_parameters!(
-            picName1.as_ptr(),
-            picName2.as_ptr(),
+            txdName.as_ptr(),
+            textureName.as_ptr(),
             flash,
             iconType,
             sender.as_ptr(),
@@ -317,8 +317,8 @@ pub fn _end_text_command_thefeed_post_messagetext_gxt_entry(
 }
 
 pub fn end_text_command_thefeed_post_messagetext_tu(
-    picName1: &std::ffi::CString,
-    picName2: &std::ffi::CString,
+    txdName: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     flash: bool,
     iconType: i32,
     sender: &std::ffi::CString,
@@ -329,8 +329,8 @@ pub fn end_text_command_thefeed_post_messagetext_tu(
         i32,
         0x1E6611149DB3DB6B,
         native_parameters!(
-            picName1.as_ptr(),
-            picName2.as_ptr(),
+            txdName.as_ptr(),
+            textureName.as_ptr(),
             flash,
             iconType,
             sender.as_ptr(),
@@ -343,8 +343,8 @@ pub fn end_text_command_thefeed_post_messagetext_tu(
 }
 
 pub fn end_text_command_thefeed_post_messagetext_with_crew_tag(
-    picName1: &std::ffi::CString,
-    picName2: &std::ffi::CString,
+    txdName: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     flash: bool,
     iconType: i32,
     sender: &std::ffi::CString,
@@ -356,8 +356,8 @@ pub fn end_text_command_thefeed_post_messagetext_with_crew_tag(
         i32,
         0x5CBF7BADE20DB93E,
         native_parameters!(
-            picName1.as_ptr(),
-            picName2.as_ptr(),
+            txdName.as_ptr(),
+            textureName.as_ptr(),
             flash,
             iconType,
             sender.as_ptr(),
@@ -371,8 +371,8 @@ pub fn end_text_command_thefeed_post_messagetext_with_crew_tag(
 }
 
 pub fn end_text_command_thefeed_post_messagetext_with_crew_tag_and_additional_icon(
-    picName1: &std::ffi::CString,
-    picName2: &std::ffi::CString,
+    txdName: &std::ffi::CString,
+    textureName: &std::ffi::CString,
     flash: bool,
     iconType1: i32,
     sender: &std::ffi::CString,
@@ -386,8 +386,8 @@ pub fn end_text_command_thefeed_post_messagetext_with_crew_tag_and_additional_ic
         i32,
         0x531B84E7DA981FB6,
         native_parameters!(
-            picName1.as_ptr(),
-            picName2.as_ptr(),
+            txdName.as_ptr(),
+            textureName.as_ptr(),
             flash,
             iconType1,
             sender.as_ptr(),
@@ -421,16 +421,22 @@ pub fn end_text_command_thefeed_post_ticker_with_tokens(blink: bool, p1: bool) -
 }
 
 pub fn end_text_command_thefeed_post_award(
-    p0: &std::ffi::CString,
-    p1: &std::ffi::CString,
-    p2: i32,
-    p3: i32,
-    p4: &std::ffi::CString,
+    textureDict: &std::ffi::CString,
+    textureName: &std::ffi::CString,
+    rpBonus: i32,
+    colorOverlay: i32,
+    titleLabel: &std::ffi::CString,
 ) -> i32 {
     let value = native!(
         i32,
         0xAA295B6F28BD587D,
-        native_parameters!(p0.as_ptr(), p1.as_ptr(), p2, p3, p4.as_ptr())
+        native_parameters!(
+            textureDict.as_ptr(),
+            textureName.as_ptr(),
+            rpBonus,
+            colorOverlay,
+            titleLabel.as_ptr()
+        )
     );
 
     value
@@ -695,11 +701,11 @@ pub fn end_text_command_is_this_help_message_being_displayed(p0: i32) -> bool {
     value
 }
 
-pub fn begin_text_command_set_blip_name(gxtentry: &std::ffi::CString) -> () {
+pub fn begin_text_command_set_blip_name(textLabel: &std::ffi::CString) -> () {
     let value = native!(
         (),
         0xF9113A30DE5C6670,
-        native_parameters!(gxtentry.as_ptr())
+        native_parameters!(textLabel.as_ptr())
     );
 
     value
@@ -1044,7 +1050,7 @@ pub fn display_hud(toggle: bool) -> () {
     value
 }
 
-pub fn _0x7669f9e39dc17063() -> () {
+pub fn _display_hud_when_dead_this_frame() -> () {
     let value = native!((), 0x7669F9E39DC17063, native_parameters!());
 
     value
@@ -1276,7 +1282,7 @@ pub fn _0xba8d65c1c65702e5(toggle: bool) -> () {
     value
 }
 
-pub fn _get_text_scale_height(size: f32, font: i32) -> f32 {
+pub fn get_rendered_character_height(size: f32, font: i32) -> f32 {
     let value = native!(f32, 0xDB88A37483346780, native_parameters!(size, font));
 
     value
@@ -1450,11 +1456,11 @@ pub fn is_help_message_fading_out() -> bool {
     value
 }
 
-pub fn _set_help_message_text_style(p0: u32, p1: u32, p2: u32, p3: u32, p4: u32) -> () {
+pub fn _set_help_message_text_style(style: i32, hudColor: i32, alpha: i32, p3: i32, p4: i32) -> () {
     let value = native!(
         (),
         0xB9C362BABECDDC7A,
-        native_parameters!(p0, p1, p2, p3, p4)
+        native_parameters!(style, hudColor, alpha, p3, p4)
     );
 
     value
@@ -1490,8 +1496,8 @@ pub fn get_first_blip_info_id(blipSprite: i32) -> i32 {
     value
 }
 
-pub fn _0xd484bf71050ca1ee(p0: u32) -> u32 {
-    let value = native!(u32, 0xD484BF71050CA1EE, native_parameters!(p0));
+pub fn _get_closest_blip_of_type(blipSprite: i32) -> i32 {
+    let value = native!(i32, 0xD484BF71050CA1EE, native_parameters!(blipSprite));
 
     value
 }
@@ -1542,11 +1548,11 @@ pub fn add_blip_for_radius(posX: f32, posY: f32, posZ: f32, radius: f32) -> i32 
     value
 }
 
-pub fn _add_blip_for_area(x: f32, y: f32, z: f32, scaleX: f32, scaleY: f32) -> i32 {
+pub fn _add_blip_for_area(x: f32, y: f32, z: f32, width: f32, height: f32) -> i32 {
     let value = native!(
         i32,
         0xCE5D0E5E315DB238,
-        native_parameters!(x, y, z, scaleX, scaleY)
+        native_parameters!(x, y, z, width, height)
     );
 
     value
@@ -1676,8 +1682,8 @@ pub fn set_blip_rotation(blip: i32, rotation: i32) -> () {
     value
 }
 
-pub fn _set_blip_squared_rotation(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xA8B6AFDAC320AC87, native_parameters!(p0, p1));
+pub fn _set_blip_squared_rotation(blip: i32, heading: f32) -> () {
+    let value = native!((), 0xA8B6AFDAC320AC87, native_parameters!(blip, heading));
 
     value
 }
@@ -1826,8 +1832,12 @@ pub fn set_blip_scale(blip: i32, scale: f32) -> () {
     value
 }
 
-pub fn _0xcd6524439909c979(blip: i32, p1: f32, p2: f32) -> () {
-    let value = native!((), 0xCD6524439909C979, native_parameters!(blip, p1, p2));
+pub fn _set_blip_scale_transformation(blip: i32, xScale: f32, yScale: f32) -> () {
+    let value = native!(
+        (),
+        0xCD6524439909C979,
+        native_parameters!(blip, xScale, yScale)
+    );
 
     value
 }
@@ -1940,8 +1950,8 @@ pub fn _set_blip_shrink(blip: i32, toggle: bool) -> () {
     value
 }
 
-pub fn set_radius_blip_edge(p0: u32, p1: bool) -> () {
-    let value = native!((), 0x25615540D894B814, native_parameters!(p0, p1));
+pub fn set_radius_blip_edge(blip: i32, toggle: bool) -> () {
+    let value = native!((), 0x25615540D894B814, native_parameters!(blip, toggle));
 
     value
 }
@@ -1988,8 +1998,8 @@ pub fn set_blip_bright(blip: i32, toggle: bool) -> () {
     value
 }
 
-pub fn set_blip_show_cone(blip: i32, toggle: bool) -> () {
-    let value = native!((), 0x13127EC3665E8EE1, native_parameters!(blip, toggle));
+pub fn set_blip_show_cone(blip: i32, toggle: bool, p2: u32) -> () {
+    let value = native!((), 0x13127EC3665E8EE1, native_parameters!(blip, toggle, p2));
 
     value
 }
@@ -2009,18 +2019,19 @@ pub fn _0xf83d0febe75e62c9(
     p5: u32,
     p6: u32,
     p7: u32,
+    p8: u32,
 ) -> () {
     let value = native!(
         (),
         0xF83D0FEBE75E62C9,
-        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7)
+        native_parameters!(p0, p1, p2, p3, p4, p5, p6, p7, p8)
     );
 
     value
 }
 
-pub fn _0x35a3cd97b2c0a6d2(p0: u32) -> () {
-    let value = native!((), 0x35A3CD97B2C0A6D2, native_parameters!(p0));
+pub fn _0x35a3cd97b2c0a6d2(blip: i32) -> () {
+    let value = native!((), 0x35A3CD97B2C0A6D2, native_parameters!(blip));
 
     value
 }
@@ -2031,8 +2042,18 @@ pub fn _0x8410c5e0cd847b9d() -> () {
     value
 }
 
-pub fn set_minimap_component(p0: i32, p1: bool, p2: i32) -> u32 {
-    let value = native!(u32, 0x75A9A10948D1DEA6, native_parameters!(p0, p1, p2));
+pub fn set_minimap_component(componentId: i32, toggle: bool, overrideColor: i32) -> u32 {
+    let value = native!(
+        u32,
+        0x75A9A10948D1DEA6,
+        native_parameters!(componentId, toggle, overrideColor)
+    );
+
+    value
+}
+
+pub fn _set_minimap_sonar_enabled(toggle: bool) -> () {
+    let value = native!((), 0x6B50FC8749632EC1, native_parameters!(toggle));
 
     value
 }
@@ -2109,6 +2130,12 @@ pub fn hide_minimap_exterior_map_this_frame() -> () {
 
 pub fn hide_minimap_interior_map_this_frame() -> () {
     let value = native!((), 0x20FE7FDFEEAD38C0, native_parameters!());
+
+    value
+}
+
+pub fn _set_toggle_minimap_heist_island(toggle: bool) -> () {
+    let value = native!((), 0x5E1460624D194A38, native_parameters!(toggle));
 
     value
 }
@@ -2243,7 +2270,7 @@ pub fn hud_force_weapon_wheel(show: bool) -> () {
     value
 }
 
-pub fn _0x488043841bbe156f() -> () {
+pub fn _hud_display_loading_screen_tips() -> () {
     let value = native!((), 0x488043841BBE156F, native_parameters!());
 
     value
@@ -2261,20 +2288,20 @@ pub fn _hud_weapon_wheel_get_selected_hash() -> u32 {
     value
 }
 
-pub fn _hud_weapon_wheel_set_slot_hash(weaponHash: u32) -> () {
+pub fn hud_set_weapon_wheel_top_slot(weaponHash: u32) -> () {
     let value = native!((), 0x72C1056D678BB7D8, native_parameters!(weaponHash));
 
     value
 }
 
-pub fn _hud_weapon_wheel_get_slot_hash(p0: u32) -> u32 {
-    let value = native!(u32, 0xA13E93403F26C812, native_parameters!(p0));
+pub fn _hud_weapon_wheel_get_slot_hash(weaponTypeIndex: i32) -> u32 {
+    let value = native!(u32, 0xA13E93403F26C812, native_parameters!(weaponTypeIndex));
 
     value
 }
 
-pub fn _hud_weapon_wheel_ignore_control_input(p0: bool) -> () {
-    let value = native!((), 0x14C9FDCC41F81F63, native_parameters!(p0));
+pub fn _hud_weapon_wheel_ignore_control_input(toggle: bool) -> () {
+    let value = native!((), 0x14C9FDCC41F81F63, native_parameters!(toggle));
 
     value
 }
@@ -2303,8 +2330,12 @@ pub fn clear_gps_race_track() -> () {
     value
 }
 
-pub fn start_gps_custom_route(hudColor: i32, p1: bool, p2: bool) -> () {
-    let value = native!((), 0xDB34E8D56FC13B08, native_parameters!(hudColor, p1, p2));
+pub fn start_gps_custom_route(hudColor: i32, displayOnFoot: bool, followPlayer: bool) -> () {
+    let value = native!(
+        (),
+        0xDB34E8D56FC13B08,
+        native_parameters!(hudColor, displayOnFoot, followPlayer)
+    );
 
     value
 }
@@ -2315,8 +2346,12 @@ pub fn add_point_to_gps_custom_route(x: f32, y: f32, z: f32) -> () {
     value
 }
 
-pub fn set_gps_custom_route_render(p0: bool, p1: i32, p2: i32) -> () {
-    let value = native!((), 0x900086F371220B6F, native_parameters!(p0, p1, p2));
+pub fn set_gps_custom_route_render(toggle: bool, radarThickness: i32, mapThickness: i32) -> () {
+    let value = native!(
+        (),
+        0x900086F371220B6F,
+        native_parameters!(toggle, radarThickness, mapThickness)
+    );
 
     value
 }
@@ -2327,8 +2362,12 @@ pub fn clear_gps_custom_route() -> () {
     value
 }
 
-pub fn start_gps_multi_route(hudColor: i32, p1: bool, p2: bool) -> () {
-    let value = native!((), 0x3D3D15AF7BCAAF83, native_parameters!(hudColor, p1, p2));
+pub fn start_gps_multi_route(hudColor: i32, routeFromPlayer: bool, displayOnFoot: bool) -> () {
+    let value = native!(
+        (),
+        0x3D3D15AF7BCAAF83,
+        native_parameters!(hudColor, routeFromPlayer, displayOnFoot)
+    );
 
     value
 }
@@ -2375,8 +2414,8 @@ pub fn flash_minimap_display() -> () {
     value
 }
 
-pub fn flash_minimap_display_with_color(p0: u32) -> () {
-    let value = native!((), 0x6B1DE27EE78E6A19, native_parameters!(p0));
+pub fn flash_minimap_display_with_color(hudColorIndex: i32) -> () {
+    let value = native!((), 0x6B1DE27EE78E6A19, native_parameters!(hudColorIndex));
 
     value
 }
@@ -2517,20 +2556,24 @@ pub fn _set_minimap_altitude_indicator_level(altitude: f32, p1: bool, p2: u32) -
     value
 }
 
-pub fn set_health_hud_display_values(p0: u32, p1: u32, p2: bool) -> () {
-    let value = native!((), 0x3F5CC444DCAAA8F2, native_parameters!(p0, p1, p2));
+pub fn set_health_hud_display_values(health: i32, capacity: i32, wasAdded: bool) -> () {
+    let value = native!(
+        (),
+        0x3F5CC444DCAAA8F2,
+        native_parameters!(health, capacity, wasAdded)
+    );
 
     value
 }
 
-pub fn set_max_health_hud_display(p0: u32) -> () {
-    let value = native!((), 0x975D66A0BC17064C, native_parameters!(p0));
+pub fn set_max_health_hud_display(maximumValue: i32) -> () {
+    let value = native!((), 0x975D66A0BC17064C, native_parameters!(maximumValue));
 
     value
 }
 
-pub fn set_max_armour_hud_display(p0: u32) -> () {
-    let value = native!((), 0x06A320535F5F0248, native_parameters!(p0));
+pub fn set_max_armour_hud_display(maximumValue: i32) -> () {
+    let value = native!((), 0x06A320535F5F0248, native_parameters!(maximumValue));
 
     value
 }
@@ -2657,46 +2700,62 @@ pub fn is_reportugc_menu_open() -> bool {
     value
 }
 
-pub fn is_floating_help_text_on_screen(p0: i32) -> bool {
-    let value = native!(bool, 0x2432784ACA090DA4, native_parameters!(p0));
+pub fn is_floating_help_text_on_screen(hudIndex: i32) -> bool {
+    let value = native!(bool, 0x2432784ACA090DA4, native_parameters!(hudIndex));
 
     value
 }
 
-pub fn set_floating_help_text_screen_position(p0: i32, x: f32, y: f32) -> () {
-    let value = native!((), 0x7679CC1BCEBE3D4C, native_parameters!(p0, x, y));
+pub fn set_floating_help_text_screen_position(hudIndex: i32, x: f32, y: f32) -> () {
+    let value = native!((), 0x7679CC1BCEBE3D4C, native_parameters!(hudIndex, x, y));
 
     value
 }
 
-pub fn set_floating_help_text_world_position(p0: i32, x: f32, y: f32, z: f32) -> () {
-    let value = native!((), 0x784BA7E0ECEB4178, native_parameters!(p0, x, y, z));
+pub fn set_floating_help_text_world_position(hudIndex: i32, x: f32, y: f32, z: f32) -> () {
+    let value = native!(
+        (),
+        0x784BA7E0ECEB4178,
+        native_parameters!(hudIndex, x, y, z)
+    );
 
     value
 }
 
-pub fn set_floating_help_text_to_entity(p0: i32, entity: i32, p2: f32, p3: f32) -> () {
+pub fn set_floating_help_text_to_entity(
+    hudIndex: i32,
+    entity: i32,
+    offsetX: f32,
+    offsetY: f32,
+) -> () {
     let value = native!(
         (),
         0xB094BC1DB4018240,
-        native_parameters!(p0, entity, p2, p3)
+        native_parameters!(hudIndex, entity, offsetX, offsetY)
     );
 
     value
 }
 
-pub fn set_floating_help_text_style(p0: i32, p1: i32, p2: i32, p3: i32, p4: i32, p5: i32) -> () {
+pub fn set_floating_help_text_style(
+    hudIndex: i32,
+    p1: i32,
+    p2: i32,
+    p3: i32,
+    p4: i32,
+    p5: i32,
+) -> () {
     let value = native!(
         (),
         0x788E7FD431BD67F1,
-        native_parameters!(p0, p1, p2, p3, p4, p5)
+        native_parameters!(hudIndex, p1, p2, p3, p4, p5)
     );
 
     value
 }
 
-pub fn clear_floating_help(p0: i32, p1: bool) -> () {
-    let value = native!((), 0x50085246ABD3FEFA, native_parameters!(p0, p1));
+pub fn clear_floating_help(hudIndex: i32, p1: bool) -> () {
+    let value = native!((), 0x50085246ABD3FEFA, native_parameters!(hudIndex, p1));
 
     value
 }
@@ -2707,7 +2766,7 @@ pub fn create_mp_gamer_tag_with_crew_color(
     pointedClanTag: bool,
     isRockstarClan: bool,
     clanTag: &std::ffi::CString,
-    p5: u32,
+    clanFlag: i32,
     r: i32,
     g: i32,
     b: i32,
@@ -2721,7 +2780,7 @@ pub fn create_mp_gamer_tag_with_crew_color(
             pointedClanTag,
             isRockstarClan,
             clanTag.as_ptr(),
-            p5,
+            clanFlag,
             r,
             g,
             b
@@ -2743,7 +2802,7 @@ pub fn create_fake_mp_gamer_tag(
     pointedClanTag: bool,
     isRockstarClan: bool,
     clanTag: &std::ffi::CString,
-    p5: u32,
+    clanFlag: i32,
 ) -> i32 {
     let value = native!(
         i32,
@@ -2754,7 +2813,7 @@ pub fn create_fake_mp_gamer_tag(
             pointedClanTag,
             isRockstarClan,
             clanTag.as_ptr(),
-            p5
+            clanFlag
         )
     );
 
@@ -2789,45 +2848,61 @@ pub fn set_mp_gamer_tag_visibility(gamerTagId: i32, component: i32, toggle: bool
     value
 }
 
-pub fn _0xee76ff7e6a0166b0(gamerTagId: i32, p1: bool) -> () {
-    let value = native!((), 0xEE76FF7E6A0166B0, native_parameters!(gamerTagId, p1));
-
-    value
-}
-
-pub fn _set_mp_gamer_tag_icons(gamerTagId: i32, p1: bool) -> () {
-    let value = native!((), 0xA67F9C46D612B6F1, native_parameters!(gamerTagId, p1));
-
-    value
-}
-
-pub fn _set_mp_gamer_health_bar_display(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xD29EC58C2F6B5014, native_parameters!(p0, p1));
-
-    value
-}
-
-pub fn _set_mp_gamer_health_bar_max(p0: u32, p1: u32, p2: u32) -> () {
-    let value = native!((), 0x1563FE35E9928E67, native_parameters!(p0, p1, p2));
-
-    value
-}
-
-pub fn set_mp_gamer_tag_colour(gamerTagId: i32, flag: i32, color: i32) -> () {
+pub fn _set_mp_gamer_tag_enabled(gamerTagId: i32, toggle: bool) -> () {
     let value = native!(
         (),
-        0x613ED644950626AE,
-        native_parameters!(gamerTagId, flag, color)
+        0xEE76FF7E6A0166B0,
+        native_parameters!(gamerTagId, toggle)
     );
 
     value
 }
 
-pub fn set_mp_gamer_tag_health_bar_colour(headDisplayId: i32, color: i32) -> () {
+pub fn _set_mp_gamer_tag_icons(gamerTagId: i32, toggle: bool) -> () {
+    let value = native!(
+        (),
+        0xA67F9C46D612B6F1,
+        native_parameters!(gamerTagId, toggle)
+    );
+
+    value
+}
+
+pub fn _set_mp_gamer_health_bar_display(gamerTagId: i32, toggle: bool) -> () {
+    let value = native!(
+        (),
+        0xD29EC58C2F6B5014,
+        native_parameters!(gamerTagId, toggle)
+    );
+
+    value
+}
+
+pub fn _set_mp_gamer_health_bar_max(gamerTagId: i32, value: i32, maximumValue: i32) -> () {
+    let value = native!(
+        (),
+        0x1563FE35E9928E67,
+        native_parameters!(gamerTagId, value, maximumValue)
+    );
+
+    value
+}
+
+pub fn set_mp_gamer_tag_colour(gamerTagId: i32, component: i32, hudColorIndex: i32) -> () {
+    let value = native!(
+        (),
+        0x613ED644950626AE,
+        native_parameters!(gamerTagId, component, hudColorIndex)
+    );
+
+    value
+}
+
+pub fn set_mp_gamer_tag_health_bar_colour(gamerTagId: i32, hudColorIndex: i32) -> () {
     let value = native!(
         (),
         0x3158C77A7E888AB4,
-        native_parameters!(headDisplayId, color)
+        native_parameters!(gamerTagId, hudColorIndex)
     );
 
     value
@@ -2897,14 +2972,14 @@ pub fn get_current_website_id() -> i32 {
     value
 }
 
-pub fn _0xe3b05614dce1d014(p0: u32) -> u32 {
-    let value = native!(u32, 0xE3B05614DCE1D014, native_parameters!(p0));
+pub fn get_global_actionscript_flag(flagIndex: i32) -> i32 {
+    let value = native!(i32, 0xE3B05614DCE1D014, native_parameters!(flagIndex));
 
     value
 }
 
-pub fn _0xb99c4e4d9499df29(p0: i32) -> () {
-    let value = native!((), 0xB99C4E4D9499DF29, native_parameters!(p0));
+pub fn reset_global_actionscript_flag(flagIndex: i32) -> () {
+    let value = native!((), 0xB99C4E4D9499DF29, native_parameters!(flagIndex));
 
     value
 }
@@ -2923,7 +2998,7 @@ pub fn set_warning_message(
     p4: i32,
     p5: &std::ffi::CString,
     p6: &std::ffi::CString,
-    showBg: bool,
+    showBackground: bool,
     p8: u32,
 ) -> () {
     let value = native!(
@@ -2937,7 +3012,7 @@ pub fn set_warning_message(
             p4,
             p5.as_ptr(),
             p6.as_ptr(),
-            showBg,
+            showBackground,
             p8
         )
     );
@@ -2946,30 +3021,30 @@ pub fn set_warning_message(
 }
 
 pub fn set_warning_message_with_header(
-    titleMsg: &std::ffi::CString,
-    p1: &std::ffi::CString,
-    flags: i32,
-    promptMsg: &std::ffi::CString,
+    entryHeader: &std::ffi::CString,
+    entryLine1: &std::ffi::CString,
+    instructionalKey: i32,
+    entryLine2: &std::ffi::CString,
     p4: bool,
     p5: u32,
-    p6: *mut u32,
+    showBackground: *mut u32,
     p7: *mut u32,
-    showBg: bool,
+    p8: bool,
     p9: u32,
 ) -> () {
     let value = native!(
         (),
         0xDC38CC1E35B6A5D7,
         native_parameters!(
-            titleMsg.as_ptr(),
-            p1.as_ptr(),
-            flags,
-            promptMsg.as_ptr(),
+            entryHeader.as_ptr(),
+            entryLine1.as_ptr(),
+            instructionalKey,
+            entryLine2.as_ptr(),
             p4,
             p5,
-            p6,
+            showBackground,
             p7,
-            showBg,
+            p8,
             p9
         )
     );
@@ -3045,36 +3120,36 @@ pub fn _set_warning_message_with_header_unk(
     value
 }
 
-pub fn _set_warning_message_4(
-    p0: &std::ffi::CString,
-    p1: &std::ffi::CString,
+pub fn _set_warning_message_with_alert(
+    labelTitle: &std::ffi::CString,
+    labelMessage: &std::ffi::CString,
     p2: i32,
     p3: i32,
-    p4: &std::ffi::CString,
+    labelMessage2: &std::ffi::CString,
     p5: bool,
     p6: i32,
     p7: i32,
     p8: &std::ffi::CString,
     p9: &std::ffi::CString,
-    p10: bool,
-    p11: u32,
+    background: bool,
+    errorCode: i32,
 ) -> () {
     let value = native!(
         (),
         0x15803FEC3B9A872B,
         native_parameters!(
-            p0.as_ptr(),
-            p1.as_ptr(),
+            labelTitle.as_ptr(),
+            labelMessage.as_ptr(),
             p2,
             p3,
-            p4.as_ptr(),
+            labelMessage2.as_ptr(),
             p5,
             p6,
             p7,
             p8.as_ptr(),
             p9.as_ptr(),
-            p10,
-            p11
+            background,
+            errorCode
         )
     );
 
@@ -3134,14 +3209,14 @@ pub fn _race_gallery_fullscreen(toggle: bool) -> () {
     value
 }
 
-pub fn _race_gallery_next_blip_sprite(p0: u32) -> () {
-    let value = native!((), 0x1EAE6DD17B7A5EFA, native_parameters!(p0));
+pub fn _race_gallery_next_blip_sprite(spriteId: i32) -> () {
+    let value = native!((), 0x1EAE6DD17B7A5EFA, native_parameters!(spriteId));
 
     value
 }
 
-pub fn _race_gallery_add_blip(p0: f32, p1: f32, p2: f32) -> u32 {
-    let value = native!(u32, 0x551DF99658DB6EE8, native_parameters!(p0, p1, p2));
+pub fn _race_gallery_add_blip(x: f32, y: f32, z: f32) -> u32 {
+    let value = native!(u32, 0x551DF99658DB6EE8, native_parameters!(x, y, z));
 
     value
 }
@@ -3164,8 +3239,8 @@ pub fn _get_north_radar_blip() -> i32 {
     value
 }
 
-pub fn _0x82cedc33687e1f50(p0: bool) -> () {
-    let value = native!((), 0x82CEDC33687E1F50, native_parameters!(p0));
+pub fn display_player_name_tags_on_blips(toggle: bool) -> () {
+    let value = native!((), 0x82CEDC33687E1F50, native_parameters!(toggle));
 
     value
 }
@@ -3306,7 +3381,7 @@ pub fn pause_menu_is_context_active(contextHash: u32) -> bool {
     value
 }
 
-pub fn _0x2a25adc48f87841f() -> u32 {
+pub fn pause_menu_is_context_menu_active() -> u32 {
     let value = native!(u32, 0x2A25ADC48F87841F, native_parameters!());
 
     value
@@ -3342,7 +3417,7 @@ pub fn _0x4895bdea16e7c080(p0: i32) -> () {
     value
 }
 
-pub fn _0xc78e239ac5b2ddb9(p0: bool, p1: u32, p2: u32) -> () {
+pub fn pause_menu_set_busy_spinner(p0: bool, p1: u32, p2: u32) -> () {
     let value = native!((), 0xC78E239AC5B2DDB9, native_parameters!(p0, p1, p2));
 
     value
@@ -3360,13 +3435,13 @@ pub fn is_frontend_ready_for_control() -> bool {
     value
 }
 
-pub fn _0xec9264727eec0f28() -> () {
+pub fn take_control_of_frontend() -> () {
     let value = native!((), 0xEC9264727EEC0F28, native_parameters!());
 
     value
 }
 
-pub fn _0x14621bb1df14e2b2() -> () {
+pub fn release_control_of_frontend() -> () {
     let value = native!((), 0x14621BB1DF14E2B2, native_parameters!());
 
     value
@@ -3384,7 +3459,7 @@ pub fn _0x593feae1f73392d4() -> u32 {
     value
 }
 
-pub fn _0x4e3cd0ef8a489541() -> u32 {
+pub fn is_navigating_menu_content() -> u32 {
     let value = native!(u32, 0x4E3CD0EF8A489541, native_parameters!());
 
     value
@@ -3396,8 +3471,8 @@ pub fn _0xf284ac67940c6812() -> u32 {
     value
 }
 
-pub fn _0x2e22fefa0100275e() -> u32 {
-    let value = native!(u32, 0x2E22FEFA0100275E, native_parameters!());
+pub fn _0x2e22fefa0100275e() -> bool {
+    let value = native!(bool, 0x2E22FEFA0100275E, native_parameters!());
 
     value
 }
@@ -3408,14 +3483,26 @@ pub fn _0x0cf54f20de43879c(p0: u32) -> () {
     value
 }
 
-pub fn _0x36c1451a88a09630(p0: *mut u32, p1: *mut u32) -> () {
-    let value = native!((), 0x36C1451A88A09630, native_parameters!(p0, p1));
+pub fn _get_pause_menu_selection(lastItemMenuId: *mut i32, selectedItemUniqueId: *mut i32) -> () {
+    let value = native!(
+        (),
+        0x36C1451A88A09630,
+        native_parameters!(lastItemMenuId, selectedItemUniqueId)
+    );
 
     value
 }
 
-pub fn _0x7e17be53e1aaabaf(p0: *mut u32, p1: *mut u32, p2: *mut u32) -> () {
-    let value = native!((), 0x7E17BE53E1AAABAF, native_parameters!(p0, p1, p2));
+pub fn _get_pause_menu_selection_data(
+    lastItemMenuId: *mut i32,
+    selectedItemMenuId: *mut i32,
+    selectedItemUniqueId: *mut i32,
+) -> () {
+    let value = native!(
+        (),
+        0x7E17BE53E1AAABAF,
+        native_parameters!(lastItemMenuId, selectedItemMenuId, selectedItemUniqueId)
+    );
 
     value
 }
@@ -3426,7 +3513,7 @@ pub fn _0xa238192f33110615(p0: *mut i32, p1: *mut i32, p2: *mut i32) -> bool {
     value
 }
 
-pub fn _0xef4ced81cebedc6d(p0: u32, p1: *mut u32) -> bool {
+pub fn get_menu_ped_int_stat(p0: u32, p1: *mut u32) -> bool {
     let value = native!(bool, 0xEF4CED81CEBEDC6D, native_parameters!(p0, p1));
 
     value
@@ -3438,7 +3525,7 @@ pub fn _0xca6b2f7ce32ab653(p0: u32, p1: *mut u32, p2: u32) -> bool {
     value
 }
 
-pub fn _0x90a6526cf0381030(p0: u32, p1: *mut u32, p2: u32, p3: u32) -> bool {
+pub fn get_menu_ped_masked_int_stat(p0: u32, p1: *mut u32, p2: u32, p3: u32) -> bool {
     let value = native!(bool, 0x90A6526CF0381030, native_parameters!(p0, p1, p2, p3));
 
     value
@@ -3454,7 +3541,7 @@ pub fn _0x24a49beaf468dc90(p0: u32, p1: *mut u32, p2: u32, p3: u32, p4: u32) -> 
     value
 }
 
-pub fn _0x5fbd7095fe7ae57f(p0: u32, p1: *mut f32) -> bool {
+pub fn get_menu_ped_float_stat(p0: u32, p1: *mut f32) -> bool {
     let value = native!(bool, 0x5FBD7095FE7AE57F, native_parameters!(p0, p1));
 
     value
@@ -3466,7 +3553,7 @@ pub fn _0x8f08017f9d7c47bd(p0: u32, p1: *mut u32, p2: u32) -> bool {
     value
 }
 
-pub fn _0x052991e59076e4e4(p0: u32, p1: *mut u32) -> bool {
+pub fn get_menu_ped_bool_stat(p0: u32, p1: *mut u32) -> bool {
     let value = native!(bool, 0x052991E59076E4E4, native_parameters!(p0, p1));
 
     value
@@ -3484,8 +3571,8 @@ pub fn give_ped_to_pause_menu(ped: i32, p1: i32) -> () {
     value
 }
 
-pub fn set_pause_menu_ped_lighting(p0: bool) -> () {
-    let value = native!((), 0x3CA6050692BC61B0, native_parameters!(p0));
+pub fn set_pause_menu_ped_lighting(state: bool) -> () {
+    let value = native!((), 0x3CA6050692BC61B0, native_parameters!(state));
 
     value
 }
@@ -3556,8 +3643,8 @@ pub fn _0x577599cced639ca2(p0: u32) -> () {
     value
 }
 
-pub fn _override_multiplayer_chat_prefix(p0: u32) -> () {
-    let value = native!((), 0x6A1738B4323FE2D9, native_parameters!(p0));
+pub fn _override_multiplayer_chat_prefix(gxtEntryHash: u32) -> () {
+    let value = native!((), 0x6A1738B4323FE2D9, native_parameters!(gxtEntryHash));
 
     value
 }
@@ -3580,8 +3667,8 @@ pub fn _0x7c226d5346d4d10a(p0: u32) -> () {
     value
 }
 
-pub fn _override_multiplayer_chat_colour(p0: u32, p1: u32) -> () {
-    let value = native!((), 0xF47E567B3630DD12, native_parameters!(p0, p1));
+pub fn _override_multiplayer_chat_colour(p0: i32, hudColor: i32) -> () {
+    let value = native!((), 0xF47E567B3630DD12, native_parameters!(p0, hudColor));
 
     value
 }
