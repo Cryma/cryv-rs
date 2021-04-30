@@ -3,6 +3,7 @@ use hook::natives::*;
 #[macro_export]
 macro_rules! make_entrypoint {
     ($fn:expr) => {
+        #[allow(unsafe_code)]
         #[no_mangle]
         pub extern "stdcall" fn DllMain(
             _: winapi::shared::minwindef::HINSTANCE,
