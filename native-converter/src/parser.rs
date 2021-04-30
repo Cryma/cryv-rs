@@ -294,11 +294,11 @@ pub fn parse_native_file<'a>(file_content: String) -> Option<Natives> {
 
                         return None;
                     }
-                    nom::Err::Error((err, kind)) => {
+                    nom::Err::Error(err) => {
                         println!(
                             "ERR::ERROR - {:#?} -  {:#?}",
-                            kind,
-                            byte_array_to_utf8_string!(err)
+                            err,
+                            byte_array_to_utf8_string!(err.input)
                         );
 
                         return None;

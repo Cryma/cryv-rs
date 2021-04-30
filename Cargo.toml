@@ -9,3 +9,6 @@ members = [
 ]
 
 default-members = ["launcher"]
+
+[patch.crates-io]
+lexical-core = { git = "https://github.com/Alexhuszagh/rust-lexical", tag = "v0.7.6" }
