@@ -2,7 +2,7 @@ use once_cell::sync::Lazy;
 use shared::bevy::prelude::*;
 use std::{collections::VecDeque, sync::Mutex};
 
-pub type NativeCallback = Box<dyn Fn(&mut World, &mut Resources) + Send + Sync>;
+pub type NativeCallback = Box<dyn Fn(&mut World) + Send + Sync>;
 
 static NATIVE_CALLBACKS: Lazy<Mutex<Vec<NativeCallback>>> = Lazy::new(|| Mutex::new(vec![]));
 
@@ -37,20 +37,20 @@ pub struct ThreadJumperPlugin;
 impl Plugin for ThreadJumperPlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.init_resource::<ThreadJumperData>()
-            .add_system(run_native_callbacks.system());
+            .add_system(run_native_callbacks.exclusive_system());
     }
 }
 
-fn run_native_callbacks(world: &mut World, resources: &mut Resources) {
+fn run_native_callbacks(world: &mut World) {
     let mut native_callbacks = NATIVE_CALLBACKS.lock().unwrap();
 
     for callback in native_callbacks.as_slice() {
-        callback(world, resources);
+        callback(world);
     }
 
     native_callbacks.clear();
 
-    let thread_jumper_data = resources.get_mut::<ThreadJumperData>();
+    let thread_jumper_data = world.get_resource_mut::<ThreadJumperData>();
 
     match thread_jumper_data {
         Some(mut thread_jumper_data) => thread_jumper_data.work(),

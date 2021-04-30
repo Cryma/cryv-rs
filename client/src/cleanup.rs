@@ -6,10 +6,10 @@ use shared::bevy::prelude::*;
 pub struct CleanupPlugin;
 impl Plugin for CleanupPlugin {
     fn build(&self, app: &mut AppBuilder) {
-        app.add_startup_system(startup_system.system())
-            .add_system(cleanup_tick_system.system())
-            .add_system(cleanup_system.system())
-            .add_system(hijack_frontend_menu.system());
+        app.add_startup_system(startup_system.exclusive_system())
+            .add_system(cleanup_tick_system.exclusive_system())
+            .add_system(cleanup_system.exclusive_system())
+            .add_system(hijack_frontend_menu.exclusive_system());
     }
 }
 
@@ -25,7 +25,7 @@ pub struct EntityCleanupData {
     last_run_at: std::time::SystemTime,
 }
 
-pub fn startup_system(world: &mut World, _resources: &mut Resources) {
+pub fn startup_system(world: &mut World) {
     let player_ped_id = player::player_ped_id();
     entity::set_entity_coords_no_offset(player_ped_id, 412.4, -976.71, 29.43, false, false, false);
 
@@ -49,18 +49,18 @@ pub fn startup_system(world: &mut World, _resources: &mut Resources) {
         misc::terminate_all_scripts_with_this_name(&gameplay_script_cstring);
     }
 
-    world.spawn((EntityCleanupData {
+    world.spawn().insert(EntityCleanupData {
         cleanup_type: EntityCleanupType::Ped,
         last_run_at: std::time::SystemTime::UNIX_EPOCH,
-    },));
+    });
 
-    world.spawn((EntityCleanupData {
+    world.spawn().insert(EntityCleanupData {
         cleanup_type: EntityCleanupType::Vehicle,
         last_run_at: std::time::SystemTime::UNIX_EPOCH,
-    },));
+    });
 }
 
-pub fn cleanup_tick_system(_world: &mut World, _resources: &mut Resources) {
+pub fn cleanup_tick_system() {
     vehicle::set_random_trains(false);
     vehicle::set_random_boats(false);
     vehicle::set_number_of_parked_vehicles(-1);
@@ -96,21 +96,21 @@ pub fn cleanup_tick_system(_world: &mut World, _resources: &mut Resources) {
     pad::disable_control_action(0, 243, true); // INPUT_ENTER_CHEAT_CODE
 }
 
-pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
+pub fn cleanup_system(world: &mut World) {
     let mut existing_entities = Vec::<EntityHandle>::new();
 
     {
-        let entities = world.query::<&EntityHandle>();
-        for entity in entities {
+        let mut entities = world.query::<&EntityHandle>();
+        for entity in entities.iter(world) {
             existing_entities.push(entity.clone());
         }
     }
 
-    let entity_cleanup_data = world.query_mut::<&mut EntityCleanupData>();
+    let mut entity_cleanup_data = world.query::<&mut EntityCleanupData>();
 
     let now = std::time::SystemTime::now();
 
-    for mut data in entity_cleanup_data {
+    for mut data in entity_cleanup_data.iter_mut(world) {
         match now.duration_since(data.last_run_at) {
             Ok(duration) => {
                 if duration.as_millis() < 500 {
@@ -165,7 +165,7 @@ pub fn cleanup_system(world: &mut World, _resources: &mut Resources) {
     }
 }
 
-pub fn hijack_frontend_menu(_world: &mut World, _resources: &mut Resources) {
+pub fn hijack_frontend_menu(_world: &mut World) {
     pad::disable_control_action(0, 199, true);
     pad::disable_control_action(0, 200, true);
 

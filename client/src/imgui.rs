@@ -1,7 +1,7 @@
 use std::sync::{atomic::AtomicBool, Mutex};
 
 use once_cell::sync::{Lazy, OnceCell};
-use shared::bevy::ecs::{Entity, Resources, World};
+use shared::bevy::prelude::Entity;
 use winapi::{
     shared::minwindef::LPARAM, shared::minwindef::UINT, shared::minwindef::WPARAM,
     shared::windef::HWND, um::winuser::FindWindowA,
@@ -134,7 +134,7 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                 ui.same_line_with_spacing(0.0, -1.0);
 
                 if ui.button(imgui::im_str!("Delete Vehicle"), [0.0, 0.0]) {
-                    crate::thread_jumper::run(Box::new(|world, _| {
+                    crate::thread_jumper::run(Box::new(|world| {
                         let player_ped_id = hook::natives::player::player_ped_id();
                         let is_in_vehicle =
                             hook::natives::ped::is_ped_in_any_vehicle(player_ped_id, false);
@@ -152,11 +152,11 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
 
                         entities::delete_entity(&mut vehicle_id);
 
-                        let existing_entities = world.query::<(Entity, &EntityHandle)>();
+                        let mut existing_entities = world.query::<(Entity, &EntityHandle)>();
 
                         let mut found_entity: Option<Entity> = None;
 
-                        for (entity, entity_data) in existing_entities {
+                        for (entity, entity_data) in existing_entities.iter(world) {
                             if entity_data.handle != vehicle_id_copy {
                                 continue;
                             }
@@ -165,7 +165,7 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                         }
 
                         if let Some(x) = found_entity {
-                            world.despawn(x).unwrap();
+                            world.despawn(x);
 
                             add_log("Vehicle has been deleted");
                         }
@@ -173,7 +173,7 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                 }
 
                 if ui.button(imgui::im_str!("Load Cayo Perico"), [0.0, 0.0]) {
-                    crate::thread_jumper::run(Box::new(|_, _| {
+                    crate::thread_jumper::run(Box::new(|_| {
                         let heist_island_cstring = std::ffi::CString::new("HeistIsland").unwrap();
                         hook::natives::dlc::load_cayo_perico(&heist_island_cstring, true);
                     }));
@@ -182,14 +182,14 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                 ui.same_line_with_spacing(0.0, -1.0);
 
                 if ui.button(imgui::im_str!("Unload Cayo Perico"), [0.0, 0.0]) {
-                    crate::thread_jumper::run(Box::new(|_, _| {
+                    crate::thread_jumper::run(Box::new(|_| {
                         let x = std::ffi::CString::new("HeistIsland").unwrap();
                         hook::natives::dlc::load_cayo_perico(&x, false);
                     }));
                 }
 
                 if ui.button(imgui::im_str!("Teleport to Cayo Perico"), [0.0, 0.0]) {
-                    crate::thread_jumper::run(Box::new(|_, _| {
+                    crate::thread_jumper::run(Box::new(|_| {
                         let player_ped = hook::natives::player::player_ped_id();
 
                         hook::natives::entity::set_entity_coords_no_offset(
@@ -217,7 +217,7 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                             let primary_color = data.primary_color;
                             let secondary_color = data.secondary_color;
 
-                            crate::thread_jumper::run(Box::new(move |world, _| {
+                            crate::thread_jumper::run(Box::new(move |world| {
                                 let player_ped_id = hook::natives::player::player_ped_id();
                                 let position =
                                     hook::natives::entity::get_entity_coords(player_ped_id, true);
@@ -239,7 +239,7 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                                     -1,
                                 );
 
-                                world.spawn((handle, model, transform, vehicle));
+                                world.spawn().insert((handle, model, transform, vehicle));
 
                                 add_log(&format!(
                                     "Spawned vehicle ({})",
@@ -278,7 +278,7 @@ pub(super) fn wndproc(hwnd: HWND, message: UINT, w_param: WPARAM, l_param: LPARA
     };
 }
 
-pub(super) fn handle_cursor(_world: &mut World, _resources: &mut Resources) {
+pub(super) fn handle_cursor() {
     if hook::is_key_released(hook::keycodes::KEY_F1, true) {
         unsafe {
             SHOW_CURSOR = AtomicBool::new(*SHOW_CURSOR.get_mut() == false);
