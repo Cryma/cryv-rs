@@ -239,7 +239,9 @@ fn draw(ui: &imgui::Ui, data: &mut ImguiData) {
                                     -1,
                                 );
 
-                                world.spawn().insert((handle, model, transform, vehicle));
+                                world
+                                    .spawn()
+                                    .insert_bundle((handle, model, transform, vehicle));
 
                                 add_log(&format!(
                                     "Spawned vehicle ({})",
