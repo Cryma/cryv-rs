@@ -9,4 +9,4 @@ edition = "2018"
 [dependencies]
 winreg = "0.8.0"
 winapi = { version = "0.3", features = ["winuser", "memoryapi", "libloaderapi", "processthreadsapi"] }
-sysinfo = "0.15.3"
+sysinfo = "0.17.2"
